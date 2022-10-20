@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "Default Test Runner",
+      "setup": "",
+      "run": "gradle test --tests \"*.*\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    }
+  ]
+}
