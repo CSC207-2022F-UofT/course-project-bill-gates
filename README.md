@@ -1,26 +1,18 @@
-<h1>🚧Under construction🚧</h1>
+## Bill Gates - Yours next Bill Management System
 
-## Bill management system
+This software serves as the project for the course CSC207 at the University of Toronto.
 
-This software serves as the Final Project for the course CSC207 in the University of Toronto.
-
-**Distribution without permission is strongly prohibited**
+**Distribution without permission is strongly prohibited**.
 
 ### Specifications
 
-The program can achieve the basic functions of a regular “bill recording” software. With extra functionalities mentioned below.
+Our application will contain a fully functional Swing GUI, 
+where users can log in to the application and start recording bill entries into the database. 
+Users will be able to convert existing data into data visualizations.
+Also, within each recorded bill entry, users can provide additional details on the payment. 
+Users can also utilize this application to calculate a split bill with other people.
 
-The program may support the following features, including but not limited to:
-
-- Storing bill payment information from manual data entry
-- Client-Server side connection through web
-- Exchange information with a local database
-- Ability to perform data analysis on existing data
-- Ability to calculate a split bill with numerous people
-- Ability to provide additional details (through markdown) in each recorded payment
-- Importing data from eStatements generated from Bank
-
-### Deployment instructions
+### Deployment Instructions
 
 TODO
 
@@ -28,15 +20,19 @@ TODO
 
 TODO
 
-### Group "Bill Gates"
+### About Us
 
-Contributors:
+We are the group "Bill Gates" are we are developing the software "Bill Gates."
 
-- Brandon
-- Charlotte Chen
-- Ellen Zhang
-- Eva Dai
-- Ray Hung
-- Scott Cui
-- Xinxiang Gao
-- Yuhan
+We hope that you can be the next Bill Gates with the help of "Bill Gates."
+
+Group Members:
+
+- Brandon Fu
+  - Charlotte Chen
+  - Ellen Zhang
+  - Eva Dai
+  - Ray Hung
+  - Ruby Li
+  - Scott Cui
+  - Xinxiang Gao
