@@ -30,10 +30,10 @@ We hope that you can be the next Bill Gates with the help of "Bill Gates".
 Group Members:
 
 - Brandon Fu
-  - Charlotte Chen
-  - Ellen Zhang
-  - Eva Dai
-  - Ray Hung
-  - Ruby Li
-  - Scott Cui
-  - Xinxiang Gao
+- Charlotte Chen
+- Ellen Zhang
+- Eva Dai
+- Ray Hung
+- Ruby Li
+- Scott Cui
+- Xinxiang Gao
