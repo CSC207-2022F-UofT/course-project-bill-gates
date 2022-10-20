@@ -1,4 +1,4 @@
-# Bill Gates - Yours next Bill Management System
+# Bill Gates - Your next Bill Management System
 
 This software serves as the project for the course CSC207 at the University of Toronto.
 
