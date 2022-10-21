@@ -1,4 +1,4 @@
-## Bill Gates - Yours next Bill Management System
+## Bill Gates - Your next Bill Management System
 
 This software serves as the project for the course CSC207 at the University of Toronto.
 
@@ -28,7 +28,7 @@ We hope that you can be the next Bill Gates with the help of "Bill Gates."
 
 Group Members:
 
-- Brandon Fu
+  - Brandon Fu
   - Charlotte Chen
   - Ellen Zhang
   - Eva Dai
