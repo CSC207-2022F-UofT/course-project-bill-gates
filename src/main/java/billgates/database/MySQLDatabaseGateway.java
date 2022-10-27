@@ -1,10 +1,10 @@
 package billgates.database;
 
-import javax.management.Query;
 import java.sql.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
@@ -52,7 +52,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     public QueryBillData getBillData(int billId) {
         Instant instantStart = Instant.ofEpochMilli(0);
 
-        // This is the end date of
+        // This is the date of 2030-01-01-00:00:00:0000
         Instant instantEnd = Instant.ofEpochMilli(1893474000000L);
         ZoneId zoneId = ZoneId.of("US/Eastern");
 
@@ -65,11 +65,14 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public QueryBillData getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate) {
         ArrayList<QueryEntryData> entries = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         try{
             Statement statement = con.createStatement();
 
-            String query = "SELECT " + "*" + " FROM bill" + billId;
+            String query = "SELECT " + "*" + " FROM bill" + billId +
+                    " WHERE" + " date >= CAST('" + startDate.format(formatter) + "' AS DATE)" +
+                    " AND" + " date <= CAST('" + endDate.format(formatter) + "' AS DATE)";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -203,11 +206,32 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
         a.initializeConnection();
 
+//        ZonedDateTime startTime = ZonedDateTime.of(2022,
+//                10,
+//                24,
+//                0,
+//                0,
+//                0,
+//                0,
+//                ZoneId.of("US/Eastern"));
+//
+//        ZonedDateTime endTime = ZonedDateTime.of(2022,
+//                10,
+//                25,
+//                0,
+//                0,
+//                0,
+//                0,
+//                ZoneId.of("US/Eastern"));
+//
         QueryBillData b = a.getBillData(1);
 
         for (QueryEntryData i : b.getEntries()) {
             System.out.println(i.getValue());
             System.out.println(i.getDate().toInstant().toEpochMilli());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            System.out.println(i.getDate().format(formatter));
         }
     }
 
