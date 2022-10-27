@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class MySQLDatabaseGateway extends DatabaseGateway {
+public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection con = null;
 
     public void initializeConnection() {
@@ -35,7 +35,7 @@ public class MySQLDatabaseGateway extends DatabaseGateway {
     }
 
     @Override
-    public QueryEntryData getEntryData(int entryId, int billId) {
+    public QueryEntryData getEntryData(int billId, int entryId) {
         double value = 0.0;
         String currency = "";
         String description = "";
@@ -80,6 +80,26 @@ public class MySQLDatabaseGateway extends DatabaseGateway {
                 from,
                 to,
                 location);
+    }
+
+    @Override
+    public void insertEntry(int billId, QueryEntryData entry) {
+
+    }
+
+    @Override
+    public void deleteEntry(int billId, int entryId) {
+
+    }
+
+    @Override
+    public void modifyEntry(int billId, QueryEntryData entry) {
+
+    }
+
+    @Override
+    public void createBill(int billId) {
+
     }
 
 }
