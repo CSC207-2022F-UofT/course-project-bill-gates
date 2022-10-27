@@ -47,7 +47,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try{
             Statement statement = con.createStatement();
 
-            String query = "SELECT " + "*" + " FROM bill" + billId + " WHERE entry_id == " + entryId;
+            String query = "SELECT " + "*" + " FROM bill" + billId + " WHERE entry_id=" + entryId;
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -99,7 +99,36 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void createBill(int billId) {
+        try{
+            Statement statement = con.createStatement();
 
+            String query = "create table bill" + billId + "\n" +
+                    "(\n" +
+                    "    entry_id    int auto_increment\n" +
+                    "        primary key,\n" +
+                    "    value       double     not null,\n" +
+                    "    date        timestamp  not null,\n" +
+                    "    currency    varchar(5) null,\n" +
+                    "    description text       null,\n" +
+                    "    `from`      text       null,\n" +
+                    "    `to`        text       null,\n" +
+                    "    location    text       null\n" +
+                    ");\n" +
+                    "\n";
+
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        MySQLDatabaseGateway a = new MySQLDatabaseGateway();
+
+        a.initializeConnection();
+
+        a.createBill(2);
     }
 
 }
