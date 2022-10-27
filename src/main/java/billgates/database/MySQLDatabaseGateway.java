@@ -6,6 +6,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection con = null;
@@ -162,7 +164,23 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void insertEntry(int billId, QueryEntryData entry) {
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("\"yyyy-MM-dd HH:mm:ss\"");
 
+            Statement statement = con.createStatement();
+
+            String query = "INSERT INTO " + "bill" + billId + " (entry_id, value, date) " + "VALUES ("
+                    + entry.getId() + ", "
+                    + entry.getValue() + ", "
+                    + entry.getDate().format(formatter) + ")";
+
+            statement.execute(query);
+
+            // Should call Update and pass all the information there to replace the Nulls?
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -233,6 +251,26 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             System.out.println(i.getDate().format(formatter));
         }
+
+        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
+                10,
+                25,
+                5,
+                24,
+                36,
+                1234,
+                ZoneId.of("US/Eastern"));
+
+        QueryEntryData entry = new QueryEntryData(3,
+                insertedTime,
+                94.0,
+                "CAD",
+                "NULL",
+                "NULL",
+                "NULL",
+                "NULL");
+
+        a.insertEntry(1, entry);
     }
 
 }

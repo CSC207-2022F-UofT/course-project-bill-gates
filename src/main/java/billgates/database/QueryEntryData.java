@@ -28,6 +28,8 @@ public class QueryEntryData {
         this.from = from;
         this.to = to;
         this.location = location;
+
+        // If this entry has null values, we will fill in "NULL" in their place
     }
 
     public int getId() {
