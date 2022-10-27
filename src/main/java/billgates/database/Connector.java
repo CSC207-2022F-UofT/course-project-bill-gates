@@ -1,4 +1,4 @@
-package billgates;
+package billgates.database;
 
 import java.sql.*;
 import java.time.Instant;
