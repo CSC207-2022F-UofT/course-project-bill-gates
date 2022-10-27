@@ -1,9 +1,11 @@
 package billgates.database;
 
+import javax.management.Query;
 import java.sql.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection con = null;
@@ -21,17 +23,90 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public QueryUserData getUserData() {
-        return null;
+        ArrayList<String> usernames = new ArrayList<>();
+        ArrayList<String> passwords = new ArrayList<>();
+
+        try{
+            Statement statement = con.createStatement();
+
+            String query = "SELECT " + "*" + " FROM user";
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+
+                usernames.add(username);
+                passwords.add(password);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new QueryUserData(usernames, passwords);
     }
 
     @Override
     public QueryBillData getBillData(int billId) {
-        return null;
+        Instant instantStart = Instant.ofEpochMilli(0);
+
+        // This is the end date of
+        Instant instantEnd = Instant.ofEpochMilli(1893474000000L);
+        ZoneId zoneId = ZoneId.of("US/Eastern");
+
+        ZonedDateTime start = instantStart.atZone(zoneId);
+        ZonedDateTime end = instantEnd.atZone(zoneId);
+
+        return getBillData(billId, start, end);
     }
 
     @Override
     public QueryBillData getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate) {
-        return null;
+        ArrayList<QueryEntryData> entries = new ArrayList<>();
+
+        try{
+            Statement statement = con.createStatement();
+
+            String query = "SELECT " + "*" + " FROM bill" + billId;
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                // Note that, aside from the general types that we have here
+                // All the rest objects will be parsed in a string format
+                int entryId = resultSet.getInt("entry_id");
+                double value = resultSet.getDouble("value");
+                Timestamp date = resultSet.getTimestamp("date");
+                String currency = resultSet.getString("currency");
+                String description = resultSet.getString("description");
+                String from = resultSet.getString("from");
+                String to = resultSet.getString("to");
+                String location = resultSet.getString("location");
+
+                Instant i = Instant.ofEpochMilli(date.getTime());
+
+                // We can pass in the different zones we want to convert in, and we can obtain the value we want
+                ZonedDateTime zDate = ZonedDateTime.ofInstant(i, ZoneId.of("US/Eastern"));
+
+                QueryEntryData entry = new QueryEntryData(entryId,
+                        zDate,
+                        value,
+                        currency,
+                        description,
+                        from,
+                        to,
+                        location);
+
+                entries.add(entry);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new QueryBillData(billId, entries);
     }
 
     @Override
@@ -128,7 +203,12 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
         a.initializeConnection();
 
-        a.createBill(2);
+        QueryBillData b = a.getBillData(1);
+
+        for (QueryEntryData i : b.getEntries()) {
+            System.out.println(i.getValue());
+            System.out.println(i.getDate().toInstant().toEpochMilli());
+        }
     }
 
 }
