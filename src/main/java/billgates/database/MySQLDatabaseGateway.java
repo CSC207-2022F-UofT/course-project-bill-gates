@@ -6,8 +6,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection con = null;
@@ -198,19 +196,20 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try{
             Statement statement = con.createStatement();
 
-            String query = "create table bill" + billId + "\n" +
-                    "(\n" +
-                    "    entry_id    int auto_increment\n" +
-                    "        primary key,\n" +
-                    "    value       decimal(16, 2)     not null,\n" +
-                    "    date        timestamp  not null,\n" +
-                    "    currency    varchar(5) null,\n" +
-                    "    description text       null,\n" +
-                    "    `from`      text       null,\n" +
-                    "    `to`        text       null,\n" +
-                    "    location    text       null\n" +
-                    ");\n" +
-                    "\n";
+            String query = String.format("""
+                    CREATE TABLE bill%d
+                    (
+                        entry_id    INT             AUTO_INCREMENT
+                                                    PRIMARY KEY,
+                        value       DECIMAL(16, 2)  NOT NULL,
+                        date        TIMESTAMP       NOT NULL,
+                        currency    VARCHAR(5)      NULL,
+                        description TEXT            NULL,
+                        `from`      TEXT            NULL,
+                        `to`        TEXT            NULL,
+                        location    TEXT            NULL
+                    )
+                    """, billId);
 
             statement.execute(query);
 
@@ -242,35 +241,37 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //                0,
 //                ZoneId.of("US/Eastern"));
 //
-        QueryBillData b = a.getBillData(1);
+//        QueryBillData b = a.getBillData(1);
 
-        for (QueryEntryData i : b.getEntries()) {
-            System.out.println(i.getValue());
-            System.out.println(i.getDate().toInstant().toEpochMilli());
+        a.createBill(2);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            System.out.println(i.getDate().format(formatter));
-        }
-
-        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
-                10,
-                25,
-                5,
-                24,
-                36,
-                1234,
-                ZoneId.of("US/Eastern"));
-
-        QueryEntryData entry = new QueryEntryData(3,
-                insertedTime,
-                94.0,
-                "CAD",
-                "NULL",
-                "NULL",
-                "NULL",
-                "NULL");
-
-        a.insertEntry(1, entry);
+//        for (QueryEntryData i : b.getEntries()) {
+//            System.out.println(i.getValue());
+//            System.out.println(i.getDate().toInstant().toEpochMilli());
+//
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//            System.out.println(i.getDate().format(formatter));
+//        }
+//
+//        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
+//                10,
+//                25,
+//                5,
+//                24,
+//                36,
+//                1234,
+//                ZoneId.of("US/Eastern"));
+//
+//        QueryEntryData entry = new QueryEntryData(3,
+//                insertedTime,
+//                94.0,
+//                "CAD",
+//                "NULL",
+//                "NULL",
+//                "NULL",
+//                "NULL");
+//
+//        a.insertEntry(1, entry);
     }
 
 }
