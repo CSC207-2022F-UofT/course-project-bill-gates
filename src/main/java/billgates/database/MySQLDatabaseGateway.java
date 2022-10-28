@@ -241,17 +241,17 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //                0,
 //                ZoneId.of("US/Eastern"));
 //
-//        QueryBillData b = a.getBillData(1);
+        QueryBillData b = a.getBillData(1);
 
-        a.createBill(2);
+//        a.createBill(2);
 
-//        for (QueryEntryData i : b.getEntries()) {
-//            System.out.println(i.getValue());
-//            System.out.println(i.getDate().toInstant().toEpochMilli());
-//
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//            System.out.println(i.getDate().format(formatter));
-//        }
+        for (QueryEntryData i : b.getEntries()) {
+            System.out.println(i.getValue());
+            System.out.println(i.getDate().toInstant().toEpochMilli());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            System.out.println(i.getDate().format(formatter));
+        }
 //
 //        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
 //                10,

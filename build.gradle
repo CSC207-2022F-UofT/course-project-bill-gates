@@ -1,9 +1,16 @@
 plugins {
     id 'java'
+    id("java-library") // or id("application")
 }
 
 repositories {
     mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 dependencies {
