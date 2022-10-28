@@ -202,7 +202,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                     "(\n" +
                     "    entry_id    int auto_increment\n" +
                     "        primary key,\n" +
-                    "    value       double     not null,\n" +
+                    "    value       decimal(16, 2)     not null,\n" +
                     "    date        timestamp  not null,\n" +
                     "    currency    varchar(5) null,\n" +
                     "    description text       null,\n" +
