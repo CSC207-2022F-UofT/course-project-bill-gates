@@ -187,7 +187,18 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void deleteEntry(int billId, int entryId) {
+        try{
+            Statement statement = con.createStatement();
 
+            String query = String.format("""
+                    DELETE FROM bill%d WHERE entry_id=%d
+                    """, billId, entryId);
+
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -245,17 +256,17 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //                0,
 //                ZoneId.of("US/Eastern"));
 //
-        QueryBillData b = a.getBillData(1);
+//        QueryBillData b = a.getBillData(1);
 
 //        a.createBill(2);
 
-        for (QueryEntryData i : b.getEntries()) {
-            System.out.println(i.getValue());
-            System.out.println(i.getDate().toInstant().toEpochMilli());
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            System.out.println(i.getDate().format(formatter));
-        }
+//        for (QueryEntryData i : b.getEntries()) {
+//            System.out.println(i.getValue());
+//            System.out.println(i.getDate().toInstant().toEpochMilli());
+//
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//            System.out.println(i.getDate().format(formatter));
+//        }
 
 //        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
 //                9,
@@ -271,6 +282,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //                123.4);
 //
 //        a.insertEntry(1, entry);
+//        a.deleteEntry(1, 5);
     }
 
 }
