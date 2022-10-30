@@ -26,7 +26,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String password = prop.getProperty("db.password");
 
             try{
-                con = DriverManager.getConnection(String.format("jdbc:mysql://%s/bill",url),
+                con = DriverManager.getConnection(String.format("jdbc:mysql://%s/bill", url),
                         user,
                         password);
 
