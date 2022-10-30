@@ -203,7 +203,36 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void modifyEntry(int billId, QueryEntryData entry) {
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+            Statement statement = con.createStatement();
+
+            String query = String.format("""
+                    UPDATE bill%d
+                    SET value = %f,
+                    date = "%s",
+                    currency = "%s",
+                    description = "%s",
+                    `from` = "%s",
+                    `to` = "%s",
+                    location = "%s"
+                    WHERE entry_id = %d
+                    """, billId,
+                    entry.getValue(),
+                    entry.getDate().format(formatter),
+                    entry.getCurrency(),
+                    entry.getDescription(),
+                    entry.getFrom(),
+                    entry.getTo(),
+                    entry.getLocation(),
+                    entry.getId());
+
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -268,21 +297,27 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //            System.out.println(i.getDate().format(formatter));
 //        }
 
-//        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
-//                9,
-//                29,
-//                1,
-//                33,
-//                44,
-//                1234,
-//                ZoneId.of("US/Eastern"));
-//
-//        QueryEntryData entry = new QueryEntryData(5,
-//                insertedTime,
-//                123.4);
+        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
+                9,
+                29,
+                1,
+                33,
+                44,
+                1234,
+                ZoneId.of("US/Eastern"));
+
+        QueryEntryData entry = new QueryEntryData(4,
+                insertedTime,
+                123.4,
+                "CNY",
+                "No description",
+                "Credit",
+                "Scott",
+                "America");
 //
 //        a.insertEntry(1, entry);
 //        a.deleteEntry(1, 5);
+        a.modifyEntry(1, entry);
     }
 
 }
