@@ -163,22 +163,29 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void insertEntry(int billId, QueryEntryData entry) {
         try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("\"yyyy-MM-dd HH:mm:ss\"");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
             Statement statement = con.createStatement();
 
-            String query = "INSERT INTO " + "bill" + billId + " VALUES ("
-                    + entry.getId() + ", "
-                    + entry.getValue() + ", "
-                    + entry.getDate().format(formatter) + ", "
-                    + entry.getCurrency() + ", "
-                    + entry.getDescription() + ", "
-                    + entry.getFrom() + ", "
-                    + entry.getTo() + ", "
-                    + entry.getLocation()
-                    + ")";
-
-            statement.execute(query);
+//            String query = String.format("""
+//                    INSERT INTO bill%d VALUE (
+//                    %d, %f, %s, %s, %s, %s, %s, %s, %s
+//                    )
+//                    """, billId,
+//                    )
+//
+//            String query = "INSERT INTO " + "bill" + billId + " VALUES ("
+//                    + entry.getId() + ", "
+//                    + entry.getValue() + ", "
+//                    + entry.getDate().format(formatter) + ", "
+//                    + entry.getCurrency() + ", "
+//                    + entry.getDescription() + ", "
+//                    + entry.getFrom() + ", "
+//                    + entry.getTo() + ", "
+//                    + entry.getLocation()
+//                    + ")";
+//
+//            statement.execute(query);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -212,11 +219,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                     UPDATE bill%d
                     SET value = %f,
                     date = "%s",
-                    currency = "%s",
-                    description = "%s",
-                    `from` = "%s",
-                    `to` = "%s",
-                    location = "%s"
+                    currency = %s,
+                    description = %s,
+                    `from` = %s,
+                    `to` = %s,
+                    location = %s
                     WHERE entry_id = %d
                     """, billId,
                     entry.getValue(),
@@ -314,10 +321,12 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                 "Credit",
                 "Scott",
                 "America");
+
+        System.out.println(entry.getCurrency());
 //
 //        a.insertEntry(1, entry);
 //        a.deleteEntry(1, 5);
-        a.modifyEntry(1, entry);
+//        a.modifyEntry(1, entry);
     }
 
 }
