@@ -6,11 +6,11 @@ public class QueryEntryData {
     private final int id;
     private final ZonedDateTime date;
     private final double value;
-    private final String currency;
-    private final String description;
-    private final String from;
-    private final String to;
-    private final String location;
+    private String currency = "NULL";
+    private String description = "NULL";
+    private String from = "NULL";
+    private String to = "NULL";
+    private String location = "NULL";
 
     public QueryEntryData(int id,
                           ZonedDateTime date,
@@ -30,6 +30,16 @@ public class QueryEntryData {
         this.location = location;
 
         // If this entry has null values, we will fill in "NULL" in their place
+    }
+
+    public QueryEntryData(int id,
+                          ZonedDateTime date,
+                          double value) {
+        // Constructor for not all values provided
+
+        this.id = id;
+        this.date = date;
+        this.value = value;
     }
 
     public int getId() {
