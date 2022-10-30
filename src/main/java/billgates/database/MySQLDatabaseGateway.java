@@ -29,7 +29,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try{
             Statement statement = con.createStatement();
 
-            String query = "SELECT " + "*" + " FROM user";
+            String query = "SELECT * FROM user";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -70,9 +70,10 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try{
             Statement statement = con.createStatement();
 
-            String query = "SELECT " + "*" + " FROM bill" + billId +
-                    " WHERE" + " date >= CAST('" + startDate.format(formatter) + "' AS DATE)" +
-                    " AND" + " date <= CAST('" + endDate.format(formatter) + "' AS DATE)";
+            String query = String.format("""
+                    SELECT * FROM bill%d
+                    WHERE date >= CAST('%s' AS DATE) AND date <= CAST('%s' AS DATE)
+                    """, billId, startDate.format(formatter), endDate.format(formatter));
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -125,7 +126,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try{
             Statement statement = con.createStatement();
 
-            String query = "SELECT " + "*" + " FROM bill" + billId + " WHERE entry_id=" + entryId;
+            String query = String.format("""
+                    SELECT * FROM bill%d WHERE entry_id = %d
+                    """, billId, entryId);
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -167,25 +170,21 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             Statement statement = con.createStatement();
 
-//            String query = String.format("""
-//                    INSERT INTO bill%d VALUE (
-//                    %d, %f, %s, %s, %s, %s, %s, %s, %s
-//                    )
-//                    """, billId,
-//                    )
-//
-//            String query = "INSERT INTO " + "bill" + billId + " VALUES ("
-//                    + entry.getId() + ", "
-//                    + entry.getValue() + ", "
-//                    + entry.getDate().format(formatter) + ", "
-//                    + entry.getCurrency() + ", "
-//                    + entry.getDescription() + ", "
-//                    + entry.getFrom() + ", "
-//                    + entry.getTo() + ", "
-//                    + entry.getLocation()
-//                    + ")";
-//
-//            statement.execute(query);
+            String query = String.format("""
+                    INSERT INTO bill%d VALUE (
+                    %d, %f, "%s", %s, %s, %s, %s, %s
+                    )
+                    """, billId,
+                    entry.getId(),
+                    entry.getValue(),
+                    entry.getDate().format(formatter),
+                    entry.getCurrency(),
+                    entry.getDescription(),
+                    entry.getFrom(),
+                    entry.getTo(),
+                    entry.getLocation());
+
+            statement.execute(query);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -285,7 +284,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //
 //        ZonedDateTime endTime = ZonedDateTime.of(2022,
 //                10,
-//                25,
+//                26,
 //                0,
 //                0,
 //                0,
@@ -293,6 +292,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //                ZoneId.of("US/Eastern"));
 //
 //        QueryBillData b = a.getBillData(1);
+//        QueryBillData b = a.getBillData(1, startTime, endTime);
+
+//        QueryEntryData c = a.getEntryData(1, 1);
 
 //        a.createBill(2);
 
@@ -304,25 +306,18 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //            System.out.println(i.getDate().format(formatter));
 //        }
 
-        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
-                9,
-                29,
-                1,
-                33,
-                44,
-                1234,
-                ZoneId.of("US/Eastern"));
-
-        QueryEntryData entry = new QueryEntryData(4,
-                insertedTime,
-                123.4,
-                "CNY",
-                "No description",
-                "Credit",
-                "Scott",
-                "America");
-
-        System.out.println(entry.getCurrency());
+//        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
+//                12,
+//                25,
+//                1,
+//                23,
+//                35,
+//                1234,
+//                ZoneId.of("US/Eastern"));
+//
+//        QueryEntryData entry = new QueryEntryData(6,
+//                insertedTime,
+//                115.6);
 //
 //        a.insertEntry(1, entry);
 //        a.deleteEntry(1, 5);
