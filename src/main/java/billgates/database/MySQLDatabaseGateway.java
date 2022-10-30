@@ -1,23 +1,41 @@
 package billgates.database;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection con = null;
 
     public void initializeConnection() {
-        try{
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bill",
-                    "root",
-                    "");
+        try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Properties prop = new Properties();
+
+            prop.load(input);
+
+            String url = prop.getProperty("db.url");
+            String user = prop.getProperty("db.user");
+            String password = prop.getProperty("db.password");
+
+            try{
+                con = DriverManager.getConnection(String.format("jdbc:mysql://%s/bill",url),
+                        user,
+                        password);
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
