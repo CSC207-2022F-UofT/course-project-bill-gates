@@ -167,14 +167,18 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             Statement statement = con.createStatement();
 
-            String query = "INSERT INTO " + "bill" + billId + " (entry_id, value, date) " + "VALUES ("
+            String query = "INSERT INTO " + "bill" + billId + " VALUES ("
                     + entry.getId() + ", "
                     + entry.getValue() + ", "
-                    + entry.getDate().format(formatter) + ")";
+                    + entry.getDate().format(formatter) + ", "
+                    + entry.getCurrency() + ", "
+                    + entry.getDescription() + ", "
+                    + entry.getFrom() + ", "
+                    + entry.getTo() + ", "
+                    + entry.getLocation()
+                    + ")";
 
             statement.execute(query);
-
-            // Should call Update and pass all the information there to replace the Nulls?
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -252,24 +256,19 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             System.out.println(i.getDate().format(formatter));
         }
-//
+
 //        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
-//                10,
-//                25,
-//                5,
-//                24,
-//                36,
+//                9,
+//                29,
+//                1,
+//                33,
+//                44,
 //                1234,
 //                ZoneId.of("US/Eastern"));
 //
-//        QueryEntryData entry = new QueryEntryData(3,
+//        QueryEntryData entry = new QueryEntryData(5,
 //                insertedTime,
-//                94.0,
-//                "CAD",
-//                "NULL",
-//                "NULL",
-//                "NULL",
-//                "NULL");
+//                123.4);
 //
 //        a.insertEntry(1, entry);
     }
