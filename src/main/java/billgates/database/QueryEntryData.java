@@ -46,31 +46,49 @@ public class QueryEntryData {
         return id;
     }
 
-    public ZonedDateTime getDate() {
-        return date;
-    }
+    public ZonedDateTime getDate() { return date; }
 
     public double getValue() {
         return value;
     }
 
     public String getCurrency() {
+        if (!currency.equals("NULL")) {
+            return "\"%s\"".formatted(currency);
+        }
+
         return currency;
     }
 
     public String getDescription() {
+        if (!description.equals("NULL")) {
+            return "\"%s\"".formatted(description);
+        }
+
         return description;
     }
 
     public String getFrom() {
+        if (!from.equals("NULL")) {
+            return "\"%s\"".formatted(from);
+        }
+
         return from;
     }
 
     public String getTo() {
+        if (!to.equals("NULL")) {
+            return "\"%s\"".formatted(to);
+        }
+
         return to;
     }
 
     public String getLocation() {
+        if (!location.equals("NULL")) {
+            return "\"%s\"".formatted(location);
+        }
+
         return location;
     }
 }
