@@ -3,7 +3,7 @@ package billgates.entities;
 import java.util.Objects;
 
 // singleton
-public class User {
+public class User implements IUser{
 
     private static User instance;
 

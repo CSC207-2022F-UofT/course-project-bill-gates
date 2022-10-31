@@ -2,7 +2,7 @@ package billgates.entities;
 
 import java.util.Objects;
 
-public class DummyUser {
+public class DummyUser implements IUser {
 
     private int id;
     private String name;
