@@ -13,6 +13,11 @@ public class Attribute<T> {
     }
 
     @Override
+    public String toString() {
+        return this.attribute.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;

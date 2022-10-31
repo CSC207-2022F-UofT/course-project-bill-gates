@@ -1,6 +1,7 @@
 package billgates.entities;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class AbstractEntry {
@@ -14,7 +15,7 @@ public abstract class AbstractEntry {
     private Attribute<String> to;
     private Attribute<String> location;
 
-    public AbstractEntry(Attribute<Integer> id, Attribute<ZonedDateTime> date, Attribute<Double> value,
+    protected AbstractEntry(Attribute<Integer> id, Attribute<ZonedDateTime> date, Attribute<Double> value,
                          Attribute<String> currency, Attribute<String> description,
                          Attribute<String> from, Attribute<String> to, Attribute<String> location) {
         this.id = id;
@@ -25,6 +26,13 @@ public abstract class AbstractEntry {
         this.from = from;
         this.to = to;
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(new String[]{
+                this.id.toString(), this.date.toString(), this.value.toString(), this.currency.toString(),
+                this.description.toString(), this.from.toString(), this.to.toString(), this.location.toString()});
     }
 
     @Override
