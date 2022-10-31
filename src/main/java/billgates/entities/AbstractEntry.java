@@ -7,17 +7,19 @@ public abstract class AbstractEntry {
 
     private Attribute<Integer> id;
     private Attribute<ZonedDateTime> date;
+    private Attribute<Double> value;
     private Attribute<String> currency;
     private Attribute<String> description;
     private Attribute<String> from;
     private Attribute<String> to;
     private Attribute<String> location;
 
-    public AbstractEntry(Attribute<Integer> id, Attribute<ZonedDateTime> date,
+    public AbstractEntry(Attribute<Integer> id, Attribute<ZonedDateTime> date, Attribute<Double> value,
                          Attribute<String> currency, Attribute<String> description,
                          Attribute<String> from, Attribute<String> to, Attribute<String> location) {
         this.id = id;
         this.date = date;
+        this.value = value;
         this.currency = currency;
         this.description = description;
         this.from = from;
@@ -40,7 +42,7 @@ public abstract class AbstractEntry {
     }
 
     public Attribute<Integer> getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Attribute<Integer> id) {
@@ -48,15 +50,23 @@ public abstract class AbstractEntry {
     }
 
     public Attribute<ZonedDateTime> getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(Attribute<ZonedDateTime> date) {
         this.date = date;
     }
 
+    public Attribute<Double> getValue() {
+        return this.value;
+    }
+
+    public void setValue(Attribute<Double> value) {
+        this.value = value;
+    }
+
     public Attribute<String> getCurrency() {
-        return currency;
+        return this.currency;
     }
 
     public void setCurrency(Attribute<String> currency) {
