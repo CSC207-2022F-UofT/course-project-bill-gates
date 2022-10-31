@@ -6,11 +6,11 @@ public class QueryEntryData {
     private final int id;
     private final ZonedDateTime date;
     private final double value;
-    private String currency = "NULL";
-    private String description = "NULL";
-    private String from = "NULL";
-    private String to = "NULL";
-    private String location = "NULL";
+    private String currency = "";
+    private String description = "";
+    private String from = "";
+    private String to = "";
+    private String location = "";
 
     public QueryEntryData(int id,
                           ZonedDateTime date,
@@ -28,15 +28,12 @@ public class QueryEntryData {
         this.from = from;
         this.to = to;
         this.location = location;
-
-        // If this entry has null values, we will fill in "NULL" in their place
     }
 
     public QueryEntryData(int id,
                           ZonedDateTime date,
                           double value) {
         // Constructor for not all values provided
-
         this.id = id;
         this.date = date;
         this.value = value;
@@ -52,43 +49,13 @@ public class QueryEntryData {
         return value;
     }
 
-    public String getCurrency() {
-        if (!currency.equals("NULL")) {
-            return "\"%s\"".formatted(currency);
-        }
+    public String getCurrency() { return currency; }
 
-        return currency;
-    }
+    public String getDescription() { return description; }
 
-    public String getDescription() {
-        if (!description.equals("NULL")) {
-            return "\"%s\"".formatted(description);
-        }
+    public String getFrom() { return from; }
 
-        return description;
-    }
+    public String getTo() { return to; }
 
-    public String getFrom() {
-        if (!from.equals("NULL")) {
-            return "\"%s\"".formatted(from);
-        }
-
-        return from;
-    }
-
-    public String getTo() {
-        if (!to.equals("NULL")) {
-            return "\"%s\"".formatted(to);
-        }
-
-        return to;
-    }
-
-    public String getLocation() {
-        if (!location.equals("NULL")) {
-            return "\"%s\"".formatted(location);
-        }
-
-        return location;
-    }
+    public String getLocation() { return location; }
 }

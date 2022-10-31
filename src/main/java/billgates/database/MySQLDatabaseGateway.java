@@ -190,7 +190,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             String query = String.format("""
                     INSERT INTO bill%d VALUE (
-                    %d, %f, "%s", %s, %s, %s, %s, %s
+                    %d, %f, "%s", "%s", "%s", "%s", "%s", "%s"
                     )
                     """, billId,
                     entry.getId(),
@@ -236,11 +236,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                     UPDATE bill%d
                     SET value = %f,
                     date = "%s",
-                    currency = %s,
-                    description = %s,
-                    `from` = %s,
-                    `to` = %s,
-                    location = %s
+                    currency = "%s",
+                    description = "%s",
+                    `from` = "%s",
+                    `to` = "%s",
+                    location = "%s"
                     WHERE entry_id = %d
                     """, billId,
                     entry.getValue(),
@@ -271,11 +271,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                                                     PRIMARY KEY,
                         value       DECIMAL(16, 2)  NOT NULL,
                         date        TIMESTAMP       NOT NULL,
-                        currency    VARCHAR(5)      NULL,
-                        description TEXT            NULL,
-                        `from`      TEXT            NULL,
-                        `to`        TEXT            NULL,
-                        location    TEXT            NULL
+                        currency    VARCHAR(5)      NOT NULL,
+                        description TEXT            NOT NULL,
+                        `from`      TEXT            NOT NULL,
+                        `to`        TEXT            NOT NULL,
+                        location    TEXT            NOT NULL
                     )
                     """, billId);
 
@@ -309,36 +309,41 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //                0,
 //                ZoneId.of("US/Eastern"));
 //
-//        QueryBillData b = a.getBillData(1);
+        QueryBillData b = a.getBillData(1);
 //        QueryBillData b = a.getBillData(1, startTime, endTime);
 
 //        QueryEntryData c = a.getEntryData(1, 1);
 
 //        a.createBill(2);
 
-//        for (QueryEntryData i : b.getEntries()) {
-//            System.out.println(i.getValue());
-//            System.out.println(i.getDate().toInstant().toEpochMilli());
-//
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//            System.out.println(i.getDate().format(formatter));
-//        }
+        for (QueryEntryData i : b.getEntries()) {
+            System.out.println(i.getValue());
+            System.out.println(i.getDate().toInstant().toEpochMilli());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            System.out.println(i.getDate().format(formatter));
+        }
 
 //        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
-//                12,
-//                25,
-//                1,
-//                23,
-//                35,
+//                9,
+//                20,
+//                20,
+//                10,
+//                30,
 //                1234,
 //                ZoneId.of("US/Eastern"));
 //
-//        QueryEntryData entry = new QueryEntryData(6,
+//        QueryEntryData entry = new QueryEntryData(3,
 //                insertedTime,
-//                115.6);
+//                145.0,
+//                "CAD",
+//                "",
+//                "Credit",
+//                "Amazon",
+//                "Outer space");
 //
 //        a.insertEntry(1, entry);
-//        a.deleteEntry(1, 5);
+//        a.deleteEntry(1, 3);
 //        a.modifyEntry(1, entry);
     }
 
