@@ -73,7 +73,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
         // This is the date of the end of the world
         // The maximum date that we can obtain using Epoch Milliseconds
-        Instant instantEnd = Instant.ofEpochMilli(Instant.MAX.toEpochMilli());
+
+        // The date is 9999-01-01 00:00:00
+        Instant instantEnd = Instant.ofEpochMilli(253370782800000L);
         ZoneId zoneId = ZoneId.of("US/Eastern");
 
         ZonedDateTime start = instantStart.atZone(zoneId);
@@ -165,11 +167,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                            INSERT INTO bill%d VALUE (
-                            %d, %f, "%s", "%s", "%s", "%s", "%s", "%s"
+                            INSERT INTO bill%d (value, date, currency, description, `from`, `to`, location) VALUE (
+                            %f, "%s", "%s", "%s", "%s", "%s", "%s"
                             )
-                            """, billId,
-                    entry.getId(),
+                            """,
+                    billId,
                     entry.getValue(),
                     entry.getDate().format(formatter),
                     entry.getCurrency(),
@@ -301,22 +303,22 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         }
 
 //        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
-//                9,
-//                20,
-//                20,
-//                10,
-//                30,
+//                12,
+//                25,
+//                1,
+//                2,
+//                3,
 //                1234,
 //                ZoneId.of("US/Eastern"));
 //
-//        QueryEntryData entry = new QueryEntryData(3,
+//        QueryEntryData entry = new QueryEntryData(-1,
 //                insertedTime,
-//                145.0,
-//                "CAD",
+//                99.3,
+//                "USD",
 //                "",
-//                "Credit",
-//                "Amazon",
-//                "Outer space");
+//                "Debit",
+//                "eBay",
+//                "U of T");
 //
 //        a.insertEntry(1, entry);
 //        a.deleteEntry(1, 3);
