@@ -72,11 +72,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         Instant instantStart = Instant.ofEpochMilli(0);
 
         // This is the date of the end of the world
-        // The maximum date that we can obtain using Epoch Milliseconds
-
         // The date is 9999-01-01 00:00:00
         Instant instantEnd = Instant.ofEpochMilli(253370782800000L);
-        ZoneId zoneId = ZoneId.of("US/Eastern");
+        ZoneId zoneId = ZoneId.systemDefault();
 
         ZonedDateTime start = instantStart.atZone(zoneId);
         ZonedDateTime end = instantEnd.atZone(zoneId);
