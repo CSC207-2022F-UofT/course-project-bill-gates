@@ -1,12 +1,12 @@
 package billgates.database;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class QueryBillData {
     private final int billId;
-    private final ArrayList<QueryEntryData> entries;
+    private final List<QueryEntryData> entries;
 
-    public QueryBillData(int billId, ArrayList<QueryEntryData> entries) {
+    public QueryBillData(int billId, List<QueryEntryData> entries) {
         this.billId = billId;
         this.entries = entries;
     }
@@ -15,7 +15,7 @@ public class QueryBillData {
         return billId;
     }
 
-    public ArrayList<QueryEntryData> getEntries() {
+    public List<QueryEntryData> getEntries() {
         return entries;
     }
 }

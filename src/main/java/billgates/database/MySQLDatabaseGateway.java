@@ -9,10 +9,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
-    private Connection con = null;
+    private Connection connection = null;
 
     public void initializeConnection() {
         try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
@@ -25,8 +26,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String user = prop.getProperty("db.user");
             String password = prop.getProperty("db.password");
 
-            try{
-                con = DriverManager.getConnection(String.format("jdbc:mysql://%s/bill", url),
+            try {
+                connection = DriverManager.getConnection(String.format("jdbc:mysql://%s/bill", url),
                         user,
                         password);
 
@@ -41,11 +42,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public QueryUserData getUserData() {
-        ArrayList<String> usernames = new ArrayList<>();
-        ArrayList<String> passwords = new ArrayList<>();
+        List<String> usernames = new ArrayList<>();
+        List<String> passwords = new ArrayList<>();
 
-        try{
-            Statement statement = con.createStatement();
+        try {
+            Statement statement = connection.createStatement();
 
             String query = "SELECT * FROM user";
 
@@ -83,46 +84,21 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public QueryBillData getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate) {
-        ArrayList<QueryEntryData> entries = new ArrayList<>();
+        List<QueryEntryData> entries = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        try{
-            Statement statement = con.createStatement();
+        try {
+            Statement statement = connection.createStatement();
 
             String query = String.format("""
                     SELECT * FROM bill%d
-                    WHERE date >= CAST('%s' AS DATE) AND date <= CAST('%s' AS DATE)
+                    WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
                     """, billId, startDate.format(formatter), endDate.format(formatter));
 
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                // Note that, aside from the general types that we have here
-                // All the rest objects will be parsed in a string format
-                int entryId = resultSet.getInt("entry_id");
-                double value = resultSet.getDouble("value");
-                Timestamp date = resultSet.getTimestamp("date");
-                String currency = resultSet.getString("currency");
-                String description = resultSet.getString("description");
-                String from = resultSet.getString("from");
-                String to = resultSet.getString("to");
-                String location = resultSet.getString("location");
-
-                Instant i = Instant.ofEpochMilli(date.getTime());
-
-                // We can pass in the different zones we want to convert in, and we can obtain the value we want
-                ZonedDateTime zDate = ZonedDateTime.ofInstant(i, ZoneId.of("US/Eastern"));
-
-                QueryEntryData entry = new QueryEntryData(entryId,
-                        zDate,
-                        value,
-                        currency,
-                        description,
-                        from,
-                        to,
-                        location);
-
-                entries.add(entry);
+                entries.add(getEntryData(billId, resultSet.getInt("entry_id")));
             }
 
         } catch (SQLException e) {
@@ -140,10 +116,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         String from = "";
         String to = "";
         String location = "";
-        ZonedDateTime zDate = null;
-
-        try{
-            Statement statement = con.createStatement();
+        ZonedDateTime zDate = ZonedDateTime.now();
+        try {
+            Statement statement = connection.createStatement();
 
             String query = String.format("""
                     SELECT * FROM bill%d WHERE entry_id = %d
@@ -165,7 +140,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                 Instant i = Instant.ofEpochMilli(date.getTime());
 
                 // We can pass in the different zones we want to convert in, and we can obtain the value we want
-                zDate = ZonedDateTime.ofInstant(i, ZoneId.of("US/Eastern"));
+                zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
             }
 
         } catch (SQLException e) {
@@ -184,16 +159,16 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void insertEntry(int billId, QueryEntryData entry) {
-        try{
+        try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-            Statement statement = con.createStatement();
+            Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    INSERT INTO bill%d VALUE (
-                    %d, %f, "%s", "%s", "%s", "%s", "%s", "%s"
-                    )
-                    """, billId,
+                            INSERT INTO bill%d VALUE (
+                            %d, %f, "%s", "%s", "%s", "%s", "%s", "%s"
+                            )
+                            """, billId,
                     entry.getId(),
                     entry.getValue(),
                     entry.getDate().format(formatter),
@@ -212,8 +187,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void deleteEntry(int billId, int entryId) {
-        try{
-            Statement statement = con.createStatement();
+        try {
+            Statement statement = connection.createStatement();
 
             String query = String.format("""
                     DELETE FROM bill%d WHERE entry_id=%d
@@ -228,22 +203,22 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void modifyEntry(int billId, QueryEntryData entry) {
-        try{
+        try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-            Statement statement = con.createStatement();
+            Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    UPDATE bill%d
-                    SET value = %f,
-                    date = "%s",
-                    currency = "%s",
-                    description = "%s",
-                    `from` = "%s",
-                    `to` = "%s",
-                    location = "%s"
-                    WHERE entry_id = %d
-                    """, billId,
+                            UPDATE bill%d
+                            SET value = %f,
+                            date = "%s",
+                            currency = "%s",
+                            description = "%s",
+                            `from` = "%s",
+                            `to` = "%s",
+                            location = "%s"
+                            WHERE entry_id = %d
+                            """, billId,
                     entry.getValue(),
                     entry.getDate().format(formatter),
                     entry.getCurrency(),
@@ -262,8 +237,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void createBill(int billId) {
-        try{
-            Statement statement = con.createStatement();
+        try {
+            Statement statement = connection.createStatement();
 
             String query = String.format("""
                     CREATE TABLE bill%d
