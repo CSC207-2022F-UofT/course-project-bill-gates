@@ -1,21 +1,21 @@
 package billgates.database;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class QueryUserData {
-    private ArrayList<String> users = new ArrayList<>();
-    private ArrayList<String> passwords = new ArrayList<>();
+    private final List<String> users;
+    private final List<String> passwords;
 
-    public QueryUserData(ArrayList<String> users, ArrayList<String> passwords) {
+    public QueryUserData(List<String> users, List<String> passwords) {
         this.users = users;
         this.passwords = passwords;
     }
 
-    public ArrayList<String> getUsers() {
+    public List<String> getUsers() {
         return users;
     }
 
-    public ArrayList<String> getPasswords() {
+    public List<String> getPasswords() {
         return passwords;
     }
 }
