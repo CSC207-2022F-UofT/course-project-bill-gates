@@ -70,12 +70,17 @@ public class RegisterDialog extends JDialog {
 
         // Case 2: Click createButton
         createButton.addActionListener((e -> {
-            if (matchPassword()) {
-                accepted = true;
-                setVisible(false);
-            } else {
+            if (nameInput.getText().equals("") | passwordInput.getPassword().length == 0 |
+                    confirmPasswordInput.getPassword().length == 0){
+                JOptionPane.showMessageDialog(null,
+                        "Blank field detected ! Please fill in the field with * !", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            } else if (!matchPassword()) {
                 JOptionPane.showMessageDialog(null, "Passwords don't match!",
                         "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                accepted = true;
+                setVisible(false);
             }
         }));
     }

@@ -75,7 +75,8 @@ public class SignInDialog extends JDialog {
                 RegisterDialog dlg = new RegisterDialog(this);
                 if (dlg.exec()){
                     JOptionPane.showMessageDialog(null,
-                            "Account has been successfully created!", "Error", JOptionPane.PLAIN_MESSAGE);
+                            "Account has been successfully created !", "Congratulation",
+                            JOptionPane.PLAIN_MESSAGE);
                     System.out.println(dlg.getInput());
                 }
             });
