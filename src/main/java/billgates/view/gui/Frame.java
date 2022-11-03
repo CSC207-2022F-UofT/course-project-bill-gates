@@ -103,8 +103,17 @@ public class Frame extends JFrame {
         topRightPanel.add(signInButton);
         topRightPanel.add(signOutButton);
 
+        // At the beginning, the signOutButton should be disabled
         signOutButton.setEnabled(false);
-        signInButton.addActionListener((e -> signIn()));
+
+        // Sign in
+        signInButton.addActionListener((e -> {
+            if(signIn()) {
+                // If the user have already signed in, the signInButton should be disabled, while signOutButton is enabled
+                signInButton.setEnabled(false);
+                signOutButton.setEnabled(true);
+            }
+        }));
 
         // A back button and labels in entryPanel
         JButton back = new GeneralButton("");
@@ -169,10 +178,12 @@ public class Frame extends JFrame {
 
     }
 
-    private void signIn(){
+    private boolean signIn(){
         SignInDialog dlg = new SignInDialog(this);
         if (dlg.exec()){
             System.out.println(dlg.getInput());
+            return true;
         }
+        return false;
     }
 }
