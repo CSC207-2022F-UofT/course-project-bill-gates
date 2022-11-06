@@ -15,5 +15,7 @@ public interface DatabaseGateway {
     void modifyEntry(int billId, QueryEntryData entry);
 
     // Creates a new bill with the pre-specified columns
-    void createBill(int billId);
+    void createBillTable(int billId);
+
+    void createUsersTable();
 }
