@@ -236,24 +236,59 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
-    public void createBill(int billId) {
+    public void createBillTable(int billId) {
         try {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    CREATE TABLE bill%d
+                    CREATE TABLE bill_%d
                     (
-                        entry_id    INT             AUTO_INCREMENT
-                                                    PRIMARY KEY,
-                        value       DECIMAL(16, 2)  NOT NULL,
-                        date        TIMESTAMP       NOT NULL,
-                        currency    VARCHAR(5)      NOT NULL,
-                        description TEXT            NOT NULL,
-                        `from`      TEXT            NOT NULL,
-                        `to`        TEXT            NOT NULL,
-                        location    TEXT            NOT NULL
+                        entry_id         INT             AUTO_INCREMENT
+                                                         PRIMARY KEY,
+                        value            DECIMAL(16, 2)  NOT NULL,
+                        date             TIMESTAMP       NOT NULL,
+                        currency         CHAR(3)         NOT NULL,
+                        description      TEXT            NOT NULL,
+                        `from`           TEXT            NOT NULL,
+                        `to`             TEXT            NOT NULL,
+                        location         TEXT            NOT NULL,
+                        split_bill_id    INT             NOT NULL
                     )
                     """, billId);
+
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void createUsersTable() {
+        // Creates the users table
+        // Checks if the users table exists, if not, create it, if yes, do nothing.
+        try {
+            Statement statement = connection.createStatement();
+
+            String checkQuery = "SHOW TABLES LIKE 'users'";
+
+            ResultSet resultSet = statement.executeQuery(checkQuery);
+
+            // Checks if the table already exists, if not, continue creating the table
+            if (resultSet.next()) {
+                return;
+            }
+
+            String query = """
+                    CREATE TABLE users
+                    (
+                        user_id  INT AUTO_INCREMENT
+                                 PRIMARY KEY,
+                        username VARCHAR(10) NOT NULL,
+                        password VARCHAR(16) NOT NULL,
+                        bill_id  INT         NOT NULL
+                    );
+                    """;
 
             statement.execute(query);
 
@@ -300,6 +335,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             System.out.println(i.getDate().format(formatter));
         }
 
+        a.createUsersTable();
+
 //        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
 //                12,
 //                25,
@@ -322,5 +359,6 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 //        a.deleteEntry(1, 3);
 //        a.modifyEntry(1, entry);
     }
+
 
 }
