@@ -1,17 +1,25 @@
 package billgates.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 // singleton
-public class User implements IUser{
+public class User {
 
     private static User instance;
-
     private int id;
     private String name;
     private String password;
     private int billID;
     private int currentBillID;
+    private List<AbstractEntry> currentBill;
+
+    private User(int id, String name, String password, int billID) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.billID = billID;
+    }
 
     public static User getInstance(int id, String name, String password, int billID) {
         if (instance == null)
@@ -19,11 +27,16 @@ public class User implements IUser{
         return instance;
     }
 
-    private User(int id, String name, String password, int billID) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.billID = billID;
+    /**
+     * Precondition: instance != null
+     * This function returns the current User instance or throw a runtime exception if the current user does not exist.
+     *
+     * @return The current User instance.
+     */
+    public static User getInstance() {
+        if (instance == null) throw new
+                NullPointerException("Failed to obtain the current user. User have not logged in yet.");
+        return instance;
     }
 
     @Override
@@ -39,22 +52,18 @@ public class User implements IUser{
         return Objects.hash(this.id, this.name);
     }
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public void setId(int id) {
         this.id = id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }

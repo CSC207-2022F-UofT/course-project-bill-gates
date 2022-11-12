@@ -1,28 +1,43 @@
 package billgates.entities;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractEntry {
 
     private Attribute<Integer> id;
     private Attribute<ZonedDateTime> date;
+    private Attribute<Double> value;
     private Attribute<String> currency;
     private Attribute<String> description;
     private Attribute<String> from;
     private Attribute<String> to;
     private Attribute<String> location;
 
-    public AbstractEntry(Attribute<Integer> id, Attribute<ZonedDateTime> date,
-                         Attribute<String> currency, Attribute<String> description,
-                         Attribute<String> from, Attribute<String> to, Attribute<String> location) {
+    protected AbstractEntry(Attribute<Integer> id, Attribute<ZonedDateTime> date, Attribute<Double> value,
+                            Attribute<String> currency, Attribute<String> description,
+                            Attribute<String> from, Attribute<String> to, Attribute<String> location) {
         this.id = id;
         this.date = date;
+        this.value = value;
         this.currency = currency;
         this.description = description;
         this.from = from;
         this.to = to;
         this.location = location;
+    }
+
+    public abstract List<Attribute<?>> toList();
+
+    public abstract List<Object> toObjects();
+
+    @Override
+    public String toString() {
+        return Arrays.toString(new String[]{
+                this.id.toString(), this.date.toString(), this.value.toString(), this.currency.toString(),
+                this.description.toString(), this.from.toString(), this.to.toString(), this.location.toString()});
     }
 
     @Override
@@ -40,7 +55,7 @@ public abstract class AbstractEntry {
     }
 
     public Attribute<Integer> getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Attribute<Integer> id) {
@@ -48,15 +63,23 @@ public abstract class AbstractEntry {
     }
 
     public Attribute<ZonedDateTime> getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(Attribute<ZonedDateTime> date) {
         this.date = date;
     }
 
+    public Attribute<Double> getValue() {
+        return this.value;
+    }
+
+    public void setValue(Attribute<Double> value) {
+        this.value = value;
+    }
+
     public Attribute<String> getCurrency() {
-        return currency;
+        return this.currency;
     }
 
     public void setCurrency(Attribute<String> currency) {
