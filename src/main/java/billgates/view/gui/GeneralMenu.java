@@ -12,6 +12,6 @@ public class GeneralMenu extends JMenu {
     public GeneralMenu(String text) {
         super(text);
         this.setFont(DEFAULT_FONT);
-        this.setForeground(ActionLabel.DEFAULT_Text_COLOR);
+        this.setForeground(ActionLabel.DEFAULT_TEXT_COLOR.darker());
     }
 }

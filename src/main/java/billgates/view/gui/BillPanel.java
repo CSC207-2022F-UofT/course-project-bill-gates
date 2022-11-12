@@ -17,7 +17,7 @@ public class BillPanel extends JPanel {
     private static final String[] COLUMN_NAMES = new String[]
             {"ID", "Date", "Value", "Currency", "Description", "From", "To", "Location"};
     // This data is just for test, will be modified in the future
-    private final Object[][] testData = {{0,0,0,0,0,0,0,0}, {1,1,1,1,1,1,1,1}};
+    private final Object[][] testData = {{0, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1, 1, 1}};
     private final JTable billTable = new BillTable(this.testData, COLUMN_NAMES);
     private final JScrollPane scrollPane = new JScrollPane(this.billTable);
 

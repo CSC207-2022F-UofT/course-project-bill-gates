@@ -23,15 +23,15 @@ public class TopMenuBar extends JMenuBar {
 
     private void initMenu() {
         // Add menus with gaps
-        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP,0)));
+        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
         this.add(this.importMenu);
-        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP,0)));
+        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
         // importMenu should be disabled  before signing in
         this.importMenu.setEnabled(false);
 
         this.add(this.settingsMenu);
-        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP,0)));
+        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
         this.add(this.helpMenu);
     }

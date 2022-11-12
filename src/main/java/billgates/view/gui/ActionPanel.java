@@ -88,14 +88,14 @@ public class ActionPanel extends JPanel {
         // signInButton
         this.add(this.signInButton);
         this.signInButton.setAlignmentX(CENTER_ALIGNMENT);
-        this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
+        this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Sign in event
         this.signInButton.addActionListener((e -> this.signIn()));
 
         // signOutButton
         this.add(this.signOutButton);
         this.signOutButton.setAlignmentX(CENTER_ALIGNMENT);
-        this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
+        this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Sign out event
         this.signOutButton.addActionListener((e -> this.signOut()));
         // signOutButton should be disabled at the beginning
@@ -104,7 +104,7 @@ public class ActionPanel extends JPanel {
         // backButton
         this.add(this.backButton);
         this.backButton.setAlignmentX(CENTER_ALIGNMENT);
-        this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
+        this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Back from splitting bills event
         this.addEntryButton.addActionListener((e -> this.backFromSplit()));
         // backButton should be disabled at the beginning
@@ -113,7 +113,7 @@ public class ActionPanel extends JPanel {
         // addEntryButton
         this.add(this.addEntryButton);
         this.addEntryButton.setAlignmentX(CENTER_ALIGNMENT);
-        this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
+        this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Add entry event
         this.addEntryButton.addActionListener((e -> this.addEntry()));
         // addEntryButton should be disabled at the beginning
@@ -122,7 +122,7 @@ public class ActionPanel extends JPanel {
         // deleteEntryButton
         this.add(this.deleteEntryButton);
         this.deleteEntryButton.setAlignmentX(CENTER_ALIGNMENT);
-        this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
+        this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Delete entry event
         this.addEntryButton.addActionListener((e -> this.deleteEntry()));
         // deleteEntryButton should be disabled at the beginning

@@ -8,11 +8,11 @@ public class ActionLabel extends JLabel {
     public static final int DEFAULT_FONT_SIZE = 13;
     public static final Font DEFAULT_FONT = new Font("Modern No. 20", Font.BOLD, DEFAULT_FONT_SIZE);
 
-    public static final Color DEFAULT_Text_COLOR = Color.GRAY;
+    public static final Color DEFAULT_TEXT_COLOR = Color.GRAY;
 
     public ActionLabel(String text){
         super(text);
         this.setFont(DEFAULT_FONT);
-        this.setForeground(DEFAULT_Text_COLOR);
+        this.setForeground(DEFAULT_TEXT_COLOR);
     }
 }
