@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
         MainFrame mainFrame = new MainFrame();
         mainFrame.setVisible(true);
 
-        System.out.println(mainFrame.getContentPane().getSize());
+        //System.out.println(mainFrame.getContentPane().getSize());
     }
 
     public MainFrame() {
@@ -28,12 +28,12 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setResizable(true);
-        this.setLocation(200, 200);
         this.setContentPane(this.contentPane);
+        SwingUtil.centerInScreen(this);
 
-        System.out.println(this.getWidth());
-        System.out.println(this.actionPanel.getWidth());
-        System.out.println(this.billPanel.getWidth());
+//        System.out.println(this.getWidth());
+//        System.out.println(this.actionPanel.getWidth());
+//        System.out.println(this.billPanel.getWidth());
 
         this.add(this.actionPanel, BorderLayout.WEST);
         this.add(this.billPanel, BorderLayout.CENTER);
