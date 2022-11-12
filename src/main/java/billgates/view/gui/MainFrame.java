@@ -45,4 +45,12 @@ public class MainFrame extends JFrame {
         this.add(this.actionPanel, BorderLayout.WEST);
         this.add(this.billPanel, BorderLayout.CENTER);
     }
+
+    public BillPanel getBillPanel() {
+        return this.billPanel;
+    }
+
+    public ActionPanel getActionPanel() {
+        return actionPanel;
+    }
 }

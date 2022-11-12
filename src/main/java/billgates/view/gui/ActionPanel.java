@@ -18,9 +18,9 @@ public class ActionPanel extends JPanel {
     public static final int DEFAULT_SIGN_IN_PANEL_HEIGHT = DEFAULT_HEIGHT / 7;
     public static final int HORIZONTAL_GAP = 5;
     public static final int VERTICAL_GAP = 10;
-    public static final int BORDER_THICKNESS = 3;
-    public static final int EMPTY_BORDER_THICKNESS = 7;
-    public static final Color DEFAULT_BORDER_TEXT_COLOR = new Color(220, 120, 150);
+//    public static final int BORDER_THICKNESS = 3;
+//    public static final int EMPTY_BORDER_THICKNESS = 7;
+//    public static final Color DEFAULT_BORDER_TEXT_COLOR = new Color(220, 120, 150);
 
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 
@@ -134,13 +134,7 @@ public class ActionPanel extends JPanel {
     }
 
     private void initBorder() {
-        TitledBorder actionBorder = BorderFactory.createTitledBorder("Actions");
-        actionBorder.setTitleColor(DEFAULT_BORDER_TEXT_COLOR);
-        Border lineBorder = new LineBorder(MainFrame.DEFAULT_BACKGROUND_COLOR, BORDER_THICKNESS, true);
-        Border emptyBorder = BorderFactory.createEmptyBorder(EMPTY_BORDER_THICKNESS,
-                EMPTY_BORDER_THICKNESS, EMPTY_BORDER_THICKNESS, EMPTY_BORDER_THICKNESS);
-        Border outsideBorder = BorderFactory.createCompoundBorder(emptyBorder, lineBorder);
-        actionBorder.setBorder(BorderFactory.createCompoundBorder(outsideBorder, emptyBorder));
+        TitledBorder actionBorder = new CustomTitleBorder("Actions");
         this.setBorder(actionBorder);
     }
 
@@ -167,6 +161,12 @@ public class ActionPanel extends JPanel {
             // enable importMenu
             TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
             tmb.getImportMenu().setEnabled(true);
+
+            // enable billTable
+            MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
+            bt.setVisible(true);
+            bt.setEnabled(true);
         }
     }
 
@@ -198,6 +198,12 @@ public class ActionPanel extends JPanel {
         TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
         tmb.getImportMenu().setEnabled(false);
 
+        // Disable the billTable
+        MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
+        BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
+        bt.setEnabled(false);
+        bt.setVisible(false);
+
         // TODO: Call the controller of BillUpdateUseCase
     }
 
@@ -211,5 +217,9 @@ public class ActionPanel extends JPanel {
 
     private void deleteEntry() {
         // TODO: Call the controller of DeleteEntryUseCase
+    }
+
+    public JButton getDeleteEntryButton() {
+        return deleteEntryButton;
     }
 }
