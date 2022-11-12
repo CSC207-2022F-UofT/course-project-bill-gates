@@ -25,6 +25,8 @@ public class ActionPanel extends JPanel {
 
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 
+    private final ImageIcon backIcon = new ImageIcon(Objects.requireNonNull
+            (this.getClass().getResource("/back.png")));
     private final SpringLayout signInLayout = new SpringLayout();
     private final JPanel signInPanel = new JPanel(this.signInLayout);
     private final JLabel usernameLabel = new ActionLabel("Username: ");
@@ -34,7 +36,7 @@ public class ActionPanel extends JPanel {
 
     private final JButton signInButton = new ActionButton("Sign In");
     private final JButton signOutButton = new ActionButton("Sign Out");
-    private final JButton backButton = new ActionButton("Back");
+    private final JButton backButton = new ActionButton(" Back", backIcon);
     private final JButton addEntryButton = new ActionButton("Add Entry");
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
     private final JTextArea statisticsTextArea = new JTextArea("Statistics");
@@ -103,7 +105,6 @@ public class ActionPanel extends JPanel {
         signOutButton.setEnabled(false);
 
         // backButton
-        // this.loadIcon();
         this.add(backButton);
         backButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
@@ -156,17 +157,4 @@ public class ActionPanel extends JPanel {
         signOutButton.setEnabled(false);
         signInButton.setEnabled(true);
     }
-
-//    private void loadIcon(){
-//        try {
-////            BufferedImage backImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("back.png")));
-////            this.backIcon = new ImageIcon(backImage);
-//            this.backIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("back.png")));
-//            // this.backIcon = (Icon) ImageIO.read(new File("/resources/back.png"));
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            throw new RuntimeException(e);
-//        }
-//    }
-
 }
