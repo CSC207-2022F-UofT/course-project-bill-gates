@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class ActionButton extends JButton {
 
-    public static final int DEFAULT_WIDTH = 165;
-    public static final int DEFAULT_HEIGHT = 45;
+    public static final int DEFAULT_WIDTH = 160;
+    public static final int DEFAULT_HEIGHT = 40;
     public static final int DEFAULT_FONT_SIZE = 16;
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(240, 140, 170);
     public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;

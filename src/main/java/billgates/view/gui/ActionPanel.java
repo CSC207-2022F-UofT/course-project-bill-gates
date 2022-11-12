@@ -181,10 +181,11 @@ public class ActionPanel extends JPanel {
     }
 
     private void signOut() {
-        // Enable the signInButton, and disable the signOutButton and , addEntryButton
+        // Enable the signInButton, and disable the signOutButton and , addEntryButton, and deleteEntryButton
         this.signInButton.setEnabled(true);
         this.signOutButton.setEnabled(false);
         this.addEntryButton.setEnabled(false);
+        this.deleteEntryButton.setEnabled(false);
 
         // The usernameField and passwordField should be editable after signing out
         this.usernameField.setEditable(true);
