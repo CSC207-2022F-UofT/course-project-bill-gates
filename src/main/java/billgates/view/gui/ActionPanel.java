@@ -16,7 +16,6 @@ public class ActionPanel extends JPanel {
     public static final int DEFAULT_HEIGHT = MainFrame.DEFAULT_HEIGHT;
     public static final int DEFAULT_SIGN_IN_PANEL_WIDTH = DEFAULT_WIDTH / 10 * 9;
     public static final int DEFAULT_SIGN_IN_PANEL_HEIGHT = DEFAULT_HEIGHT / 7;
-    public static final int DEFAULT_TEXT_AREA_HEIGHT = DEFAULT_HEIGHT / 3;
     public static final int HORIZONTAL_GAP = 5;
     public static final int VERTICAL_GAP = 10;
     public static final int BORDER_THICKNESS = 3;
@@ -36,19 +35,17 @@ public class ActionPanel extends JPanel {
 
     private final JButton signInButton = new ActionButton("Sign In");
     private final JButton signOutButton = new ActionButton("Sign Out");
-    private final JButton backButton = new ActionButton(" Back", backIcon);
+    private final JButton backButton = new ActionButton(" Back", this.backIcon);
     private final JButton addEntryButton = new ActionButton("Add Entry");
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
-    private final JTextArea statisticsTextArea = new JTextArea("Statistics");
-
-    // private Icon backIcon;
+    private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
 
     public ActionPanel() {
         this.setLayout(this.layout);
         this.initSignInPanel();
         this.initButtonTextArea();
-        this.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
         this.initBorder();
+        this.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
     }
 
     private void initSignInPanel() {
@@ -86,43 +83,54 @@ public class ActionPanel extends JPanel {
                 SpringLayout.SOUTH, this.usernameField);
     }
 
-    private void initButtonTextArea(){
+    private void initButtonTextArea() {
         // Components with gaps
         // signInButton
-        this.add(signInButton);
-        signInButton.setAlignmentX(CENTER_ALIGNMENT);
+        this.add(this.signInButton);
+        this.signInButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
         // Sign in event
-        signInButton.addActionListener((e -> signIn()));
+        this.signInButton.addActionListener((e -> this.signIn()));
 
         // signOutButton
-        this.add(signOutButton);
-        signOutButton.setAlignmentX(CENTER_ALIGNMENT);
+        this.add(this.signOutButton);
+        this.signOutButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
         // Sign out event
-        signOutButton.addActionListener((e -> signOut()));
+        this.signOutButton.addActionListener((e -> this.signOut()));
         // signOutButton should be disabled at the beginning
-        signOutButton.setEnabled(false);
+        this.signOutButton.setEnabled(false);
 
         // backButton
-        this.add(backButton);
-        backButton.setAlignmentX(CENTER_ALIGNMENT);
+        this.add(this.backButton);
+        this.backButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
+        // Back from splitting bills event
+        this.addEntryButton.addActionListener((e -> this.backFromSplit()));
+        // backButton should be disabled at the beginning
+        this.backButton.setEnabled(false);
 
         // addEntryButton
-        this.add(addEntryButton);
-        addEntryButton.setAlignmentX(CENTER_ALIGNMENT);
+        this.add(this.addEntryButton);
+        this.addEntryButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
+        // Add entry event
+        this.addEntryButton.addActionListener((e -> this.addEntry()));
+        // addEntryButton should be disabled at the beginning
+        this.addEntryButton.setEnabled(false);
 
         // deleteEntryButton
-        this.add(deleteEntryButton);
-        deleteEntryButton.setAlignmentX(CENTER_ALIGNMENT);
+        this.add(this.deleteEntryButton);
+        this.deleteEntryButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0,VERTICAL_GAP)));
+        // Delete entry event
+        this.addEntryButton.addActionListener((e -> this.deleteEntry()));
+        // deleteEntryButton should be disabled at the beginning
+        this.deleteEntryButton.setEnabled(false);
 
         // statisticsTextArea
-        this.add(statisticsTextArea);
-        statisticsTextArea.setAlignmentX(CENTER_ALIGNMENT);
-        statisticsTextArea.setMaximumSize(new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_TEXT_AREA_HEIGHT));
+        this.add(this.statisticsTextArea);
+        this.statisticsTextArea.setAlignmentX(CENTER_ALIGNMENT);
     }
 
     private void initBorder() {
@@ -136,25 +144,72 @@ public class ActionPanel extends JPanel {
         this.setBorder(actionBorder);
     }
 
-    private void signIn(){
-        // Get the username and password
-        System.out.println("Name: " + this.usernameField.getText());
-        System.out.println("Password: " + Arrays.toString(this.passwordField.getPassword()));
+    private void signIn() {
+        // Get the username and password from user
+        String userName = this.usernameField.getText();
+        String userPassword = Arrays.toString(this.passwordField.getPassword());
+        System.out.println("Name: " + userName);
+        System.out.println("Password: " + userPassword);
 
-        // If the user has successfully signed in, disable the signInButton, and enable the signOutButton
-        if (checkSignIn()){
-            signInButton.setEnabled(false);
-            signOutButton.setEnabled(true);
+        // TODO: Call the controller of UserJoinUseCase
+
+        // If the user has successfully signed in,
+        if (this.checkUsername() & this.checkPassword()) {
+            // disable the signInButton, and enable the signOutButton and addEntryButton
+            this.signInButton.setEnabled(false);
+            this.signOutButton.setEnabled(true);
+            this.addEntryButton.setEnabled(true);
+
+            // the usernameField and passwordField shouldn't be editable
+            this.usernameField.setEditable(false);
+            this.passwordField.setEditable(false);
+
+            // enable importMenu
+            TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
+            tmb.getImportMenu().setEnabled(true);
         }
     }
 
-    private boolean checkSignIn(){
+    private boolean checkUsername() {
         // Will be implemented further
         return true;
     }
 
-    private void signOut(){
-        signOutButton.setEnabled(false);
-        signInButton.setEnabled(true);
+    private boolean checkPassword() {
+        // Will be implemented further
+        return true;
+    }
+
+    private void signOut() {
+        // Enable the signInButton, and disable the signOutButton and , addEntryButton
+        this.signInButton.setEnabled(true);
+        this.signOutButton.setEnabled(false);
+        this.addEntryButton.setEnabled(false);
+
+        // The usernameField and passwordField should be editable after signing out
+        this.usernameField.setEditable(true);
+        this.passwordField.setEditable(true);
+
+        // Clear the usernameField and passwordField
+        this.usernameField.setText("");
+        this.passwordField.setText("");
+
+        // Disable the importMenu
+        TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
+        tmb.getImportMenu().setEnabled(false);
+
+        // TODO: Call the controller of BillUpdateUseCase
+    }
+
+    private void backFromSplit() {
+        // TODO: Call the controller of BillUpdateUseCase
+    }
+
+    private void addEntry() {
+        // TODO: Call the controller of InsertEntryUseCase
+    }
+
+    private void deleteEntry() {
+        // TODO: Call the controller of DeleteEntryUseCase
     }
 }

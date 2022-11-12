@@ -3,7 +3,7 @@ package billgates.view.gui;
 import java.awt.*;
 
 public class SwingUtil {
-    public static void centerInScreen(Window w){
+    public static void centerInScreen(Window w) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         int x = (screenSize.width - w.getWidth()) / 2;
@@ -11,7 +11,7 @@ public class SwingUtil {
         w.setLocation(x, y);
     }
 
-    public static void centerInOwner(Window win, Window owner){
+    public static void centerInOwner(Window win, Window owner) {
         // Get the position of the original window
         Rectangle ownerRect = owner.getBounds();
 

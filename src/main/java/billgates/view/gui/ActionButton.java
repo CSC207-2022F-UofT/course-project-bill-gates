@@ -4,8 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ActionButton extends JButton {
-    public static final int DEFAULT_WIDTH = 170;
-    public static final int DEFAULT_HEIGHT = 50;
+
+    public static final int DEFAULT_WIDTH = 165;
+    public static final int DEFAULT_HEIGHT = 45;
     public static final int DEFAULT_FONT_SIZE = 16;
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(240, 140, 170);
     public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;
@@ -13,7 +14,7 @@ public class ActionButton extends JButton {
     public static final int DEFAULT_BORDER_THICKNESS = DEFAULT_HEIGHT / 7;
     public static final int DEFAULT_IMAGE_HEIGHT = DEFAULT_HEIGHT - DEFAULT_BORDER_THICKNESS;
 
-    public ActionButton(String text){
+    public ActionButton(String text) {
         // Set the text of the icon
         super(text);
 
@@ -26,7 +27,10 @@ public class ActionButton extends JButton {
         this.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
     }
 
-    public ActionButton(String text, ImageIcon icon){
+    public ActionButton(String text, ImageIcon icon) {
+        // Set the text of the icon with default font and colors
+        this(text);
+
         // Get the original icon's size
         double originIconWidth = icon.getIconWidth();
         double originIconHeight = icon.getIconHeight();
@@ -41,14 +45,6 @@ public class ActionButton extends JButton {
 
         // Set the icon
         this.setIcon(resizedBackIcon);
-
-        // Set the text of the icon
-        this.setText(text);
-
-        // Set font and colors
-        this.setFont(DEFAULT_FONT);
-        this.setForeground(DEFAULT_TEXT_COLOR);
-        setBackground(DEFAULT_BACKGROUND_COLOR);
 
         // Set the maximum size of the button
         this.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
