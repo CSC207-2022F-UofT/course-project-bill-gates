@@ -1,5 +1,7 @@
 package billgates.database;
 
+import billgates.interface_adapters.DatabaseGateway;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +16,10 @@ import java.util.Properties;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection connection = null;
+
+    public MySQLDatabaseGateway() {
+        this.initializeConnection();
+    }
 
     public void initializeConnection() {
         try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
@@ -48,7 +54,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try {
             Statement statement = connection.createStatement();
 
-            String query = "SELECT * FROM user";
+            String query = "SELECT * FROM users";
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -295,69 +301,6 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) {
-        MySQLDatabaseGateway a = new MySQLDatabaseGateway();
-
-        a.initializeConnection();
-
-//        ZonedDateTime startTime = ZonedDateTime.of(2022,
-//                10,
-//                24,
-//                0,
-//                0,
-//                0,
-//                0,
-//                ZoneId.of("US/Eastern"));
-//
-//        ZonedDateTime endTime = ZonedDateTime.of(2022,
-//                10,
-//                26,
-//                0,
-//                0,
-//                0,
-//                0,
-//                ZoneId.of("US/Eastern"));
-//
-        QueryBillData b = a.getBillData(1);
-//        QueryBillData b = a.getBillData(1, startTime, endTime);
-
-//        QueryEntryData c = a.getEntryData(1, 1);
-
-//        a.createBill(2);
-
-        for (QueryEntryData i : b.getEntries()) {
-            System.out.println(i.getValue());
-            System.out.println(i.getDate().toInstant().toEpochMilli());
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            System.out.println(i.getDate().format(formatter));
-        }
-
-        a.createUsersTable();
-
-//        ZonedDateTime insertedTime = ZonedDateTime.of(2022,
-//                12,
-//                25,
-//                1,
-//                2,
-//                3,
-//                1234,
-//                ZoneId.of("US/Eastern"));
-//
-//        QueryEntryData entry = new QueryEntryData(-1,
-//                insertedTime,
-//                99.3,
-//                "USD",
-//                "",
-//                "Debit",
-//                "eBay",
-//                "U of T");
-//
-//        a.insertEntry(1, entry);
-//        a.deleteEntry(1, 3);
-//        a.modifyEntry(1, entry);
     }
 
 

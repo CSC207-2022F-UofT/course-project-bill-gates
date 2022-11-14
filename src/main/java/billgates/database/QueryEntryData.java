@@ -1,5 +1,7 @@
 package billgates.database;
 
+import billgates.entities.EntryBuilder;
+
 import java.time.ZonedDateTime;
 
 public class QueryEntryData {
@@ -39,23 +41,47 @@ public class QueryEntryData {
         this.value = value;
     }
 
+    public EntryBuilder toEntryBuilder() {
+        return new EntryBuilder()
+                .setId(this.id)
+                .setDate(this.date)
+                .setValue(this.value)
+                .setCurrency(this.currency)
+                .setDescription(this.description)
+                .setFrom(this.from)
+                .setTo(this.to)
+                .setLocation(this.location);
+    }
+
     public int getId() {
         return id;
     }
 
-    public ZonedDateTime getDate() { return date; }
+    public ZonedDateTime getDate() {
+        return date;
+    }
 
     public double getValue() {
         return value;
     }
 
-    public String getCurrency() { return currency; }
+    public String getCurrency() {
+        return currency;
+    }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public String getFrom() { return from; }
+    public String getFrom() {
+        return from;
+    }
 
-    public String getTo() { return to; }
+    public String getTo() {
+        return to;
+    }
 
-    public String getLocation() { return location; }
+    public String getLocation() {
+        return location;
+    }
 }

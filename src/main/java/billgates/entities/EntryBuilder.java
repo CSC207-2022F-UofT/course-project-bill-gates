@@ -2,7 +2,7 @@ package billgates.entities;
 
 import java.time.ZonedDateTime;
 
-public class EntryFactory {
+public class EntryBuilder {
 
     private int id = -1;
     private ZonedDateTime date = ZonedDateTime.now();
@@ -17,11 +17,13 @@ public class EntryFactory {
 
     // TODO for splitter, payee
 
-    public EntryFactory(int id) {
-        this.id = id;
+    public EntryBuilder() {
     }
 
-    public Entry createEntry() {
+    public Entry build() {
+        if (this.id == -1) {
+            throw new InvalidEntryException("Invalid entry ID!");
+        }
         return new Entry(
                 new Attribute<>(this.id, "id"),
                 new Attribute<>(this.date, "date"),
@@ -31,40 +33,57 @@ public class EntryFactory {
                 new Attribute<>(this.from, "from"),
                 new Attribute<>(this.to, "to"),
                 new Attribute<>(this.location, "location")
-                );
+        );
     }
 
-    public EntryFactory setDate(ZonedDateTime date) {
+    public EntryBuilder reset() {
+        this.id = -1;
+        this.date = ZonedDateTime.now();
+        this.value = 0.0;
+        this.currency = "";
+        this.description = "";
+        this.from = "";
+        this.to = "";
+        this.location = "";
+        return this;
+    }
+
+    public EntryBuilder setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public EntryBuilder setDate(ZonedDateTime date) {
         this.date = date;
         return this;
     }
 
-    public EntryFactory setValue(double value) {
+    public EntryBuilder setValue(double value) {
         this.value = value;
         return this;
     }
 
-    public EntryFactory setCurrency(String currency) {
+    public EntryBuilder setCurrency(String currency) {
         this.currency = currency;
         return this;
     }
 
-    public EntryFactory setDescription(String description) {
+    public EntryBuilder setDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public EntryFactory setFrom(String from) {
+    public EntryBuilder setFrom(String from) {
         this.from = from;
         return this;
     }
 
-    public EntryFactory setTo(String to) {
+    public EntryBuilder setTo(String to) {
         this.to = to;
         return this;
     }
 
-    public EntryFactory setLocation(String location) {
+    public EntryBuilder setLocation(String location) {
         this.location = location;
         return this;
     }
