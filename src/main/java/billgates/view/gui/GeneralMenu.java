@@ -7,7 +7,7 @@ import java.awt.*;
 public class GeneralMenu extends JMenu {
 
     public static final int DEFAULT_FONT_SIZE = 12;
-    public static final Font DEFAULT_FONT = new Font("Modern No. 20", Font.BOLD, DEFAULT_FONT_SIZE);
+    public static final Font DEFAULT_FONT = new FontSettings(DEFAULT_FONT_SIZE);
 
     public GeneralMenu(String text) {
         super(text);

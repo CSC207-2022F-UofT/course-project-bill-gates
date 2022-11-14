@@ -6,7 +6,7 @@ import java.awt.*;
 public class ActionLabel extends JLabel {
 
     public static final int DEFAULT_FONT_SIZE = 13;
-    public static final Font DEFAULT_FONT = new Font("Modern No. 20", Font.BOLD, DEFAULT_FONT_SIZE);
+    public static final Font DEFAULT_FONT = new FontSettings(DEFAULT_FONT_SIZE);
 
     public static final Color DEFAULT_TEXT_COLOR = Color.GRAY;
 

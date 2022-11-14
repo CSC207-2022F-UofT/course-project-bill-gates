@@ -10,7 +10,7 @@ public class ActionButton extends JButton {
     public static final int DEFAULT_FONT_SIZE = 16;
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(240, 140, 170);
     public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;
-    public static final Font DEFAULT_FONT = new Font("Modern No. 20", Font.BOLD, DEFAULT_FONT_SIZE);
+    public static final Font DEFAULT_FONT = new FontSettings(DEFAULT_FONT_SIZE);
     public static final int DEFAULT_BORDER_THICKNESS = DEFAULT_HEIGHT / 7;
     public static final int DEFAULT_IMAGE_HEIGHT = DEFAULT_HEIGHT - DEFAULT_BORDER_THICKNESS;
 

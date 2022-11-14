@@ -8,7 +8,7 @@ public class BillTable extends JTable {
     public static final int DEFAULT_HEADER_HEIGHT = 50;
     public static final int DEFAULT_ROW_HEIGHT = 40;
     public static final int DEFAULT_FONT_SIZE = 15;
-    public static final Font DEFAULT_FONT = new Font("Modern No. 20", Font.PLAIN, DEFAULT_FONT_SIZE);
+    public static final Font DEFAULT_FONT = new FontSettings(DEFAULT_FONT_SIZE);
 
     public BillTable(Object[][] data, Object[] columnNames) {
         // Set the data and header
