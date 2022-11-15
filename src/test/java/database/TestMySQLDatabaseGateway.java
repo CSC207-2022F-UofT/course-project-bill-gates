@@ -1,0 +1,545 @@
+package database;
+
+import org.junit.*;
+import static org.junit.Assert.*;
+import billgates.database.*;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.*;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+public class TestMySQLDatabaseGateway {
+    public MySQLDatabaseGateway testGateway;
+    public int testBillID = 9999;
+
+    public Connection testConnection;
+
+    public static final int TEST_TIMEOUT = 100000;
+
+    @Before
+    public void setUp() {
+        this.testGateway = new MySQLDatabaseGateway();
+
+        try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
+
+            Properties prop = new Properties();
+
+            prop.load(input);
+
+            String url = prop.getProperty("db.url");
+            String user = prop.getProperty("db.user");
+            String password = prop.getProperty("db.password");
+
+            try {
+                this.testConnection = DriverManager.getConnection(String.format("jdbc:mysql://%s/bill", url),
+                        user,
+                        password);
+
+                Statement testStatement = this.testConnection.createStatement();
+
+                String checkQuery = String.format("SHOW TABLES LIKE 'bill%d'", this.testBillID);
+
+                ResultSet resultSet = testStatement.executeQuery(checkQuery);
+
+                if (resultSet.next()) {
+                    // If the table already exists there (Due to previous failed tests, we want to remove it and recreate)
+                    String dropTableQuery = String.format("DROP TABLE bill%d", this.testBillID);
+
+                    testStatement.execute(dropTableQuery);
+                }
+
+                // For each test, I want a table called bill9999
+                String createTableQuery = String.format("""
+                    CREATE TABLE bill%d
+                    (
+                        entry_id         INT             AUTO_INCREMENT
+                                                         PRIMARY KEY,
+                        value            DECIMAL(16, 2)  NOT NULL,
+                        date             TIMESTAMP       NOT NULL,
+                        currency         CHAR(3)         NOT NULL,
+                        description      TEXT            NOT NULL,
+                        `from`           TEXT            NOT NULL,
+                        `to`             TEXT            NOT NULL,
+                        location         TEXT            NOT NULL,
+                        split_bill_id    INT             NOT NULL
+                    )
+                    """, this.testBillID);
+
+                testStatement.execute(createTableQuery);
+
+                String createEntryOneQuery = String.format("""
+                            INSERT INTO bill%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
+                            (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
+                            """, this.testBillID);
+
+                testStatement.execute(createEntryOneQuery);
+
+                String createEntryTwoQuery = String.format("""
+                            INSERT INTO bill%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
+                            (2, 678.90, "1970-01-10 00:00:00", "CNY", "This is another test entry", "Cash", "Burger King", "College Street", -1)
+                            """, this.testBillID);
+
+                testStatement.execute(createEntryTwoQuery);
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @After
+    public void tearDown() {
+        try {
+            Statement statement = this.testConnection.createStatement();
+            String dropTableQuery = String.format("DROP TABLE bill%d", this.testBillID);
+
+            // Dropping the table that we created for testing
+            statement.execute(dropTableQuery);
+        } catch (SQLException ignored) {
+        }
+    }
+
+    // Test for creating a users table
+    @Test(timeout = TEST_TIMEOUT)
+    public void testCreateUsersTable() {
+        try {
+            // After we call this method, we must have a users table that exists in the server
+            this.testGateway.createUsersTable();
+
+            Statement statement = this.testConnection.createStatement();
+
+            String checkQuery = "SHOW COLUMNS FROM users";
+
+            ResultSet resultSet = statement.executeQuery(checkQuery);
+
+            ArrayList<String> obtainedColumnNames = new ArrayList<>();
+
+            ArrayList<String> trueColumnNames = new ArrayList<>(List.of("user_id",
+                    "username",
+                    "password",
+                    "bill_id"));
+
+            while (resultSet.next()) {
+                obtainedColumnNames.add(resultSet.getString("Field"));
+            }
+
+            // Tests if the obtained list of Users column names
+            assertEquals(obtainedColumnNames, trueColumnNames);
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    // Test for creating a users table
+    @Test(timeout = TEST_TIMEOUT)
+    public void testGetUserData() {
+        try {
+            QueryUserData obtainedUsers = this.testGateway.getUserData();
+            // There's not much ways we can test this method, as the users list grows in size as people use our application
+            // So we will just test if there is a runtime exception being raised
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            // Only tests if we obtain an error
+            fail();
+        }
+    }
+
+    // Test for creating a bill table with the ID being testBillID
+    @Test(timeout = TEST_TIMEOUT)
+    public void testCreateBillTable() {
+        try {
+            Statement testStatement = this.testConnection.createStatement();
+
+            String dropTableQuery = String.format("DROP TABLE bill%d", this.testBillID);
+            // Remove the table created by @before first
+            testStatement.execute(dropTableQuery);
+
+            // Test create the table
+            this.testGateway.createBillTable(this.testBillID);
+
+            String checkQuery = String.format("SHOW COLUMNS FROM bill%d", this.testBillID);
+
+            ResultSet resultSet = testStatement.executeQuery(checkQuery);
+
+            ArrayList<String> obtainedColumnNames = new ArrayList<>();
+
+            ArrayList<String> trueColumnNames = new ArrayList<>(List.of("entry_id",
+                    "value",
+                    "date",
+                    "currency",
+                    "description",
+                    "from",
+                    "to",
+                    "location",
+                    "split_bill_id"));
+
+            while (resultSet.next()) {
+                obtainedColumnNames.add(resultSet.getString("Field"));
+            }
+
+            // Tests if the obtained list of Bill column names
+            assertEquals(obtainedColumnNames, trueColumnNames);
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            // When trying to run getBillData method on BillID testBillID
+            fail();
+        }
+    }
+
+    // Test inserting an entry with all attributes
+    @Test(timeout = TEST_TIMEOUT)
+    public void testInsertEntryAllAttributes() {
+        try {
+            int testID = 3;
+            ZonedDateTime testDate = ZonedDateTime.of(2022,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    ZoneId.systemDefault());
+            double testValue = 100.0;
+            String testCurrency = "NTD";
+            String testDescription = "This is the third example entry";
+            String testFrom = "Credit Card";
+            String testTo = "Amazon";
+            String testLocation = "Online";
+            int testSplitBillID = -1;
+
+            QueryEntryData testEntry3 = new QueryEntryData(testID,
+                    testDate,
+                    testValue,
+                    testCurrency,
+                    testDescription,
+                    testFrom,
+                    testTo,
+                    testLocation,
+                    testSplitBillID);
+
+            this.testGateway.insertEntry(this.testBillID, testEntry3);
+
+            Statement testStatement = this.testConnection.createStatement();
+
+            String getNewlyCreatedEntry = String.format("SELECT * FROM bill%d WHERE entry_id=%d",
+                    this.testBillID, testEntry3.getId());
+
+            ResultSet result = testStatement.executeQuery(getNewlyCreatedEntry);
+
+            int obtainedID = -1;
+            double value = 0.0;
+            String currency = "";
+            String description = "";
+            String from = "";
+            String to = "";
+            String location = "";
+            ZonedDateTime zDate = ZonedDateTime.now();
+            int splitBillID = -1;
+
+            while (result.next()) {
+                obtainedID = result.getInt("entry_id");
+                value = result.getDouble("value");
+                Timestamp date = result.getTimestamp("date");
+                currency = result.getString("currency");
+                description = result.getString("description");
+                from = result.getString("from");
+                to = result.getString("to");
+                location = result.getString("location");
+                splitBillID = result.getInt("split_bill_id");
+
+                Instant i = Instant.ofEpochMilli(date.getTime());
+
+                // We can pass in the different zones we want to convert in, and we can obtain the value we want
+                zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
+            }
+
+            assertEquals(obtainedID, testID);
+            assertEquals(value, testValue, 1e-8);
+            assertEquals(zDate, testDate);
+            assertEquals(currency, testCurrency);
+            assertEquals(description, testDescription);
+            assertEquals(from, testFrom);
+            assertEquals(to, testTo);
+            assertEquals(location, testLocation);
+            assertEquals(splitBillID, testSplitBillID);
+
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    // Test for inserting an entry with only the ID, Date, Value
+    @Test(timeout = TEST_TIMEOUT)
+    public void testInsertEntryMainAttributes() {
+        try {
+            int testID = 4;
+            ZonedDateTime testDate = ZonedDateTime.of(2022,
+                    2,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    ZoneId.systemDefault());
+            double testValue = 999.1;
+
+            QueryEntryData testEntry4 = new QueryEntryData(testID,
+                    testDate,
+                    testValue);
+
+            this.testGateway.insertEntry(this.testBillID, testEntry4);
+
+            Statement testStatement = this.testConnection.createStatement();
+
+            String getNewlyCreatedEntry = String.format("SELECT * FROM bill%d WHERE entry_id=%d",
+                    this.testBillID, testEntry4.getId());
+
+            ResultSet result = testStatement.executeQuery(getNewlyCreatedEntry);
+
+            int obtainedID = -1;
+            double value = 0.0;
+            String currency = "";
+            String description = "";
+            String from = "";
+            String to = "";
+            String location = "";
+            ZonedDateTime zDate = ZonedDateTime.now();
+            int splitBillID = -1;
+
+            while (result.next()) {
+                obtainedID = result.getInt("entry_id");
+                value = result.getDouble("value");
+                Timestamp date = result.getTimestamp("date");
+                currency = result.getString("currency");
+                description = result.getString("description");
+                from = result.getString("from");
+                to = result.getString("to");
+                location = result.getString("location");
+                splitBillID = result.getInt("split_bill_id");
+
+                Instant i = Instant.ofEpochMilli(date.getTime());
+
+                // We can pass in the different zones we want to convert in, and we can obtain the value we want
+                zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
+            }
+
+            assertEquals(obtainedID, testID);
+            assertEquals(value, testValue, 1e-8);
+            assertEquals(zDate, testDate);
+            assertEquals(currency, "");
+            assertEquals(description, "");
+            assertEquals(from, "");
+            assertEquals(to, "");
+            assertEquals(location, "");
+            assertEquals(splitBillID, -1);
+
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    // Test for getting the Entry that we inserted in the previous test
+    @Test(timeout = TEST_TIMEOUT)
+    public void testGetEntry() {
+        try {
+            // In the @Before chunk, we inserted an entry that has the ID 1
+            QueryEntryData obtainedEntry = this.testGateway.getEntryData(this.testBillID, 1);
+
+            ZonedDateTime expectedDate = ZonedDateTime.of(1970,
+                    1,
+                    2,
+                    0,
+                    0,
+                    0,
+                    0, ZoneId.systemDefault());
+
+            // This information was identical to the ones in the setUp chunk.
+            // (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
+            assertEquals(1, obtainedEntry.getId());
+            assertEquals(expectedDate, obtainedEntry.getDate());
+            assertEquals(123.45, obtainedEntry.getValue(), 1e-8);
+            assertEquals("CAD", obtainedEntry.getCurrency());
+            assertEquals("This is a test entry", obtainedEntry.getDescription());
+            assertEquals("Credit Card", obtainedEntry.getFrom());
+            assertEquals("T&T Supermarket", obtainedEntry.getTo());
+            assertEquals("T&T Supermarket", obtainedEntry.getLocation());
+            assertEquals(-1, obtainedEntry.getSplitBillId());
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
+    public void testGetBillDataAll() {
+        try {
+            QueryBillData obtainedBillData = this.testGateway.getBillData(this.testBillID);
+
+            // Testing if the size is 2, since if there is 2, then it means we have obtained all entries
+            // In the setUp chunk, we initialized the bill with 2 entries
+            assertEquals(obtainedBillData.getEntries().size(), 2);
+
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
+    public void testGetBillDataPartial() {
+        try {
+            ZonedDateTime startTime = ZonedDateTime.of(1969,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0, ZoneId.systemDefault());
+
+            ZonedDateTime endTime = ZonedDateTime.of(1970,
+                    1,
+                    5,
+                    0,
+                    0,
+                    0,
+                    0, ZoneId.systemDefault());
+
+            QueryBillData obtainedBillData = this.testGateway.getBillData(this.testBillID, startTime, endTime);
+
+            // If we only have 1 entry obtained, then it is a success
+            assertEquals(obtainedBillData.getEntries().size(), 1);
+
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
+    public void testModifyEntry() {
+        try {
+            int testEntryID = 1;
+            ZonedDateTime testTime = ZonedDateTime.of(2019,
+                    1,
+                    2,
+                    1,
+                    2,
+                    3,
+                    4,
+                    ZoneId.systemDefault());
+            double testValue = 100.00;
+            String testCurrency = "USD";
+            String testDescription = "This is modified test entry 1";
+            String testFrom = "Debit Card";
+            String testTo = "Amazon";
+            String testLocation = "Online";
+            int testSplitBillID = -1;
+
+            QueryEntryData testModifiedEntry1 = new QueryEntryData(testEntryID,
+                    testTime,
+                    testValue,
+                    testCurrency,
+                    testDescription,
+                    testFrom,
+                    testTo,
+                    testLocation,
+                    testSplitBillID);
+
+            this.testGateway.modifyEntry(this.testBillID, testModifiedEntry1);
+
+            Statement testStatement = this.testConnection.createStatement();
+
+            String getModifiedEntry = String.format("SELECT * FROM bill%d WHERE entry_id=%d",
+                    this.testBillID, testModifiedEntry1.getId());
+
+            ResultSet result = testStatement.executeQuery(getModifiedEntry);
+
+            int obtainedID = -1;
+            double value = 0.0;
+            String currency = "";
+            String description = "";
+            String from = "";
+            String to = "";
+            String location = "";
+            ZonedDateTime zDate = ZonedDateTime.now();
+            int splitBillID = -1;
+
+            while (result.next()) {
+                obtainedID = result.getInt("entry_id");
+                value = result.getDouble("value");
+                Timestamp date = result.getTimestamp("date");
+                currency = result.getString("currency");
+                description = result.getString("description");
+                from = result.getString("from");
+                to = result.getString("to");
+                location = result.getString("location");
+                splitBillID = result.getInt("split_bill_id");
+
+                Instant i = Instant.ofEpochMilli(date.getTime());
+
+                // We can pass in the different zones we want to convert in, and we can obtain the value we want
+                zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
+            }
+
+            assertEquals(obtainedID, testModifiedEntry1.getId());
+            assertEquals(value, testModifiedEntry1.getValue(), 1e-8);
+            assertEquals(zDate, testModifiedEntry1.getDate());
+            assertEquals(currency, testModifiedEntry1.getCurrency());
+            assertEquals(description, testModifiedEntry1.getDescription());
+            assertEquals(from, testModifiedEntry1.getFrom());
+            assertEquals(to, testModifiedEntry1.getTo());
+            assertEquals(location, testModifiedEntry1.getLocation());
+            assertEquals(splitBillID, testModifiedEntry1.getSplitBillId());
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
+    public void testDeleteEntry() {
+        try {
+            // Now, we are testing to delete entry with the ID of 1, which is created in the Setup
+            this.testGateway.deleteEntry(this.testBillID, 1);
+
+            Statement testStatement = this.testConnection.createStatement();
+
+            String getAllEntries = String.format("SELECT * FROM bill%d",
+                    this.testBillID);
+
+            ResultSet result = testStatement.executeQuery(getAllEntries);
+
+            int entryCount = 0;
+
+            while (result.next()) {
+                entryCount += 1;
+            }
+
+            // We should only have 1 entry left after deleting the entry with ID 1
+            assertEquals(entryCount, 1);
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+}
+

@@ -174,11 +174,12 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                            INSERT INTO bill%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
-                            %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
+                            INSERT INTO bill%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
+                            %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
                             )
                             """,
                     billId,
+                    entry.getId(),
                     entry.getValue(),
                     entry.getDate().format(formatter),
                     entry.getCurrency(),
@@ -291,6 +292,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                 return;
             }
 
+
             String query = """
                     CREATE TABLE users
                     (
@@ -309,5 +311,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         }
     }
 
+    public static void main(String[] args) {
+
+
+    }
 
 }

@@ -3,6 +3,7 @@ package billgates.database;
 import billgates.entities.EntryBuilder;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class QueryEntryData {
     private final int id;
@@ -25,7 +26,7 @@ public class QueryEntryData {
                           String location,
                           int splitBillId) {
         this.id = id;
-        this.date = date;
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
         this.value = value;
         this.currency = currency;
         this.description = description;
@@ -40,7 +41,7 @@ public class QueryEntryData {
                           double value) {
         // Constructor for not all values provided
         this.id = id;
-        this.date = date;
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
         this.value = value;
     }
 
