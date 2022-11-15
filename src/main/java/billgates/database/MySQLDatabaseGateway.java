@@ -311,9 +311,4 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         }
     }
 
-    public static void main(String[] args) {
-
-
-    }
-
 }
