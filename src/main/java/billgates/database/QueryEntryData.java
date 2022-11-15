@@ -13,6 +13,7 @@ public class QueryEntryData {
     private String from = "";
     private String to = "";
     private String location = "";
+    private int splitBillId = -1;
 
     public QueryEntryData(int id,
                           ZonedDateTime date,
@@ -21,7 +22,8 @@ public class QueryEntryData {
                           String description,
                           String from,
                           String to,
-                          String location) {
+                          String location,
+                          int splitBillId) {
         this.id = id;
         this.date = date;
         this.value = value;
@@ -30,6 +32,7 @@ public class QueryEntryData {
         this.from = from;
         this.to = to;
         this.location = location;
+        this.splitBillId = splitBillId;
     }
 
     public QueryEntryData(int id,
@@ -53,9 +56,7 @@ public class QueryEntryData {
                 .setLocation(this.location);
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
     public ZonedDateTime getDate() {
         return date;
@@ -83,6 +84,9 @@ public class QueryEntryData {
 
     public String getLocation() {
         return location;
+    }
+    public int getSplitBillId() {
+        return splitBillId;
     }
 
     @Override
