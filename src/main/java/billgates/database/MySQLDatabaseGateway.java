@@ -116,6 +116,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public QueryEntryData getEntryData(int billId, int entryId) {
+        int splitBillId = -1;
         double value = 0.0;
         String currency = "";
         String description = "";
@@ -142,6 +143,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                 from = resultSet.getString("from");
                 to = resultSet.getString("to");
                 location = resultSet.getString("location");
+                splitBillId = resultSet.getInt("split_bill_id");
 
                 Instant i = Instant.ofEpochMilli(date.getTime());
 
@@ -160,7 +162,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                 description,
                 from,
                 to,
-                location);
+                location,
+                splitBillId);
     }
 
     @Override
@@ -171,8 +174,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                            INSERT INTO bill%d (value, date, currency, description, `from`, `to`, location) VALUE (
-                            %f, "%s", "%s", "%s", "%s", "%s", "%s"
+                            INSERT INTO bill%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
+                            %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
                             )
                             """,
                     billId,
@@ -182,7 +185,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                     entry.getDescription(),
                     entry.getFrom(),
                     entry.getTo(),
-                    entry.getLocation());
+                    entry.getLocation(),
+                    entry.getSplitBillId());
 
             statement.execute(query);
 
@@ -222,7 +226,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                             description = "%s",
                             `from` = "%s",
                             `to` = "%s",
-                            location = "%s"
+                            location = "%s",
+                            split_bill_id = %d
                             WHERE entry_id = %d
                             """, billId,
                     entry.getValue(),
@@ -232,6 +237,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                     entry.getFrom(),
                     entry.getTo(),
                     entry.getLocation(),
+                    entry.getSplitBillId(),
                     entry.getId());
 
             statement.execute(query);
@@ -247,7 +253,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    CREATE TABLE bill_%d
+                    CREATE TABLE bill%d
                     (
                         entry_id         INT             AUTO_INCREMENT
                                                          PRIMARY KEY,
