@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,13 @@ public class TestMySQLDatabaseGateway {
 
         // Setting up testEntry1
         int testEntryID = 1;
-        ZonedDateTime testTime = ZonedDateTime.now();
+        ZonedDateTime testTime = ZonedDateTime.of(1970,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0, ZoneId.of("EST"));
         double testValue = 123.45;
         String testCurrency = "CAD";
         String testDescription = "This is a test entry";
@@ -45,6 +52,13 @@ public class TestMySQLDatabaseGateway {
                 testLocation);
 
         testEntryID = 2;
+        testTime = ZonedDateTime.of(1970,
+                1,
+                5,
+                0,
+                0,
+                0,
+                0, ZoneId.of("EST"));
         testValue = 678.90;
 
         this.testEntry2 = new QueryEntryData(testEntryID,
@@ -89,7 +103,7 @@ public class TestMySQLDatabaseGateway {
     public void testCreateUsersTable() {
         try {
             // After we call this method, we must have a users table that exists in the server
-            testGateway.createUsersTable();
+            this.testGateway.createUsersTable();
 
             Statement statement = this.testConnection.createStatement();
 
@@ -117,12 +131,24 @@ public class TestMySQLDatabaseGateway {
         }
     }
 
+    // Test for creating a users table
+    @Test(timeout = TEST_TIMEOUT)
+    public void testGetUserData() {
+        try {
+            QueryUserData obtainedUsers = this.testGateway.getUserData();
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            // Only tests if we obtain an error
+            fail();
+        }
+    }
+
     // Test for creating a bill table with the ID being testBillID
     @Test(timeout = TEST_TIMEOUT)
     public void testCreateBillTable() {
         try {
-            // Creating a test Bill 9999
-            testGateway.createBillTable(this.testBillID);
+            // Creating a test Bill
+            this.testGateway.createBillTable(this.testBillID);
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
             // When trying to run getBillData method on BillID 9999
@@ -135,7 +161,7 @@ public class TestMySQLDatabaseGateway {
     public void testInsertEntryAllAttributes() {
         try {
             // If nothing happens when we try to insert, then we declare that this is a success
-            testGateway.insertEntry(this.testBillID, this.testEntry1);
+            this.testGateway.insertEntry(this.testBillID, this.testEntry1);
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
             fail();
@@ -147,7 +173,7 @@ public class TestMySQLDatabaseGateway {
     public void testInsertEntryMainAttributes() {
         try {
             // If nothing happens when we try to insert, then we declare that this is a success
-            testGateway.insertEntry(this.testBillID, this.testEntry2);
+            this.testGateway.insertEntry(this.testBillID, this.testEntry2);
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
             fail();
@@ -159,16 +185,16 @@ public class TestMySQLDatabaseGateway {
     public void testGetEntryAllAttributes() {
         try {
             // Using testEntry1 to test the obtained result
-            QueryEntryData obtainedEntry = testGateway.getEntryData(this.testBillID, this.testEntry1.getId());
+            QueryEntryData obtainedEntry = this.testGateway.getEntryData(this.testBillID, this.testEntry1.getId());
 
-            assertEquals(testEntry1.getId(), obtainedEntry.getId());
-            assertEquals(testEntry1.getDate(), obtainedEntry.getDate());
-            assertEquals(testEntry1.getValue(), obtainedEntry.getValue(), 1e-8);
-            assertEquals(testEntry1.getCurrency(), obtainedEntry.getCurrency());
-            assertEquals(testEntry1.getDescription(), obtainedEntry.getDescription());
-            assertEquals(testEntry1.getFrom(), obtainedEntry.getFrom());
-            assertEquals(testEntry1.getTo(), obtainedEntry.getTo());
-            assertEquals(testEntry1.getLocation(), obtainedEntry.getLocation());
+            assertEquals(this.testEntry1.getId(), obtainedEntry.getId());
+            assertEquals(this.testEntry1.getDate(), obtainedEntry.getDate());
+            assertEquals(this.testEntry1.getValue(), obtainedEntry.getValue(), 1e-8);
+            assertEquals(this.testEntry1.getCurrency(), obtainedEntry.getCurrency());
+            assertEquals(this.testEntry1.getDescription(), obtainedEntry.getDescription());
+            assertEquals(this.testEntry1.getFrom(), obtainedEntry.getFrom());
+            assertEquals(this.testEntry1.getTo(), obtainedEntry.getTo());
+            assertEquals(this.testEntry1.getLocation(), obtainedEntry.getLocation());
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
             fail();
@@ -178,27 +204,131 @@ public class TestMySQLDatabaseGateway {
     @Test(timeout = TEST_TIMEOUT)
     public void testGetEntryMainAttributes() {
         try {
-            // Using testEntry1 to test the obtained result
-            QueryEntryData obtainedEntry = testGateway.getEntryData(this.testBillID, this.testEntry2.getId());
+            // Using testEntry2 to test the obtained result
+            QueryEntryData obtainedEntry = this.testGateway.getEntryData(this.testBillID, this.testEntry2.getId());
 
-            assertEquals(testEntry2.getId(), obtainedEntry.getId());
-            assertEquals(testEntry2.getDate(), obtainedEntry.getDate());
-            assertEquals(testEntry2.getValue(), obtainedEntry.getValue(), 1e-8);
+            assertEquals(this.testEntry2.getId(), obtainedEntry.getId());
+            assertEquals(this.testEntry2.getDate(), obtainedEntry.getDate());
+            assertEquals(this.testEntry2.getValue(), obtainedEntry.getValue(), 1e-8);
 
             // Specifically, all of these tests should be empty String tests
-            assertEquals(testEntry2.getCurrency(), obtainedEntry.getCurrency());
-            assertEquals(testEntry2.getDescription(), obtainedEntry.getDescription());
-            assertEquals(testEntry2.getFrom(), obtainedEntry.getFrom());
-            assertEquals(testEntry2.getTo(), obtainedEntry.getTo());
-            assertEquals(testEntry2.getLocation(), obtainedEntry.getLocation());
+            assertEquals(this.testEntry2.getCurrency(), obtainedEntry.getCurrency());
+            assertEquals(this.testEntry2.getDescription(), obtainedEntry.getDescription());
+            assertEquals(this.testEntry2.getFrom(), obtainedEntry.getFrom());
+            assertEquals(this.testEntry2.getTo(), obtainedEntry.getTo());
+            assertEquals(this.testEntry2.getLocation(), obtainedEntry.getLocation());
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
             fail();
         }
     }
 
+    @Test(timeout = TEST_TIMEOUT)
+    public void testGetBillDataAll() {
+        try {
+            QueryBillData obtainedBillData = this.testGateway.getBillData(this.testBillID);
+
+            // Testing if the size is 2, since if there is 2, then it means we have obtained all entries
+            assertEquals(obtainedBillData.getEntries().size(), 2);
+
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
+    public void testGetBillDataPartial() {
+        try {
+            ZonedDateTime startTime = ZonedDateTime.of(1969,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0, ZoneId.of("EST"));
+
+            ZonedDateTime endTime = ZonedDateTime.of(1970,
+                    1,
+                    5,
+                    0,
+                    0,
+                    0,
+                    0, ZoneId.of("EST"));
+
+            QueryBillData obtainedBillData = this.testGateway.getBillData(this.testBillID, startTime, endTime);
+
+            // If we only have 1 entry obtained, then it is a success
+            assertEquals(obtainedBillData.getEntries().size(), 1);
+
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
+    public void testModifyEntry() {
+        try {
+            // Setting up test modify entry for Entry 1
+            int testEntryID = 1;
+            ZonedDateTime testTime = ZonedDateTime.now();
+            double testValue = 100.00;
+            String testCurrency = "USD";
+            String testDescription = "This is modified test entry 1";
+            String testFrom = "Debit Card";
+            String testTo = "Amazon";
+            String testLocation = "Online";
+
+            QueryEntryData testModifiedEntry1 = new QueryEntryData(testEntryID,
+                    testTime,
+                    testValue,
+                    testCurrency,
+                    testDescription,
+                    testFrom,
+                    testTo,
+                    testLocation);
+
+            this.testGateway.modifyEntry(this.testBillID, testModifiedEntry1);
+
+            // Now, we try to obtain the modified entry
+            // Since we modified the entry with ID 1, we should be able to retrieve the entry with ID 1
+            // And we should have all the attributes being equal to the attributes in testModifiedEntry1
+            QueryEntryData obtainedEntry = this.testGateway.getEntryData(this.testBillID, this.testEntry1.getId());
+
+            assertEquals(testModifiedEntry1.getId(), obtainedEntry.getId());
+            assertEquals(testModifiedEntry1.getDate(), obtainedEntry.getDate());
+            assertEquals(testModifiedEntry1.getValue(), obtainedEntry.getValue(), 1e-8);
+            assertEquals(testModifiedEntry1.getCurrency(), obtainedEntry.getCurrency());
+            assertEquals(testModifiedEntry1.getDescription(), obtainedEntry.getDescription());
+            assertEquals(testModifiedEntry1.getFrom(), obtainedEntry.getFrom());
+            assertEquals(testModifiedEntry1.getTo(), obtainedEntry.getTo());
+            assertEquals(testModifiedEntry1.getLocation(), obtainedEntry.getLocation());
+
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
+    public void testDeleteEntry() {
+        try {
+            // Now, we are testing to delete entry with the ID of 1, which is modified earlier
+            this.testGateway.deleteEntry(this.testBillID, this.testEntry1.getId());
 
 
+            QueryBillData obtainedBillData = this.testGateway.getBillData(this.testBillID);
+            // Testing if we only have 1 entry left in the bill, if yes, then we have deleted entry 1
+            // And only entry 2 exists
+            assertEquals(obtainedBillData.getEntries().size(), 1);
+            assertEquals(obtainedBillData.getEntries().get(0).getId(), 2);
+
+        } catch (RuntimeException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
 
 }
 
