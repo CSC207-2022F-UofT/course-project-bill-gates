@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class TestMySQLDatabaseGateway {
+public class MySQLDatabaseGatewayTests {
     public MySQLDatabaseGateway testGateway;
     public int testBillID = 9999;
 
