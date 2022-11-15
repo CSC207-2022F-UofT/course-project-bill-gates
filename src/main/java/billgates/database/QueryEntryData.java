@@ -84,4 +84,14 @@ public class QueryEntryData {
     public String getLocation() {
         return location;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+
+        QueryEntryData entry = (QueryEntryData) obj;
+        return this.getId() == entry.getId();
+    }
+
 }
