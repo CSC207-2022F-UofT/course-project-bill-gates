@@ -23,6 +23,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    gradle test --tests TestMySQLDatabaseGateway
+
     testLogging {
         events "passed", "skipped", "failed"
     }
