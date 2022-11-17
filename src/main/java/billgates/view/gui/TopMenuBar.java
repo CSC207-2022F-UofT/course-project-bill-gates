@@ -14,7 +14,7 @@ public class TopMenuBar extends JMenuBar{
     private final JMenu importMenu = new GeneralMenu("Import");
     private final JMenu settingsMenu = new GeneralMenu("Settings");
     private final JMenu helpMenu = new GeneralMenu("Help");
-    private final Color[] colors = new Color[]{new Color(220, 120, 150, 100), Color.RED, Color.ORANGE,
+    private final Color[] colors = new Color[]{new Color(240, 140, 170), Color.RED, Color.ORANGE,
             Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK, Color.WHITE};
     private final String[] fonts = new String[]{"Modern No. 20", "Times New Roman", "Helvetica", "Arial", "Impact",
             "Verdana", "Century", "Tahoma", "Copperplate"};
@@ -66,6 +66,10 @@ public class TopMenuBar extends JMenuBar{
 
                 MainFrame.getBillPanel().changeColor(colors[setting[0]]);
                 MainFrame.getActionPanel().changeColor(colors[setting[0]]);
+
+                MainFrame.getActionPanel().changeFont(fonts[setting[1]]);
+                MainFrame.getBillPanel().changeFont(fonts[setting[1]]);
+
             }
 
             @Override

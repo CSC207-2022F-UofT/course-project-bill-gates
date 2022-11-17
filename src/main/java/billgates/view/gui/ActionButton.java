@@ -5,7 +5,8 @@ import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 public class ActionButton extends JButton{
-    public static List<JButton> allButton = new ArrayList<>();
+
+    public static final List<ActionButton> allButton = new ArrayList<>();
     public static final int DEFAULT_WIDTH = 160;
     public static final int DEFAULT_HEIGHT = 40;
     public static final int DEFAULT_FONT_SIZE = 16;
@@ -53,9 +54,4 @@ public class ActionButton extends JButton{
         allButton.add(this);
     }
 
-    public static void change(Color color) {
-        for(JButton jb: allButton){
-            jb.setBackground(color);
-        }
-    }
 }

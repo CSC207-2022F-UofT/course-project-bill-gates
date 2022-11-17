@@ -56,4 +56,9 @@ public class BillPanel extends JPanel {
         billTable.getTableHeader().setBackground(c);
         this.setBorder(new CustomTitleBorder("Bills",c));
     }
+
+    public void changeFont(String f){
+        Font newTableFont = new FontSettings(f, BillTable.DEFAULT_FONT_SIZE);
+        this.billTable.getTableHeader().setFont(newTableFont);
+    }
 }
