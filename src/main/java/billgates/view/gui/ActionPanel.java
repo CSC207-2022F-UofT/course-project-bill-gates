@@ -223,4 +223,10 @@ public class ActionPanel extends JPanel {
     public JButton getDeleteEntryButton() {
         return deleteEntryButton;
     }
+
+    public void changeColor(Color c){
+        this.setBorder(new CustomTitleBorder("Action", c));
+        this.statisticsTextArea.setBorder(new CustomTitleBorder("Statistics", c));
+        this.statisticsTextArea.setForeground(c);
+    }
 }

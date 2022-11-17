@@ -2,9 +2,10 @@ package billgates.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BillTable extends JTable {
-
     public static final int DEFAULT_HEADER_HEIGHT = 50;
     public static final int DEFAULT_ROW_HEIGHT = 40;
     public static final int DEFAULT_FONT_SIZE = 15;
@@ -30,4 +31,5 @@ public class BillTable extends JTable {
         // Set functionality
         this.setCellSelectionEnabled(true);
     }
+
 }

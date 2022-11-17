@@ -16,7 +16,7 @@ public class ActionTextArea extends JTextArea {
 
         // Set the font and colors
         this.setFont(DEFAULT_FONT);
-        this.setForeground(CustomTitleBorder.DEFAULT_BORDER_TEXT_COLOR);
+        this.setForeground(CustomTitleBorder.borderTextColor);
         this.setBackground(DEFAULT_BACKGROUND_COLOR);
         this.setBorder(new CustomTitleBorder("Statistics"));
 
