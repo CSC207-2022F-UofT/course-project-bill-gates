@@ -15,6 +15,7 @@ public class SettingDialog extends JDialog {
     private int fontIndex = 0;
     private boolean confirmed = false;
 
+    // Set up setting dialog to change background color and font style
     public SettingDialog(TopMenuBar owner) {
         super();
 

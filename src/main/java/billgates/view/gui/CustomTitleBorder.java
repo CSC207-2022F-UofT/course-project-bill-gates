@@ -24,6 +24,8 @@ public class CustomTitleBorder extends TitledBorder{
         this.setTitleColor(borderTextColor);
         this.setBorder(BorderFactory.createCompoundBorder(OUTSIDE_BORDER, EMPTY_BORDER));
     }
+
+    // Add a new constructor to change border color later
     public CustomTitleBorder(String text, Color c){
         super(OUTSIDE_BORDER, text);
         this.setTitleColor(c);

@@ -45,10 +45,7 @@ public class MainFrame extends JFrame{
         this.add(this.actionPanel, BorderLayout.WEST);
         this.add(this.billPanel, BorderLayout.CENTER);
     }
-//    public static void changeColor(Color c){
-//        billPanel.getBillTable().getTableHeader().setBackground(c);
-//        billPanel.changeTableBorderColor(c);
-//    }
+
     public static BillPanel getBillPanel() {
         return billPanel;
     }

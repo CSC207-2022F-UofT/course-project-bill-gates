@@ -52,11 +52,13 @@ public class BillPanel extends JPanel {
         return this.billTable;
     }
 
+    // Change color of table header and border in bill panel
     public void changeColor(Color c){
         billTable.getTableHeader().setBackground(c);
         this.setBorder(new CustomTitleBorder("Bills",c));
     }
 
+    // Change font of table header and border in bill panel
     public void changeFont(String f){
         Font newTableFont = new FontSettings(f, BillTable.DEFAULT_FONT_SIZE);
         this.billTable.getTableHeader().setFont(newTableFont);

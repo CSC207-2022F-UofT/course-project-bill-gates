@@ -224,12 +224,14 @@ public class ActionPanel extends JPanel {
         return deleteEntryButton;
     }
 
+    // Change color in ActionPanel and statistic text area
     public void changeColor(Color c){
         this.setBorder(new CustomTitleBorder("Action", c));
         this.statisticsTextArea.setBorder(new CustomTitleBorder("Statistics", c));
         this.statisticsTextArea.setForeground(c);
     }
 
+    // Change font in ActionPanel and statistic text area
     public void changeFont(String f){
         Font newButtonFont = new FontSettings(f, ActionButton.DEFAULT_FONT_SIZE);
         for(ActionButton ab: ActionButton.allButton){

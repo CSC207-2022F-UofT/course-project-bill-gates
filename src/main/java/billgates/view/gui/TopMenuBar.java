@@ -39,7 +39,7 @@ public class TopMenuBar extends JMenuBar{
         // importMenu should be disabled  before signing in
 //        this.importMenu.setEnabled(false);
 
-
+        // Add function to import menu
         importMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -58,6 +58,7 @@ public class TopMenuBar extends JMenuBar{
         });
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
+        // Add function to setting menu
         settingsMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -89,6 +90,7 @@ public class TopMenuBar extends JMenuBar{
         this.add(this.helpMenu);
     }
 
+    // Function to set up the setting dialog
     private int[] setting() {
         SettingDialog setdlg = new SettingDialog(this);
         int[] setting = new int[2];
@@ -108,6 +110,7 @@ public class TopMenuBar extends JMenuBar{
         return importMenu;
     }
 
+    // Function to choose file in your computer
     private void importBills() {
         System.out.println("imported");
         JFileChooser chooser = new JFileChooser();
@@ -119,6 +122,8 @@ public class TopMenuBar extends JMenuBar{
             loadFile(file);
         }
     }
+
+    //Function to load file after loading file
     public void loadFile(File file) {
         // CONTINUE!!!
         System.out.println("loaded");
