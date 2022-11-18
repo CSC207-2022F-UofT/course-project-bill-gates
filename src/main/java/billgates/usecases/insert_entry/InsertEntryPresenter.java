@@ -1,14 +1,15 @@
 package billgates.usecases.insert_entry;
 
 import billgates.interface_adapters.Updatable;
+import billgates.interface_adapters.Updatable_insert;
 
 import java.util.List;
 
 public class InsertEntryPresenter implements InsertEntryOutputPort{
 
-    private final Updatable view;
+    private final Updatable_insert view;
 
-    public InsertEntryPresenter(Updatable view) {
+    public InsertEntryPresenter(Updatable_insert view) {
         this.view = view;
     }
 
