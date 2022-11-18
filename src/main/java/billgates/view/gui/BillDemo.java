@@ -3,6 +3,7 @@ package billgates.view.gui;
 import billgates.database.MySQLDatabaseGateway;
 import billgates.entities.User;
 import billgates.interface_adapters.Updatable;
+import billgates.usecase_shared_abstract.ViewModel;
 import billgates.usecases.bill_update.*;
 import billgates.view.BillTableModel;
 
@@ -83,7 +84,7 @@ public class BillDemo extends JFrame implements Updatable {
     }
 
     @Override
-    public void update(BillUpdateViewModel viewModel) {
+    public void update(ViewModel viewModel) {
         BillTableModel model = (BillTableModel) this.table.getModel();
         model.setData(viewModel.getEntries());
         this.table.updateUI();

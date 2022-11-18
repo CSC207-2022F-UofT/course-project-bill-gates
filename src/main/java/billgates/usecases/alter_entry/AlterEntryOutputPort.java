@@ -1,4 +1,4 @@
-package billgates.alter_entry;
+package billgates.usecases.alter_entry;
 
 
 public interface AlterEntryOutputPort {

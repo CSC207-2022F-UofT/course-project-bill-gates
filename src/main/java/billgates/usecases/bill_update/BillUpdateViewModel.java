@@ -1,21 +1,8 @@
 package billgates.usecases.bill_update;
 
-import java.util.List;
+import billgates.usecase_shared_abstract.ViewModel;
 
-public class BillUpdateViewModel {
+public class BillUpdateViewModel extends ViewModel {
 
-    private List<List<Object>> entries;
-
-    public BillUpdateViewModel(List<List<Object>> entries) {
-        this.entries = entries;
-    }
-
-    public List<List<Object>> getEntries() {
-        return entries;
-    }
-
-    public void setEntries(List<List<Object>> entries) {
-        this.entries = entries;
-    }
 
 }

@@ -1,13 +1,9 @@
-package billgates.alter_entry;
+package billgates.usecase_shared_abstract;
 
 import java.util.List;
 
-public class AlterEntryViewModel {
+public abstract class ViewModel {
     private List<List<Object>> entries;
-
-    public AlterEntryViewModel(List<List<Object>> entries) {
-        this.entries = entries;
-    }
 
     public List<List<Object>> getEntries() {
         return entries;
