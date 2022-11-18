@@ -10,6 +10,6 @@ public class AlterEntryController {
     }
 
     public void update(int billId, QueryEntryData entry) {
-        this.useCase.alterEntry(billId,entry);
+        this.useCase.alterEntry(billId, entry);
     }
 }
