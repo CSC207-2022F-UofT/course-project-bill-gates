@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Bill {
+    // a class represent your bill-notebook
 
     private int id;
     private List<AbstractEntry> entries;

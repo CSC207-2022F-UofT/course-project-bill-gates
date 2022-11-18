@@ -5,6 +5,7 @@ import java.util.Objects;
 
 // singleton
 public class User {
+    // entities represent user, and store the relationship that links user and their bills
 
     private static User instance;
     private int id;

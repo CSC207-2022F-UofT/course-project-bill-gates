@@ -3,6 +3,7 @@ package billgates.entities;
 import java.time.ZonedDateTime;
 
 public class EntryBuilder {
+    //builder of entry's, step by step, default id=-1
 
     private int id = -1;
     private ZonedDateTime date = ZonedDateTime.now();
