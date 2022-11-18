@@ -4,8 +4,9 @@ import java.util.List;
 
 public class AlterEntryViewModel {
     private List<List<Object>> entries;
+
     public AlterEntryViewModel(List<List<Object>> entries) {
-        this.entries=entries;
+        this.entries = entries;
     }
 
     public List<List<Object>> getEntries() {
