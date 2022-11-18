@@ -1,14 +1,15 @@
 package billgates.usecases.alter_entry;
 
-import billgates.interface_adapters.Updatable_alter;
+import billgates.interface_adapters.Updatable;
+
 
 import java.util.List;
 
 public class AlterEntryPresenter implements AlterEntryOutputPort {
 
-    private final Updatable_alter view;
+    private final Updatable view;
 
-    public AlterEntryPresenter(Updatable_alter view) {
+    public AlterEntryPresenter(Updatable view) {
         this.view = view;
     }
 
