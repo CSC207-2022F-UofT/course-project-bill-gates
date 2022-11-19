@@ -3,8 +3,6 @@ package billgates.usecases.user_join;
 import billgates.database.QueryUserData;
 import billgates.interface_adapters.DatabaseGateway;
 
-import java.util.function.ToDoubleBiFunction;
-
 public class UserJoinUseCase implements UserJoinInputPort{
     private final DatabaseGateway gateway;
     private final UserJoinOutputPort outputPort;
