@@ -7,11 +7,11 @@ import java.util.Objects;
 
 public abstract class AbstractEntry {
 
-    private Attribute<Integer> id; //Entry id,
-    private Attribute<ZonedDateTime> date; // enteried date,
-    private Attribute<Double> value;// value of money
+    private Attribute<Integer> id; //Entry id
+    private Attribute<ZonedDateTime> date; //enteried date
+    private Attribute<Double> value;//value of money
     private Attribute<String> currency;//what currency is used, so this will be more convenient for international users
-    private Attribute<String> description;// simple description
+    private Attribute<String> description;//simple description
     private Attribute<String> from;//money flow from
     private Attribute<String> to;//money flow to
     private Attribute<String> location;//location of this bill
