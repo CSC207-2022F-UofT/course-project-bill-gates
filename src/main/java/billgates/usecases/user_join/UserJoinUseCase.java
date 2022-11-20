@@ -21,13 +21,13 @@ public class UserJoinUseCase implements UserJoinInputPort {
             // TODO add the user in the database.
 
             // TODO log the user in
-            outputPort.display(new UserJoinResponseModel(true, "Login successfully"));
+            outputPort.display(new UserJoinResponseModel(true, "Registered successfully"));
         }
         else {
             int userIndex = userData.getUsers().indexOf(model.getUsername());
             if (userData.getPasswords().get(userIndex).equals(model.getPassword())) {
                 // TODO log the user in
-                outputPort.display(new UserJoinResponseModel(true, "Login successfully"));
+                outputPort.display(new UserJoinResponseModel(true, "Logged in successfully"));
             } else {
                 outputPort.display(new UserJoinResponseModel(false, "Incorrect password " +
                         "or the username already exists."));
