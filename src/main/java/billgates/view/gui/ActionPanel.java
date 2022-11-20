@@ -1,5 +1,7 @@
 package billgates.view.gui;
 
+import billgates.usecases.delete_entry.DeleteEntryController;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -39,6 +41,7 @@ public class ActionPanel extends JPanel {
     private final JButton addEntryButton = new ActionButton("Add Entry");
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
     private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
+    private DeleteEntryController deleteEntryController;
 
     public ActionPanel() {
         this.setLayout(this.layout);
@@ -141,43 +144,45 @@ public class ActionPanel extends JPanel {
     private void signIn() {
         // Get the username and password from user
         String userName = this.usernameField.getText();
-        String userPassword = Arrays.toString(this.passwordField.getPassword());
-        System.out.println("Name: " + userName);
-        System.out.println("Password: " + userPassword);
+        String userPassword = String.valueOf(this.passwordField.getPassword());
+        // These print statements are just for testing (Will be removed later!)
+        System.out.println("Name: " + userName.length());
+        System.out.println("Password: " + userPassword.length());
 
-        // TODO: Call the controller of UserJoinUseCase
-
-        // If the user has successfully signed in,
+        // If the username and password are legal, we should then call the controller of UserJoinUseCase
         if (this.checkUsername() & this.checkPassword()) {
-            // disable the signInButton, and enable the signOutButton and addEntryButton
-            this.signInButton.setEnabled(false);
-            this.signOutButton.setEnabled(true);
-            this.addEntryButton.setEnabled(true);
-
-            // the usernameField and passwordField shouldn't be editable
-            this.usernameField.setEditable(false);
-            this.passwordField.setEditable(false);
-
-            // enable importMenu
-            TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-            tmb.getImportMenu().setEnabled(true);
-
-            // enable billTable
-            MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
-            BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
-            bt.setVisible(true);
-            bt.setEnabled(true);
+            System.out.println("1");
+              // TODO: Call the controller of UserJoinUseCase
+              // Codes below should be put in the update method for user_join use case
+//            // disable the signInButton, and enable the signOutButton and addEntryButton
+//            this.signInButton.setEnabled(false);
+//            this.signOutButton.setEnabled(true);
+//            this.addEntryButton.setEnabled(true);
+//
+//            // the usernameField and passwordField shouldn't be editable
+//            this.usernameField.setEditable(false);
+//            this.passwordField.setEditable(false);
+//
+//            // enable importMenu
+//            TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
+//            tmb.getImportMenu().setEnabled(true);
+//
+//            // enable billTable
+//            MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
+//            BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
+//            bt.setVisible(true);
+//            bt.setEnabled(true);
         }
     }
 
     private boolean checkUsername() {
-        // Will be implemented further
-        return true;
+        int usernameLength = this.usernameField.getText().length();
+        return usernameLength <= 10;
     }
 
     private boolean checkPassword() {
-        // Will be implemented further
-        return true;
+        int passwordLength = String.valueOf(this.passwordField.getPassword()).length();
+        return passwordLength <= 16;
     }
 
     private void signOut() {
