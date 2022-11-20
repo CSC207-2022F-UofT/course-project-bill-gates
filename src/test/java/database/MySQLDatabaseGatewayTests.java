@@ -598,6 +598,90 @@ public class MySQLDatabaseGatewayTests {
     }
 
     @Test(timeout = TEST_TIMEOUT)
+    public void testModifyEntryAll() {
+        // This is a test that uses the overwrite method of modifyEntry
+        try {
+            int testEntryID = 1;
+            ZonedDateTime testTime = ZonedDateTime.of(2019,
+                    1,
+                    2,
+                    1,
+                    2,
+                    3,
+                    4,
+                    ZoneId.systemDefault());
+            double testValue = 100.00;
+            String testCurrency = "USD";
+            String testDescription = "This is modified test entry 1";
+            String testFrom = "Debit Card";
+            String testTo = "Amazon";
+            String testLocation = "Online";
+            int testSplitBillID = -1;
+
+            QueryEntryData testModifiedEntry1 = new QueryEntryData(testEntryID,
+                    testTime,
+                    testValue,
+                    testCurrency,
+                    testDescription,
+                    testFrom,
+                    testTo,
+                    testLocation,
+                    testSplitBillID);
+
+            this.testGateway.modifyEntry(this.testBillID, testModifiedEntry1);
+
+            Statement testStatement = this.testConnection.createStatement();
+
+            String getModifiedEntry = String.format("SELECT * FROM bill%d WHERE entry_id=%d",
+                    this.testBillID, testModifiedEntry1.getId());
+
+            ResultSet result = testStatement.executeQuery(getModifiedEntry);
+
+            int obtainedID = -1;
+            double value = 0.0;
+            String currency = "";
+            String description = "";
+            String from = "";
+            String to = "";
+            String location = "";
+            ZonedDateTime zDate;
+            Timestamp date = new Timestamp(0);
+            int splitBillID = -1;
+
+            while (result.next()) {
+                obtainedID = result.getInt("entry_id");
+                value = result.getDouble("value");
+                date = result.getTimestamp("date");
+                currency = result.getString("currency");
+                description = result.getString("description");
+                from = result.getString("from");
+                to = result.getString("to");
+                location = result.getString("location");
+                splitBillID = result.getInt("split_bill_id");
+            }
+
+            Instant i = Instant.ofEpochMilli(date.getTime());
+
+            // We can pass in the different zones we want to convert in, and we can obtain the value we want
+            zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
+
+            assertEquals(obtainedID, testModifiedEntry1.getId());
+            assertEquals(value, testModifiedEntry1.getValue(), 1e-8);
+            assertEquals(zDate, testModifiedEntry1.getDate());
+            assertEquals(currency, testModifiedEntry1.getCurrency());
+            assertEquals(description, testModifiedEntry1.getDescription());
+            assertEquals(from, testModifiedEntry1.getFrom());
+            assertEquals(to, testModifiedEntry1.getTo());
+            assertEquals(location, testModifiedEntry1.getLocation());
+            assertEquals(splitBillID, testModifiedEntry1.getSplitBillId());
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
     public void testDeleteEntry() {
         try {
             // Now, we are testing to delete entry with the ID of 1, which is created in the Setup

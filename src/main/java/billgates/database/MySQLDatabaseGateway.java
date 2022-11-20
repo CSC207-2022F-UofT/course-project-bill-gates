@@ -184,11 +184,10 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             String query = String.format("""
                             INSERT INTO bill%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
-                            %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
+                            %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
                             )
                             """,
                     billId,
-                    entry.getId(),
                     entry.getValue(),
                     entry.getDate().format(formatter),
                     entry.getCurrency(),
@@ -260,6 +259,40 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                     this.columnToDatabaseColumn.get(column),
                     newValue,
                     entryId);
+
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void modifyEntry(int billId, QueryEntryData entry) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            Statement statement = connection.createStatement();
+
+            String query = String.format("""
+                            UPDATE bill%d
+                            SET value = %f,
+                                date = "%s",
+                                currency = "%s",
+                                description = "%s",
+                                `from` = "%s",
+                                `to` = "%s",
+                                location = "%s"
+                            WHERE entry_id=%d
+                            """, billId,
+                    entry.getValue(),
+                    entry.getDate().format(formatter),
+                    entry.getCurrency(),
+                    entry.getDescription(),
+                    entry.getFrom(),
+                    entry.getTo(),
+                    entry.getLocation(),
+                    entry.getId());
 
             statement.execute(query);
 
