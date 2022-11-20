@@ -16,18 +16,17 @@ public class UserJoinUseCase implements UserJoinInputPort {
 
     @Override
     public void join(UserJoinRequestModel model) {
-        List<QueryUserData> userData = gateway.getUserData();
-        // Check whether the user is in database.
-        for (QueryUserData user: userData) {
-            if (user.getUsername().equals(model.getUsername())) { // We found one that matches the username.
-                if (user.getPassword().equals(model.getPassword())) { //This is the one!
-                    //TODO: log in the user
-                }
-                else {
-                outputPort.display(new UserJoinResponseModel(false, "Wrong password."));
-                }
-                return;
-            }
+        QueryUserData userData = gateway.getUserData();
+        if (!userData.getUsers().contains(model.getUsername())){
+            // TODO add the user to the database
+
+            // TODO log the user in
+
+        }
+        else {
+            // pop a dialog and notify the user that the name is invalid
+            outputPort.display(new UserJoinResponseModel(false, "Invalid username."));
+            // TODO
         }
         //Then the rest is for the not-detected in database.
         outputPort.display(new UserJoinResponseModel(false, "Username not in database."));
