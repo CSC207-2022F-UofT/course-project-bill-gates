@@ -5,21 +5,21 @@ public class UserJoinViewModel {
     private boolean isJoined;
     private String reasonRejected;
 
-    public UserJoinViewModel(boolean isJoined, String reasonRejected){
+    public UserJoinViewModel(boolean isJoined, String reasonRejected) {
         this.isJoined = isJoined;
         this.reasonRejected = reasonRejected;
     }
 
     public boolean isJoined() {
-        return isJoined;
+        return this.isJoined;
     }
 
     public void setJoined(boolean joined) {
-        isJoined = joined;
+        this.isJoined = joined;
     }
 
     public String getReasonRejected() {
-        return reasonRejected;
+        return this.reasonRejected;
     }
 
     public void setReasonRejected(String reasonRejected) {

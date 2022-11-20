@@ -2,7 +2,7 @@ package billgates.usecases.user_join;
 
 import billgates.interface_adapters.UserJoinUpdatable;
 
-public class UserJoinPresenter implements UserJoinOutputPort{
+public class UserJoinPresenter implements UserJoinOutputPort {
 
     private UserJoinUpdatable view;
 

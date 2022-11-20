@@ -11,15 +11,15 @@ public class UserJoinResponseModel {
     }
 
     public boolean getIsJoined(){
-        return isJoined;
+        return this.isJoined;
     }
 
     public void setJoined(boolean joined) {
-        isJoined = joined;
+        this.isJoined = joined;
     }
 
     public String getReasonRejected() {
-        return reasonRejected;
+        return this.reasonRejected;
     }
 
     public void setReasonRejected(String reasonRejected) {

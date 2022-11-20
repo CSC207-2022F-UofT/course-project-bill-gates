@@ -5,11 +5,12 @@ import billgates.database.QueryEntryData;
 import billgates.database.QueryUserData;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 public interface DatabaseGateway {
     void initializeConnection();
 
-    QueryUserData getUserData();
+    List<QueryUserData> getUserData();
 
     QueryBillData getBillData(int billId);
 
@@ -28,4 +29,6 @@ public interface DatabaseGateway {
     void createBillTable(int billId);
 
     void createUsersTable();
+
+    void insertUser(String userName, String password);
 }

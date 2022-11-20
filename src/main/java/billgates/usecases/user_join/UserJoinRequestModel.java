@@ -10,11 +10,11 @@ public class UserJoinRequestModel {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setUsername(String username) {
