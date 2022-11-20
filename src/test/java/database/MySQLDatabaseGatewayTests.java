@@ -11,6 +11,7 @@ import java.sql.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -549,6 +550,46 @@ public class MySQLDatabaseGatewayTests {
             }
 
             assertEquals(Double.parseDouble(testValue), value, 1e-8);
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
+    @Test(timeout = TEST_TIMEOUT)
+    public void testModifyEntryDate() {
+        try {
+            int testEntryID = 1;
+            ZonedDateTime testDate = ZonedDateTime.of(2021,
+                    9,
+                    1,
+                    5,
+                    30,
+                    0,
+                    0,
+                    ZoneId.systemDefault());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            this.testGateway.modifyEntry(this.testBillID, testEntryID, "Date", testDate.format(formatter));
+
+            Statement testStatement = this.testConnection.createStatement();
+
+            String getModifiedEntry = String.format("SELECT * FROM bill%d WHERE entry_id=%d",
+                    this.testBillID, testEntryID);
+
+            ResultSet result = testStatement.executeQuery(getModifiedEntry);
+
+            Timestamp date = new Timestamp(0);
+
+            while (result.next()) {
+                date = result.getTimestamp("date");
+            }
+
+            ZonedDateTime zDate = ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+
+            assertEquals(zDate, testDate);
 
         } catch (RuntimeException | SQLException e) {
             // Fails the test whenever we encounter an Error
