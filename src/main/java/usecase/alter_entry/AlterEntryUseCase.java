@@ -18,8 +18,8 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
     public void alterEntry(int entryID, Object newValue, String alterColumn) {
         int billID = User.getInstance().getCurrentBillID();
 
-        QueryEntryData old_entry = this.gateway.getEntryData(billID, entryID);
-        AlterEntryRequestModel model = new AlterEntryRequestModel(old_entry);
+        QueryEntryData oldEntry = this.gateway.getEntryData(billID, entryID);
+        AlterEntryRequestModel model = new AlterEntryRequestModel(oldEntry);
 
         if (alterColumn.equals("date")) {
             model.setDate((ZonedDateTime) newValue);

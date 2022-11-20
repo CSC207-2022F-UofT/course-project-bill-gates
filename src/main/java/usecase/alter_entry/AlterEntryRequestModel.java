@@ -13,14 +13,14 @@ public class AlterEntryRequestModel {
     private String to;
     private String location;
 
-    public AlterEntryRequestModel(QueryEntryData old_entry) {
-        date = old_entry.getDate();
-        value = old_entry.getValue();
-        currency = old_entry.getCurrency();
-        description = old_entry.getDescription();
-        from = old_entry.getFrom();
-        to = old_entry.getTo();
-        location = old_entry.getLocation();
+    public AlterEntryRequestModel(QueryEntryData oldEntry) {
+        date = oldEntry.getDate();
+        value = oldEntry.getValue();
+        currency = oldEntry.getCurrency();
+        description = oldEntry.getDescription();
+        from = oldEntry.getFrom();
+        to = oldEntry.getTo();
+        location = oldEntry.getLocation();
     }
 
 
@@ -61,8 +61,8 @@ public class AlterEntryRequestModel {
         this.currency = currency;
     }
 
-    public QueryEntryData getQueryEntryData(int entry_id) {
-        return new QueryEntryData(entry_id, date, value, currency, description, from, to, location);
+    public QueryEntryData getQueryEntryData(int entryID) {
+        return new QueryEntryData(entryID, date, value, currency, description, from, to, location);
 
     }
 }
