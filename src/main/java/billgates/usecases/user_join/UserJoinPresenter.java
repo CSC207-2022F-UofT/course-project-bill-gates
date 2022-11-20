@@ -6,7 +6,7 @@ public class UserJoinPresenter implements UserJoinOutputPort {
 
     private UserJoinUpdatable view;
 
-    public UserJoinPresenter(UserJoinUpdatable view){
+    public UserJoinPresenter(UserJoinUpdatable view) {
         this.view = view;
     }
 
