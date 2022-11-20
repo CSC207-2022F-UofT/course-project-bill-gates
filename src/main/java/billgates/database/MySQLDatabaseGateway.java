@@ -201,14 +201,17 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try {
             Statement statement = connection.createStatement();
 
-//            String query = String.format("""
-//                            INSERT INTO users (user_id, username, password, bill_id) VALUE (
-//                            %d, %s, %s, %d
-//                            )
-//                            """,
-//                    user;
-//
-//            statement.execute(query);
+            String query = String.format("""
+                            INSERT INTO users (user_id, username, password, bill_id) VALUE (
+                            %d, "%s", "%s", %d
+                            )
+                            """,
+                    user.getUserID(),
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getBillID());
+
+            statement.execute(query);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
