@@ -4,7 +4,7 @@ public class UserJoinRequestModel {
     private String username;
     private String password;
 
-    public UserJoinRequestModel(String username, String password){
+    public UserJoinRequestModel(String username, String password) {
         this.username = username;
         this.password = password;
     }

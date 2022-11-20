@@ -5,12 +5,12 @@ public class UserJoinResponseModel {
     private boolean isJoined;
     private String reasonRejected;
 
-    public UserJoinResponseModel(boolean isJoined, String reasonRejected){
+    public UserJoinResponseModel(boolean isJoined, String reasonRejected) {
         this.isJoined = isJoined;
         this.reasonRejected = reasonRejected;
     }
 
-    public boolean getIsJoined(){
+    public boolean getIsJoined() {
         return this.isJoined;
     }
 
