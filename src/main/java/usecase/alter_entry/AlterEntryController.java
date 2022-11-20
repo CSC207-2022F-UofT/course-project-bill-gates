@@ -7,7 +7,7 @@ public class AlterEntryController {
         this.useCase = useCase;
     }
 
-    public void alterEntry(int entry_id, Object new_value, String alter_column) {
-        this.useCase.alterEntry(entry_id, new_value, alter_column);
+    public void alterEntry(int entryID, Object newValue, String alterColumn) {
+        this.useCase.alterEntry(entryID, newValue, alterColumn);
     }
 }
