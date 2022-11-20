@@ -1,6 +1,7 @@
 package billgates.usecases.insert_entry;
 
 public class InsertEntryController {
+
     private final InsertEntryInputPort useCase;
 
     public InsertEntryController(InsertEntryInputPort useCase) {

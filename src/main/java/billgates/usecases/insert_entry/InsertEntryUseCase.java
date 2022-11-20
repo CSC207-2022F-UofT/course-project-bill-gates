@@ -16,6 +16,7 @@ public class InsertEntryUseCase implements InsertEntryInputPort{
 
     @Override
     public void insertEntry(InsertEntryRequestModel model) {
+
         //Query all the entries.
         List<QueryEntryData> result = this.gateway.getBillData(User.getInstance().getCurrentBillID()).getEntries();
 
