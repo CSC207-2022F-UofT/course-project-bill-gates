@@ -269,7 +269,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    DELETE FROM bill_%d WHERE entry_id=%d
+                    DELETE FROM bill_%d WHERE entry_id = %d
                     """, billId, entryId);
 
             statement.execute(query);
@@ -320,7 +320,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                                 `from` = "%s",
                                 `to` = "%s",
                                 location = "%s"
-                            WHERE entry_id=%d
+                            WHERE entry_id = %d
                             """, billId,
                     entry.getValue(),
                     entry.getDate().format(formatter),

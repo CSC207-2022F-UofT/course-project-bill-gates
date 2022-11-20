@@ -232,7 +232,7 @@ public class MySQLDatabaseGatewayTests {
             // Checking if we actually inserted
             Statement testStatement = this.testConnection.createStatement();
 
-            String getNewlyCreatedUser = String.format("SELECT * FROM users WHERE user_id=%d",
+            String getNewlyCreatedUser = String.format("SELECT * FROM users WHERE user_id = %d",
                     testUser.getUserID());
 
             ResultSet result = testStatement.executeQuery(getNewlyCreatedUser);
@@ -255,7 +255,7 @@ public class MySQLDatabaseGatewayTests {
             assertEquals(testPassword, obtainedPassword);
 
             // If every test passed, try to remove the user we created
-            String removeNewlyCreatedUser = String.format("DELETE FROM users WHERE user_id=%d",
+            String removeNewlyCreatedUser = String.format("DELETE FROM users WHERE user_id = %d",
                     testUser.getUserID());
 
             testStatement.execute(removeNewlyCreatedUser);
@@ -301,7 +301,7 @@ public class MySQLDatabaseGatewayTests {
 
             Statement testStatement = this.testConnection.createStatement();
 
-            String getNewlyCreatedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id=%d",
+            String getNewlyCreatedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
                     this.testBillID, testEntry3.getId());
 
             ResultSet result = testStatement.executeQuery(getNewlyCreatedEntry);
@@ -373,7 +373,7 @@ public class MySQLDatabaseGatewayTests {
 
             Statement testStatement = this.testConnection.createStatement();
 
-            String getNewlyCreatedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id=%d",
+            String getNewlyCreatedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
                     this.testBillID, testEntry4.getId());
 
             ResultSet result = testStatement.executeQuery(getNewlyCreatedEntry);
@@ -550,7 +550,7 @@ public class MySQLDatabaseGatewayTests {
 
             Statement testStatement = this.testConnection.createStatement();
 
-            String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id=%d",
+            String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
                     this.testBillID, testEntryID);
 
             ResultSet result = testStatement.executeQuery(getModifiedEntry);
@@ -579,7 +579,7 @@ public class MySQLDatabaseGatewayTests {
 
             Statement testStatement = this.testConnection.createStatement();
 
-            String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id=%d",
+            String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
                     this.testBillID, testEntryID);
 
             ResultSet result = testStatement.executeQuery(getModifiedEntry);
@@ -617,7 +617,7 @@ public class MySQLDatabaseGatewayTests {
 
             Statement testStatement = this.testConnection.createStatement();
 
-            String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id=%d",
+            String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
                     this.testBillID, testEntryID);
 
             ResultSet result = testStatement.executeQuery(getModifiedEntry);
@@ -673,7 +673,7 @@ public class MySQLDatabaseGatewayTests {
 
             Statement testStatement = this.testConnection.createStatement();
 
-            String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id=%d",
+            String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
                     this.testBillID, testModifiedEntry1.getId());
 
             ResultSet result = testStatement.executeQuery(getModifiedEntry);
