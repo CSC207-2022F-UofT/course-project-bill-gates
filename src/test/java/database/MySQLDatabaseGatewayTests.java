@@ -145,8 +145,8 @@ public class MySQLDatabaseGatewayTests {
     @Test(timeout = TEST_TIMEOUT)
     public void testGetUserData() {
         try {
-            QueryUserData obtainedUsers = this.testGateway.getUserData();
-            // There's not much ways we can test this method, as the users list grows in size as people use our application
+            List<QueryUserData> obtainedUsers = this.testGateway.getUserData();
+            // There's not much we can test on this method, as the users list grows in size as people use our application
             // So we will just test if there is a runtime exception being raised
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error

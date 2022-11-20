@@ -47,11 +47,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
-    public QueryUserData getUserData() {
-        List<String> userIDs = new ArrayList<>();
-        List<String> billIDs = new ArrayList<>();
-        List<String> usernames = new ArrayList<>();
-        List<String> passwords = new ArrayList<>();
+    public List<QueryUserData> getUserData() {
+        List<QueryUserData> users = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
@@ -61,22 +58,19 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                String userID = resultSet.getString("user_id");
-                String billID = resultSet.getString("bill_id");
+                int userID = resultSet.getInt("user_id");
+                int billID = resultSet.getInt("bill_id");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
 
-                usernames.add(username);
-                passwords.add(password);
-                userIDs.add(userID);
-                billIDs.add(billID);
+                users.add(new QueryUserData(userID, billID, username, password));
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return new QueryUserData(userIDs, billIDs, usernames, passwords);
+        return users;
     }
 
     @Override
@@ -196,6 +190,25 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                     entry.getSplitBillId());
 
             statement.execute(query);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void insertUser(QueryUserData user) {
+        try {
+            Statement statement = connection.createStatement();
+
+//            String query = String.format("""
+//                            INSERT INTO users (user_id, username, password, bill_id) VALUE (
+//                            %d, %s, %s, %d
+//                            )
+//                            """,
+//                    user;
+//
+//            statement.execute(query);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
