@@ -2,21 +2,13 @@ package billgates.usecases.user_join;
 
 public class UserJoinController{
 
-    private UserJoinInputPort useCase;
+    private final UserJoinInputPort useCase;
 
     public UserJoinController(UserJoinInputPort useCase) {
         this.useCase = useCase;
     }
 
-    public void setUseCase(UserJoinInputPort useCase) {
-        this.useCase = useCase;
-    }
-
-    public UserJoinInputPort getUseCase() {
-        return useCase;
-    }
-
-    public void UserJoin(UserJoinRequestModel model){
-        this.useCase.join(model);
+    public void userJoin(String username, String password){
+        this.useCase.join(new UserJoinRequestModel(username, password));
     }
 }
