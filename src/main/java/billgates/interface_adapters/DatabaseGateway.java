@@ -25,7 +25,7 @@ public interface DatabaseGateway {
     void deleteEntry(int billId, int entryId);
 
     // This uses the ID in entry to overwrite what was originally there
-    void modifyEntry(int billId, QueryEntryData entry);
+    void modifyEntry(int billId, int entryId, String column, String newValue);
 
     // Creates a new bill with the pre-specified columns
     void createBillTable(int billId);

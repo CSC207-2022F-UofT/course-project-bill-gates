@@ -10,15 +10,24 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection connection = null;
+    public final Map<String, String> columnToDatabaseColumn = new HashMap<>();
 
     public MySQLDatabaseGateway() {
         this.initializeConnection();
+
+        this.columnToDatabaseColumn.put("ID", "entry_id");
+        this.columnToDatabaseColumn.put("Value", "value");
+        this.columnToDatabaseColumn.put("Date", "date");
+        this.columnToDatabaseColumn.put("Currency", "currency");
+        this.columnToDatabaseColumn.put("Description", "description");
+        this.columnToDatabaseColumn.put("From", "from");
+        this.columnToDatabaseColumn.put("To", "to");
+        this.columnToDatabaseColumn.put("Location", "location");
+        this.columnToDatabaseColumn.put("Splitter", "splitter");
     }
 
     public void initializeConnection() {
@@ -235,33 +244,22 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
-    public void modifyEntry(int billId, QueryEntryData entry) {
+    public void modifyEntry(int billId, int entryId, String column, String newValue) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // This method assumed that the newValue being passed in already has the right format.
+            // E.g. For ZonedDateTime, it is already in the format of "yyyy-MM-dd HH:mm:ss"
+            // For value, since it is double, SQL can parse "123.45" as double as well
 
             Statement statement = connection.createStatement();
 
             String query = String.format("""
                             UPDATE bill%d
-                            SET value = %f,
-                            date = "%s",
-                            currency = "%s",
-                            description = "%s",
-                            `from` = "%s",
-                            `to` = "%s",
-                            location = "%s",
-                            split_bill_id = %d
+                            SET %s = "%s"
                             WHERE entry_id = %d
                             """, billId,
-                    entry.getValue(),
-                    entry.getDate().format(formatter),
-                    entry.getCurrency(),
-                    entry.getDescription(),
-                    entry.getFrom(),
-                    entry.getTo(),
-                    entry.getLocation(),
-                    entry.getSplitBillId(),
-                    entry.getId());
+                    this.columnToDatabaseColumn.get(column),
+                    newValue,
+                    entryId);
 
             statement.execute(query);
 
