@@ -106,7 +106,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    SELECT * FROM bill%d
+                    SELECT * FROM bill_%d
                     WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
                     """, billId, startDate.format(formatter), endDate.format(formatter));
 
@@ -137,7 +137,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    SELECT * FROM bill%d WHERE entry_id = %d
+                    SELECT * FROM bill_%d WHERE entry_id = %d
                     """, billId, entryId);
 
             ResultSet resultSet = statement.executeQuery(query);
@@ -182,12 +182,12 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             Statement statement = connection.createStatement();
 
-            String query = "";
+            String query;
 
             // This is the case where we want autoincrement
             if (!(entry.getId() == -1)) {
                 query = String.format("""
-                            INSERT INTO bill%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
+                            INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
                             %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
                             )
                             """,
@@ -204,7 +204,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             } else {
                 // This is the case where we want to insert with a specific ID
                 query = String.format("""
-                            INSERT INTO bill%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
+                            INSERT INTO bill_%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
                             %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
                             )
                             """,
@@ -231,7 +231,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try {
             Statement statement = connection.createStatement();
 
-            String query = "";
+            String query;
 
             // This is the case that we want to Auto-Increment User
             if (!(user.getUserID() == -1)) {
@@ -269,7 +269,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    DELETE FROM bill%d WHERE entry_id=%d
+                    DELETE FROM bill_%d WHERE entry_id=%d
                     """, billId, entryId);
 
             statement.execute(query);
@@ -289,7 +289,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                            UPDATE bill%d
+                            UPDATE bill_%d
                             SET %s = "%s"
                             WHERE entry_id = %d
                             """, billId,
@@ -312,7 +312,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                            UPDATE bill%d
+                            UPDATE bill_%d
                             SET value = %f,
                                 date = "%s",
                                 currency = "%s",
@@ -344,7 +344,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    CREATE TABLE bill%d
+                    CREATE TABLE bill_%d
                     (
                         entry_id         INT             AUTO_INCREMENT
                                                          PRIMARY KEY,
