@@ -422,6 +422,47 @@ public class MySQLDatabaseGatewayTests {
         }
     }
 
+    // Testing insertEntry with auto increment
+    @Test(timeout = TEST_TIMEOUT)
+    public void testInsertEntryAutoIncrement() {
+        try {
+            ZonedDateTime testDate = ZonedDateTime.of(2009,
+                    3,
+                    5,
+                    3,
+                    5,
+                    3,
+                    0,
+                    ZoneId.systemDefault());
+            double testValue = 1011.02;
+
+            QueryEntryData testEntry5 = new QueryEntryData(testDate,
+                    testValue);
+
+            this.testGateway.insertEntry(this.testBillID, testEntry5);
+
+            Statement testStatement = this.testConnection.createStatement();
+
+            String query = String.format("SELECT * FROM bill%d", testBillID);
+
+            ResultSet result = testStatement.executeQuery(query);
+
+            int size = 0;
+
+            while (result.next()) {
+                size += 1;
+            }
+
+            // We have 3 entries now, because we have 2 entries inserted in setUp, and 1 inserted in this test case
+            assertEquals(size, 3);
+
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            fail();
+        }
+    }
+
     // Test for getting the Entry that we inserted in the previous test
     @Test(timeout = TEST_TIMEOUT)
     public void testGetEntry() {
