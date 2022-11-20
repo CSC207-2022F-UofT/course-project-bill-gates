@@ -15,35 +15,35 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
 
 
     @Override
-    public void alterEntry(int entry_id, Object new_value, String alter_column) {
+    public void alterEntry(int entryID, Object newValue, String alterColumn) {
         int billID = User.getInstance().getCurrentBillID();
 
-        QueryEntryData old_entry = this.gateway.getEntryData(billID, entry_id);
+        QueryEntryData old_entry = this.gateway.getEntryData(billID, entryID);
         AlterEntryRequestModel model = new AlterEntryRequestModel(old_entry);
 
-        if (alter_column.equals("date")) {
-            model.setDate((ZonedDateTime) new_value);
+        if (alterColumn.equals("date")) {
+            model.setDate((ZonedDateTime) newValue);
         }
-        if (alter_column.equals("value")) {
-            model.setValue((double) new_value);
+        if (alterColumn.equals("value")) {
+            model.setValue((double) newValue);
         }
-        if (alter_column.equals("currency")) {
-            model.setCurrency((String) new_value);
+        if (alterColumn.equals("currency")) {
+            model.setCurrency((String) newValue);
         }
-        if (alter_column.equals("description")) {
-            model.setDescription((String) new_value);
+        if (alterColumn.equals("description")) {
+            model.setDescription((String) newValue);
         }
-        if (alter_column.equals("from")) {
-            model.setFrom((String) new_value);
+        if (alterColumn.equals("from")) {
+            model.setFrom((String) newValue);
         }
-        if (alter_column.equals("to")) {
-            model.setTo((String) new_value);
+        if (alterColumn.equals("to")) {
+            model.setTo((String) newValue);
         }
-        if (alter_column.equals("location")) {
-            model.setLocation((String) new_value);
+        if (alterColumn.equals("location")) {
+            model.setLocation((String) newValue);
         }
 
-        gateway.modifyEntry(billID, model.getQueryEntryData(entry_id));
+        gateway.modifyEntry(billID, model.getQueryEntryData(entryID));
 
     }
 }

@@ -62,7 +62,7 @@ public class AlterEntryRequestModel {
     }
 
     public QueryEntryData getQueryEntryData(int entry_id) {
-        QueryEntryData entry = new QueryEntryData(entry_id, date, value, currency, description, from, to, location);
-        return entry;
+        return new QueryEntryData(entry_id, date, value, currency, description, from, to, location);
+
     }
 }
