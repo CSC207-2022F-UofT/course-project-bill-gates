@@ -48,6 +48,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public QueryUserData getUserData() {
+        List<String> userIDs = new ArrayList<>();
+        List<String> billIDs = new ArrayList<>();
         List<String> usernames = new ArrayList<>();
         List<String> passwords = new ArrayList<>();
 
@@ -59,18 +61,22 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
+                String userID = resultSet.getString("user_id");
+                String billID = resultSet.getString("bill_id");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
 
                 usernames.add(username);
                 passwords.add(password);
+                userIDs.add(userID);
+                billIDs.add(billID);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return new QueryUserData(usernames, passwords);
+        return new QueryUserData(userIDs, billIDs, usernames, passwords);
     }
 
     @Override
