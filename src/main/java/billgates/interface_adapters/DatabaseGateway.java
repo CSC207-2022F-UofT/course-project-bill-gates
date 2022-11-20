@@ -5,11 +5,12 @@ import billgates.database.QueryEntryData;
 import billgates.database.QueryUserData;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 public interface DatabaseGateway {
     void initializeConnection();
 
-    QueryUserData getUserData();
+    List<QueryUserData> getUserData();
 
     QueryBillData getBillData(int billId);
 
@@ -19,9 +20,14 @@ public interface DatabaseGateway {
 
     void insertEntry(int billId, QueryEntryData entry);
 
+    void insertUser(QueryUserData user);
+
     void deleteEntry(int billId, int entryId);
 
-    // This uses the ID in entry to overwrite what was originally there
+    // This uses the ID in entry to overwrite a specific column
+    void modifyEntry(int billId, int entryId, String column, String newValue);
+
+    // This uses the ID in entry to overwrite the whole entry with the new entry
     void modifyEntry(int billId, QueryEntryData entry);
 
     // Creates a new bill with the pre-specified columns

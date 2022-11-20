@@ -3,9 +3,10 @@ package billgates.database;
 import billgates.entities.EntryBuilder;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class QueryEntryData {
-    private final int id;
+    private int id = -1;
     private final ZonedDateTime date;
     private final double value;
     private String currency = "";
@@ -13,6 +14,7 @@ public class QueryEntryData {
     private String from = "";
     private String to = "";
     private String location = "";
+    private int splitBillId = -1;
 
     public QueryEntryData(int id,
                           ZonedDateTime date,
@@ -21,15 +23,35 @@ public class QueryEntryData {
                           String description,
                           String from,
                           String to,
-                          String location) {
+                          String location,
+                          int splitBillId) {
         this.id = id;
-        this.date = date;
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
         this.value = value;
         this.currency = currency;
         this.description = description;
         this.from = from;
         this.to = to;
         this.location = location;
+        this.splitBillId = splitBillId;
+    }
+
+    public QueryEntryData(ZonedDateTime date,
+                          double value,
+                          String currency,
+                          String description,
+                          String from,
+                          String to,
+                          String location,
+                          int splitBillId) {
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
+        this.value = value;
+        this.currency = currency;
+        this.description = description;
+        this.from = from;
+        this.to = to;
+        this.location = location;
+        this.splitBillId = splitBillId;
     }
 
     public QueryEntryData(int id,
@@ -37,7 +59,14 @@ public class QueryEntryData {
                           double value) {
         // Constructor for not all values provided
         this.id = id;
-        this.date = date;
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
+        this.value = value;
+    }
+
+    public QueryEntryData(ZonedDateTime date,
+                          double value) {
+        // Constructor for not all values provided, with no ID provided
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
         this.value = value;
     }
 
@@ -53,9 +82,7 @@ public class QueryEntryData {
                 .setLocation(this.location);
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
     public ZonedDateTime getDate() {
         return date;
@@ -84,4 +111,17 @@ public class QueryEntryData {
     public String getLocation() {
         return location;
     }
+    public int getSplitBillId() {
+        return splitBillId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+
+        QueryEntryData entry = (QueryEntryData) obj;
+        return this.getId() == entry.getId();
+    }
+
 }

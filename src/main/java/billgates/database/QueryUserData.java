@@ -3,19 +3,38 @@ package billgates.database;
 import java.util.List;
 
 public class QueryUserData {
-    private final List<String> users;
-    private final List<String> passwords;
 
-    public QueryUserData(List<String> users, List<String> passwords) {
-        this.users = users;
-        this.passwords = passwords;
+    private int userID = -1;
+    private final int billID;
+    private final String username;
+    private final String password;
+
+    public QueryUserData(int userID, int billID, String username, String password) {
+        this.userID = userID;
+        this.billID = billID;
+        this.username = username;
+        this.password = password;
     }
 
-    public List<String> getUsers() {
-        return users;
+    public QueryUserData(int billID, String username, String password) {
+        this.billID = billID;
+        this.username = username;
+        this.password = password;
     }
 
-    public List<String> getPasswords() {
-        return passwords;
+    public int getUserID() {
+        return userID;
+    }
+
+    public int getBillID() {
+        return billID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
