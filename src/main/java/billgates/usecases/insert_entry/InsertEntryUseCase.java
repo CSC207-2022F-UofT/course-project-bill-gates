@@ -12,7 +12,7 @@ public class InsertEntryUseCase implements InsertEntryInputPort{
     }
 
     @Override
-    public void insertEntry(QueryEntryData entry) {
-        gateway.insertEntry(entry.getId(), entry);
+    public void insertEntry(int billId, QueryEntryData entry) {
+        gateway.insertEntry(billId, entry);
     }
 }

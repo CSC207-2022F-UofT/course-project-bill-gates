@@ -9,7 +9,7 @@ public class InsertEntryController {
         this.useCase = useCase;
     }
 
-    public void insert(QueryEntryData entry) {
-        this.useCase.insertEntry(entry);
+    public void insert(int billId, QueryEntryData entry) {
+        this.useCase.insertEntry(billId, entry);
     }
 }
