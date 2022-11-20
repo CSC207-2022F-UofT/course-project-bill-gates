@@ -19,6 +19,8 @@ public class MySQLDatabaseGatewayTests {
     public MySQLDatabaseGateway testGateway;
     public int testBillID = 9999;
 
+    public int testUserID = 9999;
+
     public Connection testConnection;
 
     public static final int TEST_TIMEOUT = 100000;
@@ -44,13 +46,26 @@ public class MySQLDatabaseGatewayTests {
 
                 Statement testStatement = this.testConnection.createStatement();
 
-                String checkQuery = String.format("SHOW TABLES LIKE 'bill%d'", this.testBillID);
+                // Checking if the test table already exists, if it does, then we want to remove it for our tests
+                String checkBillQuery = String.format("SHOW TABLES LIKE 'bill%d'", this.testBillID);
 
-                ResultSet resultSet = testStatement.executeQuery(checkQuery);
+                ResultSet resultSet = testStatement.executeQuery(checkBillQuery);
 
                 if (resultSet.next()) {
                     // If the table already exists there (Due to previous failed tests, we want to remove it and recreate)
                     String dropTableQuery = String.format("DROP TABLE bill%d", this.testBillID);
+
+                    testStatement.execute(dropTableQuery);
+                }
+
+                // Checking if the test user already exists, if it does, then we want to remove it for our tests
+                String checkUserQuery = String.format("SELECT * FROM users WHERE user_id=%d", this.testUserID);
+
+                resultSet = testStatement.executeQuery(checkUserQuery);
+
+                if (resultSet.next()) {
+                    // If the user already exists there (Due to previous failed tests, we want to remove it and recreate)
+                    String dropTableQuery = String.format("DELETE FROM users WHERE user_id=%d", this.testUserID);
 
                     testStatement.execute(dropTableQuery);
                 }
@@ -194,6 +209,58 @@ public class MySQLDatabaseGatewayTests {
         } catch (RuntimeException | SQLException e) {
             // Fails the test whenever we encounter an Error
             // When trying to run getBillData method on BillID testBillID
+            fail();
+        }
+    }
+
+    // Test for inserting a new user into the users table
+    @Test(timeout = TEST_TIMEOUT)
+    public void testInsertUser() {
+        try {
+            String testUsername = "TestUser";
+            String testPassword = "TestUserPassword";
+
+            QueryUserData testUser = new QueryUserData(this.testUserID,
+                    this.testBillID,
+                    testUsername,
+                    testPassword);
+
+            // Inserts the user into the database
+            this.testGateway.insertUser(testUser);
+
+            // Checking if we actually inserted
+            Statement testStatement = this.testConnection.createStatement();
+
+            String getNewlyCreatedUser = String.format("SELECT * FROM users WHERE user_id=%d",
+                    testUser.getUserID());
+
+            ResultSet result = testStatement.executeQuery(getNewlyCreatedUser);
+
+            int obtainedUserID = -1;
+            int obtainedUserBillID = -1;
+            String obtainedUsername = "";
+            String obtainedPassword = "";
+
+            while (result.next()) {
+                obtainedUserID = result.getInt("user_id");
+                obtainedUserBillID = result.getInt("bill_id");
+                obtainedUsername = result.getString("username");
+                obtainedPassword = result.getString("password");
+            }
+
+            assertEquals(this.testUserID, obtainedUserID);
+            assertEquals(this.testBillID, obtainedUserBillID);
+            assertEquals(testUsername, obtainedUsername);
+            assertEquals(testPassword, obtainedPassword);
+
+            // If every test passed, try to remove the user we created
+            String removeNewlyCreatedUser = String.format("DELETE FROM users WHERE user_id=%d",
+                    testUser.getUserID());
+
+            testStatement.execute(removeNewlyCreatedUser);
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
             fail();
         }
     }
