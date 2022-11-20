@@ -1,7 +1,5 @@
 package billgates.usecases.insert_entry;
 
-import billgates.database.QueryEntryData;
-
 public class InsertEntryController {
     private final InsertEntryInputPort useCase;
 
@@ -9,7 +7,7 @@ public class InsertEntryController {
         this.useCase = useCase;
     }
 
-    public void insert(int billId, QueryEntryData entry) {
-        this.useCase.insertEntry(billId, entry);
+    public void insert(InsertEntryRequestModel model) {
+        this.useCase.insertEntry(model);
     }
 }
