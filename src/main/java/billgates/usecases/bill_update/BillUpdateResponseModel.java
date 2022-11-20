@@ -5,9 +5,11 @@ import java.util.List;
 public class BillUpdateResponseModel {
 
     private List<List<Object>> entries;
+    private boolean isSplitterBill;
 
-    public BillUpdateResponseModel(List<List<Object>> entries) {
+    public BillUpdateResponseModel(List<List<Object>> entries, boolean isSplitterBill) {
         this.entries = entries;
+        this.isSplitterBill = isSplitterBill;
     }
 
     public List<List<Object>> getEntries() {
@@ -16,5 +18,13 @@ public class BillUpdateResponseModel {
 
     public void setEntries(List<List<Object>> entries) {
         this.entries = entries;
+    }
+
+    public boolean isSplitterBill() {
+        return isSplitterBill;
+    }
+
+    public void setSplitterBill(boolean splitterBill) {
+        isSplitterBill = splitterBill;
     }
 }

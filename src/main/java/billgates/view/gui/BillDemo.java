@@ -2,7 +2,7 @@ package billgates.view.gui;
 
 import billgates.database.MySQLDatabaseGateway;
 import billgates.entities.User;
-import billgates.interface_adapters.Updatable;
+import billgates.interface_adapters.BillPanelUpdatable;
 import billgates.usecases.bill_update.*;
 import billgates.view.BillTableModel;
 
@@ -11,12 +11,12 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Collections;
+import java.util.Arrays;
 
 /**
  * This is a demo class for demonstrating the UpdateBillUseCase.
  */
-public class BillDemo extends JFrame implements Updatable {
+public class BillDemo extends JFrame implements BillPanelUpdatable {
 
     private final JPanel contentPane = new JPanel(new BorderLayout());
     private final JTable table = new JTable();
@@ -42,7 +42,7 @@ public class BillDemo extends JFrame implements Updatable {
                 gateway.initializeConnection();
                 BillUpdateOutputPort presenter = new BillUpdatePresenter(BillDemo.this);
                 BillUpdateInputPort interactor = new BillUpdateUseCase(presenter, gateway);
-                interactor.updateBill();
+                interactor.updateBill(User.getInstance().getCurrentBillID());
             }
         });
     }
@@ -58,12 +58,12 @@ public class BillDemo extends JFrame implements Updatable {
         BillUpdateOutputPort presenter = new BillUpdatePresenter(frame);
         BillUpdateInputPort useCase = new BillUpdateUseCase(presenter, gateway);
         BillUpdateController controller = new BillUpdateController(useCase);
-        controller.update();
+//        controller.update();
     }
 
     private void initTable() {
         this.add(this.scrollPane, BorderLayout.CENTER);
-        this.table.setModel(new BillTableModel(Collections.emptyList()));
+        this.table.setModel(new BillTableModel());
         this.table.setRowHeight(40);
 //        this.table.setModel(new DefaultTableModel(new Object[][]{{"1"}}, new Object[] {"1"}));
         this.table.getModel().addTableModelListener(new TableModelListener() {
@@ -85,7 +85,10 @@ public class BillDemo extends JFrame implements Updatable {
     @Override
     public void update(BillUpdateViewModel viewModel) {
         BillTableModel model = (BillTableModel) this.table.getModel();
+        model.setColumnNames(viewModel.getColumns());
         model.setData(viewModel.getEntries());
+        System.out.println(model.getData());
+        System.out.println(Arrays.toString(model.getColumnNames()));
         this.table.updateUI();
     }
 }

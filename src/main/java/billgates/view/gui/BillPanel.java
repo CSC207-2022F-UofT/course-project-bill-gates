@@ -1,24 +1,21 @@
 package billgates.view.gui;
 
+import billgates.interface_adapters.BillPanelUpdatable;
+import billgates.usecases.bill_update.BillUpdateViewModel;
+import billgates.view.BillTableModel;
+
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
-public class BillPanel extends JPanel {
+public class BillPanel extends JPanel implements BillPanelUpdatable {
 
     public static final int DEFAULT_WIDTH = MainFrame.DEFAULT_WIDTH - ActionPanel.DEFAULT_WIDTH - 14;
     // public static final int DEFAULT_HEIGHT = MainFrame.DEFAULT_HEIGHT - 37;
-    private static final String[] COLUMN_NAMES = new String[]
-            {"ID", "Date", "Value", "Currency", "Description", "From", "To", "Location"};
-    // This data is just for test, will be modified in the future
-    private final Object[][] testData = {{0, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1, 1, 1}};
-    private final JTable billTable = new BillTable(this.testData, COLUMN_NAMES);
+    private final JTable billTable = new BillTable();
     private final JScrollPane scrollPane = new JScrollPane(this.billTable);
 
     public BillPanel() {
@@ -54,5 +51,15 @@ public class BillPanel extends JPanel {
 
     public JTable getBillTable() {
         return this.billTable;
+    }
+
+    @Override
+    public void update(BillUpdateViewModel viewModel) {
+        String[] columns = viewModel.getColumns();
+        List<List<Object>> entries = viewModel.getEntries();
+        BillTableModel model = (BillTableModel) this.getBillTable().getModel();
+        model.setColumnNames(columns);
+        model.setData(entries);
+        this.getBillTable().updateUI();
     }
 }

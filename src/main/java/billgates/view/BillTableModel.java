@@ -1,17 +1,18 @@
 package billgates.view;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 // Frameworks and Drivers Layer
 public class BillTableModel extends AbstractTableModel {
 
-    private static final String[] COLUMN_NAMES = new String[]
-            {"ID", "Date", "Value", "Currency", "Description", "From", "To", "Location"};
-    private List<List<Object>> data;
+    // columnNames has initial values as defined
+    private String[] columnNames = new String[]
+            {"ID", "Date", "Value", "Currency", "Description", "From", "To", "Location", "Splitter"};
+    private List<List<Object>> data = new ArrayList<>();
 
-    public BillTableModel(List<List<Object>> data) {
-        this.data = data;
+    public BillTableModel() {
     }
 
     @Override
@@ -21,7 +22,7 @@ public class BillTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return COLUMN_NAMES.length;
+        return this.columnNames.length;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class BillTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int column) {
-        return COLUMN_NAMES[column];
+        return this.columnNames[column];
     }
 
     @Override
@@ -47,10 +48,15 @@ public class BillTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         this.data.get(rowIndex).set(columnIndex, aValue);
+        // TODO: alter entry use case here
+        // TODO: insert entry use case maybe also here
         this.fireTableCellUpdated(rowIndex, columnIndex);
     }
 
-    // TODO override more methods
+    @Override
+    public int findColumn(String columnName) {
+        return super.findColumn(columnName);
+    }
 
     public List<List<Object>> getData() {
         return this.data;
@@ -58,5 +64,13 @@ public class BillTableModel extends AbstractTableModel {
 
     public void setData(List<List<Object>> data) {
         this.data = data;
+    }
+
+    public String[] getColumnNames() {
+        return columnNames;
+    }
+
+    public void setColumnNames(String[] columnNames) {
+        this.columnNames = columnNames;
     }
 }

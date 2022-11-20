@@ -8,7 +8,7 @@ public class BillUpdateController {
         this.useCase = useCase;
     }
 
-    public void update() {
-        this.useCase.updateBill();
+    public void update(int billId) {
+        this.useCase.updateBill(billId);
     }
 }

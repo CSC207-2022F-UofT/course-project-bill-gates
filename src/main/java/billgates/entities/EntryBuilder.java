@@ -12,8 +12,7 @@ public class EntryBuilder {
     private String from = "";
     private String to = "";
     private String location = "";
-
-    // TODO splitter
+    private int splitterBillId = -1;
 
     // TODO for splitter, payee
 
@@ -32,7 +31,8 @@ public class EntryBuilder {
                 new Attribute<>(this.description, "description"),
                 new Attribute<>(this.from, "from"),
                 new Attribute<>(this.to, "to"),
-                new Attribute<>(this.location, "location")
+                new Attribute<>(this.location, "location"),
+                new Attribute<>(this.splitterBillId, "splitter_bill_id")
         );
     }
 
@@ -45,6 +45,7 @@ public class EntryBuilder {
         this.from = "";
         this.to = "";
         this.location = "";
+        this.splitterBillId = -1;
         return this;
     }
 
@@ -85,6 +86,11 @@ public class EntryBuilder {
 
     public EntryBuilder setLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    public EntryBuilder setSplitterBillId(int splitterBillId) {
+        this.splitterBillId = splitterBillId;
         return this;
     }
 }

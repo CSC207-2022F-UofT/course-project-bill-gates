@@ -1,5 +1,7 @@
 package billgates.view.gui;
 
+import billgates.view.BillTableModel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,9 +12,11 @@ public class BillTable extends JTable {
     public static final int DEFAULT_FONT_SIZE = 15;
     public static final Font DEFAULT_FONT = new FontSettings(DEFAULT_FONT_SIZE);
 
-    public BillTable(Object[][] data, Object[] columnNames) {
+    private final BillTableModel model = new BillTableModel();
+
+    public BillTable() {
         // Set the data and header
-        super(data, columnNames);
+        this.setModel(this.model);
 
         // Set the font
         this.setFont(DEFAULT_FONT);
@@ -29,5 +33,10 @@ public class BillTable extends JTable {
 
         // Set functionality
         this.setCellSelectionEnabled(true);
+    }
+
+    @Override
+    public BillTableModel getModel() {
+        return this.model;
     }
 }
