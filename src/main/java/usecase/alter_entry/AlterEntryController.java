@@ -9,7 +9,7 @@ public class AlterEntryController {
         this.useCase = useCase;
     }
 
-    public void update(int billId, QueryEntryData entry) {
-        this.useCase.alterEntry(billId, entry);
+    public void alter_Entry(int billId, int entry_id, Object new_value,String alter_column) {
+        this.useCase.alterEntry(billId, entry_id,new_value,alter_column);
     }
 }
