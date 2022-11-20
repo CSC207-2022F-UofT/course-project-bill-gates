@@ -4,13 +4,19 @@ import java.util.List;
 
 public class QueryUserData {
 
-    private final int userID;
+    private int userID = -1;
     private final int billID;
     private final String username;
     private final String password;
 
     public QueryUserData(int userID, int billID, String username, String password) {
         this.userID = userID;
+        this.billID = billID;
+        this.username = username;
+        this.password = password;
+    }
+
+    public QueryUserData(int billID, String username, String password) {
         this.billID = billID;
         this.username = username;
         this.password = password;

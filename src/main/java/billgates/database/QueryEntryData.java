@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class QueryEntryData {
-    private final int id;
+    private int id = -1;
     private final ZonedDateTime date;
     private final double value;
     private String currency = "";
@@ -36,11 +36,36 @@ public class QueryEntryData {
         this.splitBillId = splitBillId;
     }
 
+    public QueryEntryData(ZonedDateTime date,
+                          double value,
+                          String currency,
+                          String description,
+                          String from,
+                          String to,
+                          String location,
+                          int splitBillId) {
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
+        this.value = value;
+        this.currency = currency;
+        this.description = description;
+        this.from = from;
+        this.to = to;
+        this.location = location;
+        this.splitBillId = splitBillId;
+    }
+
     public QueryEntryData(int id,
                           ZonedDateTime date,
                           double value) {
         // Constructor for not all values provided
         this.id = id;
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
+        this.value = value;
+    }
+
+    public QueryEntryData(ZonedDateTime date,
+                          double value) {
+        // Constructor for not all values provided, with no ID provided
         this.date = date.truncatedTo(ChronoUnit.SECONDS);
         this.value = value;
     }

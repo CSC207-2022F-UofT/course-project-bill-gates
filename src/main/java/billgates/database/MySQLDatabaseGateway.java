@@ -182,20 +182,42 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             Statement statement = connection.createStatement();
 
-            String query = String.format("""
+            String query = "";
+
+            // This is the case where we want autoincrement
+            if (!(entry.getId() == -1)) {
+                query = String.format("""
                             INSERT INTO bill%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
+                            %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
+                            )
+                            """,
+                        billId,
+                        entry.getId(),
+                        entry.getValue(),
+                        entry.getDate().format(formatter),
+                        entry.getCurrency(),
+                        entry.getDescription(),
+                        entry.getFrom(),
+                        entry.getTo(),
+                        entry.getLocation(),
+                        entry.getSplitBillId());
+            } else {
+                // This is the case where we want to insert with a specific ID
+                query = String.format("""
+                            INSERT INTO bill%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
                             %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
                             )
                             """,
-                    billId,
-                    entry.getValue(),
-                    entry.getDate().format(formatter),
-                    entry.getCurrency(),
-                    entry.getDescription(),
-                    entry.getFrom(),
-                    entry.getTo(),
-                    entry.getLocation(),
-                    entry.getSplitBillId());
+                        billId,
+                        entry.getValue(),
+                        entry.getDate().format(formatter),
+                        entry.getCurrency(),
+                        entry.getDescription(),
+                        entry.getFrom(),
+                        entry.getTo(),
+                        entry.getLocation(),
+                        entry.getSplitBillId());
+            }
 
             statement.execute(query);
 
@@ -209,15 +231,30 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try {
             Statement statement = connection.createStatement();
 
-            String query = String.format("""
+            String query = "";
+
+            // This is the case that we want to Auto-Increment User
+            if (!(user.getUserID() == -1)) {
+                query = String.format("""
                             INSERT INTO users (user_id, username, password, bill_id) VALUE (
                             %d, "%s", "%s", %d
                             )
                             """,
-                    user.getUserID(),
-                    user.getUsername(),
-                    user.getPassword(),
-                    user.getBillID());
+                        user.getUserID(),
+                        user.getUsername(),
+                        user.getPassword(),
+                        user.getBillID());
+            } else {
+                // This is the case that we want to specify a userId
+                query = String.format("""
+                            INSERT INTO users (username, password, bill_id) VALUE (
+                            "%s", "%s", %d
+                            )
+                            """,
+                        user.getUsername(),
+                        user.getPassword(),
+                        user.getBillID());
+            }
 
             statement.execute(query);
 
