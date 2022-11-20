@@ -1,20 +1,20 @@
 package billgates.usecases.user_join;
 
-import billgates.interface_adapters.Viewable;
+import billgates.interface_adapters.UserJoinUpdatable;
 
 public class UserJoinPresenter implements UserJoinOutputPort{
 
-    private Viewable view;
+    private UserJoinUpdatable view;
 
-    public UserJoinPresenter(Viewable view){
+    public UserJoinPresenter(UserJoinUpdatable view){
         this.view = view;
     }
 
-    public Viewable getView() {
+    public UserJoinUpdatable getView() {
         return view;
     }
 
-    public void setView(Viewable view) {
+    public void setView(UserJoinUpdatable view) {
         this.view = view;
     }
 

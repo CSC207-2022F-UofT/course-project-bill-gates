@@ -3,7 +3,7 @@ package billgates.usecases.user_join;
 import billgates.database.QueryUserData;
 import billgates.interface_adapters.DatabaseGateway;
 
-public class UserJoinUseCase implements UserJoinInputPort{
+public class UserJoinUseCase implements UserJoinInputPort {
     private final DatabaseGateway gateway;
     private final UserJoinOutputPort outputPort;
 
@@ -16,12 +16,14 @@ public class UserJoinUseCase implements UserJoinInputPort{
     public void join(UserJoinRequestModel model) {
         QueryUserData userData = gateway.getUserData();
         if (!userData.getUsers().contains(model.getUsername())){
-            outputPort.display(new UserJoinResponseModel(false, "Not in database"));
+            // TODO add the user to the database
+
+            // TODO log the user in
 
         }
         else {
-            join(model);
-            outputPort.display(new UserJoinResponseModel(true, null));
+            // pop a dialog and notify the user that the name is invalid
+            outputPort.display(new UserJoinResponseModel(false, "Invalid username."));
         }
     }
 }
