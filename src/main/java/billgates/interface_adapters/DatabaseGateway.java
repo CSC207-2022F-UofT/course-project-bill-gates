@@ -10,7 +10,7 @@ import java.util.List;
 public interface DatabaseGateway {
     void initializeConnection();
 
-    List<QueryUserData> getUserData();
+    QueryUserData getUserData();
 
     QueryBillData getBillData(int billId);
 
@@ -29,6 +29,4 @@ public interface DatabaseGateway {
     void createBillTable(int billId);
 
     void createUsersTable();
-
-    void insertUser(String userName, String password);
 }
