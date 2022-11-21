@@ -1,5 +1,6 @@
 package billgates.usecases.delete_entry;
 
+import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
 
@@ -13,7 +14,8 @@ public class DeleteEntryUseCase implements DeleteEntryInputPort {
 
 
     @Override
-    public void deleteEntry(int billId, int entryId) {
+    public void deleteEntry(int entryId) {
+        int billId = User.getInstance().getCurrentBillID();
         this.gateway.deleteEntry(billId, entryId);
     }
 }

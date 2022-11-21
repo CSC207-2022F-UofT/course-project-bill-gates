@@ -20,8 +20,9 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
     @Override
     public void updateBill(int billId) {
         User user = User.getInstance();
-        if (billId == -1) {
-            billId = user.getCurrentBillID();
+        switch (billId) {
+            case -1 -> billId = user.getCurrentBillID();
+            case -2 -> billId = user.getBillId();
         }
         user.setCurrentBillID(billId);
         // get all entries of the current bill

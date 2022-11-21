@@ -1,8 +1,9 @@
 package billgates.view.gui;
 
+import billgates.usecases.bill_update.BillUpdateController;
+import billgates.usecases.delete_entry.DeleteEntryController;
+
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
@@ -14,14 +15,13 @@ public class MainFrame extends JFrame {
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);
 
     private final JPanel contentPane = new JPanel(new BorderLayout());
-    private final ActionPanel actionPanel = new ActionPanel();
-    private final BillPanel billPanel = new BillPanel();
+    private final ActionPanel actionPanel = new ActionPanel(this);
+    private final BillPanel billPanel = new BillPanel(this);
     private final JMenuBar menu = new TopMenuBar();
 
-    public static void main(String[] args) {
-        MainFrame mainFrame = new MainFrame();
-        mainFrame.setVisible(true);
-    }
+    // controllers will be set after constructing the view objects
+    private BillUpdateController billUpdateController;
+    private DeleteEntryController deleteEntryController;
 
     public MainFrame() {
         // Set the title
@@ -52,5 +52,21 @@ public class MainFrame extends JFrame {
 
     public ActionPanel getActionPanel() {
         return actionPanel;
+    }
+
+    public BillUpdateController getBillUpdateController() {
+        return billUpdateController;
+    }
+
+    public void setBillUpdateController(BillUpdateController billUpdateController) {
+        this.billUpdateController = billUpdateController;
+    }
+
+    public DeleteEntryController getDeleteEntryController() {
+        return deleteEntryController;
+    }
+
+    public void setDeleteEntryController(DeleteEntryController deleteEntryController) {
+        this.deleteEntryController = deleteEntryController;
     }
 }

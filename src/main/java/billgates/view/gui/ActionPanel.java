@@ -1,12 +1,8 @@
 package billgates.view.gui;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -38,7 +34,10 @@ public class ActionPanel extends JPanel {
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
     private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
 
-    public ActionPanel() {
+    private final MainFrame mainFrame;
+
+    public ActionPanel(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
         BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
         this.setLayout(layout);
         this.initSignInPanel();
@@ -123,7 +122,7 @@ public class ActionPanel extends JPanel {
         this.deleteEntryButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Delete entry event
-        this.addEntryButton.addActionListener((e -> this.deleteEntry()));
+        this.deleteEntryButton.addActionListener((e -> this.deleteEntry()));
         // deleteEntryButton should be disabled at the beginning
         this.deleteEntryButton.setEnabled(false);
 
@@ -158,14 +157,16 @@ public class ActionPanel extends JPanel {
             this.passwordField.setEditable(false);
 
             // enable importMenu
-            TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-            tmb.getImportMenu().setEnabled(true);
+            TopMenuBar menuBar = (TopMenuBar) this.getRootPane().getJMenuBar();
+            menuBar.getImportMenu().setEnabled(true);
 
             // enable billTable
-            MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
-            BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
-            bt.setVisible(true);
-            bt.setEnabled(true);
+            BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
+            billTable.setVisible(true);
+            billTable.setEnabled(true);
+
+            // if the user had successfully signed in, then we update the bill
+            SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
         }
     }
 
@@ -195,31 +196,39 @@ public class ActionPanel extends JPanel {
         this.passwordField.setText("");
 
         // Disable the importMenu
-        TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-        tmb.getImportMenu().setEnabled(false);
+        TopMenuBar menuBar = (TopMenuBar) this.getRootPane().getJMenuBar();
+        menuBar.getImportMenu().setEnabled(false);
 
         // Disable the billTable
-        MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
-        BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
-        bt.setEnabled(false);
-        bt.setVisible(false);
-
-        // TODO: Call the controller of BillUpdateUseCase
+        BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
+        billTable.setEnabled(false);
+        billTable.setVisible(false);
     }
 
     private void backFromSplit() {
-        // TODO: Call the controller of BillUpdateUseCase
+        // set the current bill to the main bill of the user
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-2));
     }
 
     private void addEntry() {
         // TODO: Call the controller of InsertEntryUseCase
+
+        // after adding the entry, update the current bill
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
     }
 
     private void deleteEntry() {
-        // TODO: Call the controller of DeleteEntryUseCase
+        BillTable table = this.mainFrame.getBillPanel().getBillTable();
+        int[] selectedRows = table.getSelectedRows();
+        for (int i : selectedRows) {
+            int entryId = (int) table.getModel().getValueAt(i, 0);
+            System.out.println(entryId);
+            this.mainFrame.getDeleteEntryController().delete(entryId);
+        }
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
     }
 
     public JButton getDeleteEntryButton() {
-        return deleteEntryButton;
+        return this.deleteEntryButton;
     }
 }

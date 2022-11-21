@@ -42,14 +42,17 @@ public class BillTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+        // splitter is not editable
+        if ("Splitter".equals(this.columnNames[columnIndex])) {
+            return false;
+        }
+        // id is not editable
+        return columnIndex != 0;
     }
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         this.data.get(rowIndex).set(columnIndex, aValue);
-        // TODO: alter entry use case here
-        // TODO: insert entry use case maybe also here
         this.fireTableCellUpdated(rowIndex, columnIndex);
     }
 

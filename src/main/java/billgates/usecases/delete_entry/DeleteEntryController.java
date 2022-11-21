@@ -9,7 +9,7 @@ public class DeleteEntryController {
         this.useCase = useCase;
     }
 
-    public void delete(int billId, int entryId) {
-        this.useCase.deleteEntry(billId, entryId);
+    public void delete(int entryId) {
+        this.useCase.deleteEntry(entryId);
     }
 }
