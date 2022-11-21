@@ -45,6 +45,5 @@ public class UserJoinUseCase implements UserJoinInputPort {
                         "or the username already exists."));
             }
         }
-        // TODO: Call BillUpdateController
     }
 }
