@@ -7,6 +7,11 @@ import billgates.database.QueryUserData;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+/**
+ * Clean Architecture Layer: Application Business Rules
+ *
+ * @author Ray, Scott
+ */
 public interface DatabaseGateway {
 
     void initializeConnection();

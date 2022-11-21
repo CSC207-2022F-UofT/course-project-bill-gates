@@ -1,26 +1,74 @@
 package billgates.entities;
 
-import java.util.List;
 import java.util.Objects;
 
-// singleton
+/**
+ * Clean Architecture Layer: Enterprise Business Rules
+ * This class represents a user entity in our program.
+ * Only one user is allowed in the running time of our program.
+ * We implement the User using singleton design pattern.
+ * The UserJoinUseCase will initialize the user by calling getInstance(parameters).
+ * Other use cases can use getInstance() (the one without parameters) to obtain the current user.
+ *
+ * @author Scott
+ */
 public class User {
 
+    /**
+     * The current instance of the User.
+     */
     private static User instance;
-    private int id;
-    private String name;
-    private String password;
-    private int billID;
-    private int currentBillID;
-    private List<AbstractEntry> currentBill;
 
-    private User(int id, String name, String password, int billID) {
+    /**
+     * The id of this user.
+     * The id is unique for each user.
+     */
+    private int id;
+
+    /**
+     * The name of this user.
+     * The name is unique for each user.
+     * The max name length is 10.
+     * We may put some constraints on what characters should a username contain.
+     */
+    private String name;
+
+    /**
+     * The password of this user.
+     * The max password length is 16.
+     * We may implement some encrypt methods in the future to increase program security.
+     * We may put some constraints on what characters should a password contain.
+     */
+    private String password;
+
+    /**
+     * The main bill id of this user.
+     */
+    private int billId;
+
+    /**
+     * The current bill id of this user.
+     * This may be different that billId because a splitter bill might be opened.
+     */
+    private int currentBillID;
+
+    private User(int id, String name, String password, int billId) {
         this.id = id;
         this.name = name;
         this.password = password;
-        this.billID = billID;
+        this.billId = billId;
+        this.currentBillID = billId;
     }
 
+    /**
+     * Get or create an instance of a user.
+     *
+     * @param id the id of this user
+     * @param name the name of this user
+     * @param password the password of this user
+     * @param billID the main bill id of this user
+     * @return a new user instance
+     */
     public static User getInstance(int id, String name, String password, int billID) {
         if (instance == null)
             instance = new User(id, name, password, billID);
@@ -77,12 +125,12 @@ public class User {
         this.password = password;
     }
 
-    public int getBillID() {
-        return billID;
+    public int getBillId() {
+        return billId;
     }
 
-    public void setBillID(int billID) {
-        this.billID = billID;
+    public void setBillId(int billId) {
+        this.billId = billId;
     }
 
     public int getCurrentBillID() {

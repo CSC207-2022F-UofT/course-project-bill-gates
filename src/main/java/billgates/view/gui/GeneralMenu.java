@@ -1,9 +1,13 @@
 package billgates.view.gui;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte
+ */
 public class GeneralMenu extends JMenu {
 
     public static final int DEFAULT_FONT_SIZE = 12;

@@ -1,6 +1,10 @@
 package billgates.usecases.delete_entry;
 
-
+/**
+ * Clean Architecture Layer: Interface Adapters
+ *
+ * @author Ellen, Scott
+ */
 public class DeleteEntryController {
 
     private final DeleteEntryInputPort useCase;
@@ -9,7 +13,7 @@ public class DeleteEntryController {
         this.useCase = useCase;
     }
 
-    public void delete(int billId, int entryId) {
-        this.useCase.deleteEntry(billId, entryId);
+    public void delete(int entryId) {
+        this.useCase.deleteEntry(entryId);
     }
 }

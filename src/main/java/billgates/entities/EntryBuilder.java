@@ -2,6 +2,18 @@ package billgates.entities;
 
 import java.time.ZonedDateTime;
 
+/**
+ * Clean Architecture Layer: Enterprise Business Rules
+ * This is a builder class that help to build an Entry or Splitter Entry.
+ * This class implements a builder design pattern.
+ * <p>
+ * The instance variables define the default values for each attribute.
+ * Each setter method set an attribute of the entry and returns this EntryBuilder.
+ * In this way, you can chain setters and build an Entry in one line.
+ * After setting all required attributes, you should use build______ method to build an entry or a splitter entry.
+ *
+ * @author Scott
+ */
 public class EntryBuilder {
 
     private int id = -1;
@@ -12,15 +24,14 @@ public class EntryBuilder {
     private String from = "";
     private String to = "";
     private String location = "";
-
-    // TODO splitter
-
-    // TODO for splitter, payee
+    private int splitterBillId = -1;
+    private String payee = "";
+    private boolean isPaidBack = false;
 
     public EntryBuilder() {
     }
 
-    public Entry build() {
+    public Entry buildEntry() {
         if (this.id == -1) {
             throw new InvalidEntryException("Invalid entry ID!");
         }
@@ -32,7 +43,26 @@ public class EntryBuilder {
                 new Attribute<>(this.description, "description"),
                 new Attribute<>(this.from, "from"),
                 new Attribute<>(this.to, "to"),
-                new Attribute<>(this.location, "location")
+                new Attribute<>(this.location, "location"),
+                new Attribute<>(this.splitterBillId, "splitter_bill_id")
+        );
+    }
+
+    public SplitterEntry buildSplitterEntry() {
+        if (this.id == -1) {
+            throw new InvalidEntryException("Invalid entry ID!");
+        }
+        return new SplitterEntry(
+                new Attribute<>(this.id, "id"),
+                new Attribute<>(this.date, "date"),
+                new Attribute<>(this.value, "value"),
+                new Attribute<>(this.currency, "currency"),
+                new Attribute<>(this.description, "description"),
+                new Attribute<>(this.from, "from"),
+                new Attribute<>(this.to, "to"),
+                new Attribute<>(this.location, "location"),
+                new Attribute<>(this.payee, "payee"),
+                new Attribute<>(this.isPaidBack, "is_paid_back")
         );
     }
 
@@ -45,6 +75,9 @@ public class EntryBuilder {
         this.from = "";
         this.to = "";
         this.location = "";
+        this.splitterBillId = -1;
+        this.payee = "";
+        this.isPaidBack = false;
         return this;
     }
 
@@ -85,6 +118,21 @@ public class EntryBuilder {
 
     public EntryBuilder setLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    public EntryBuilder setSplitterBillId(int splitterBillId) {
+        this.splitterBillId = splitterBillId;
+        return this;
+    }
+
+    public EntryBuilder setPayee(String payee) {
+        this.payee = payee;
+        return this;
+    }
+
+    public EntryBuilder setIsPaidBack(boolean isPaidBack) {
+        this.isPaidBack = isPaidBack;
         return this;
     }
 }

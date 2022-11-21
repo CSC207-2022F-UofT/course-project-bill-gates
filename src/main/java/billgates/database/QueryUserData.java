@@ -2,6 +2,11 @@ package billgates.database;
 
 import java.util.List;
 
+/**
+ * Clean Architecture Layer: Application Business Rules
+ *
+ * @author Ray
+ */
 public class QueryUserData {
 
     private int userID = -1;

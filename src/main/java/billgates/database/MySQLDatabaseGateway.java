@@ -12,6 +12,11 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Ray, Scott
+ */
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private int userId = -1;
     private Connection connection = null;
