@@ -4,9 +4,20 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Entry represents an entry in the splitter bill of the current entry of the current user.
+ * An entry is defined in AbstractEntry.
+ */
 public class SplitterEntry extends AbstractEntry {
 
+    /**
+     * The name of the person that needs to pay the money back.
+     */
     private Attribute<String> payee;
+
+    /**
+     * Whether the person specified by payee paid the money back.
+     */
     private Attribute<Boolean> isPaidBack;
 
     protected SplitterEntry(Attribute<Integer> id, Attribute<ZonedDateTime> date, Attribute<Double> value,

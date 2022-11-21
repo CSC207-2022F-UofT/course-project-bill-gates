@@ -4,8 +4,16 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Entry represents an entry in the main bill of the current user.
+ * An entry is defined in AbstractEntry.
+ */
 public class Entry extends AbstractEntry {
 
+    /**
+     * The id of the splitter bill of this entry.
+     * We currently define it to be equal to the id of this entry.
+     */
     private Attribute<Integer> splitterBillId;
 
     protected Entry(Attribute<Integer> id, Attribute<ZonedDateTime> date, Attribute<Double> value,

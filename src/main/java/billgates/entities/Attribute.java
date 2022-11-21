@@ -2,9 +2,20 @@ package billgates.entities;
 
 import java.util.Objects;
 
+/**
+ * This is a class that represents an attribute of an entry in a bill.
+ * @param <T>: the actual type of this attribute.
+ */
 public class Attribute<T> {
 
+    /**
+     * The raw data of this attribute.
+     */
     private T attribute;
+
+    /**
+     * The name of this attribute.
+     */
     private String name;
 
     public Attribute(T attribute, String name) {
