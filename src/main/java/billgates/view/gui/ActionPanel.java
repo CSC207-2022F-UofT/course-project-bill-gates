@@ -1,6 +1,8 @@
 package billgates.view.gui;
 
+import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.usecases.delete_entry.DeleteEntryController;
+import billgates.usecases.user_join.UserJoinViewModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +14,7 @@ import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ActionPanel extends JPanel {
+public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     public static final int DEFAULT_WIDTH = (int) (MainFrame.DEFAULT_WIDTH / 3.5);
     public static final int DEFAULT_HEIGHT = MainFrame.DEFAULT_HEIGHT;
@@ -42,8 +44,10 @@ public class ActionPanel extends JPanel {
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
     private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
     private DeleteEntryController deleteEntryController;
+    private final MainFrame mainFrame;
 
-    public ActionPanel() {
+    public ActionPanel(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
         this.setLayout(this.layout);
         this.initSignInPanel();
         this.initButtonTextArea();
@@ -151,27 +155,8 @@ public class ActionPanel extends JPanel {
 
         // If the username and password are legal, we should then call the controller of UserJoinUseCase
         if (this.checkUsername() & this.checkPassword()) {
-            System.out.println("1");
-              // TODO: Call the controller of UserJoinUseCase
-              // Codes below should be put in the update method for user_join use case
-//            // disable the signInButton, and enable the signOutButton and addEntryButton
-//            this.signInButton.setEnabled(false);
-//            this.signOutButton.setEnabled(true);
-//            this.addEntryButton.setEnabled(true);
-//
-//            // the usernameField and passwordField shouldn't be editable
-//            this.usernameField.setEditable(false);
-//            this.passwordField.setEditable(false);
-//
-//            // enable importMenu
-//            TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-//            tmb.getImportMenu().setEnabled(true);
-//
-//            // enable billTable
-//            MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
-//            BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
-//            bt.setVisible(true);
-//            bt.setEnabled(true);
+            // Call the UserJoinController
+            SwingUtilities.invokeLater(() -> this.mainFrame.getUserJoinController().userJoin(userName, userPassword));
         }
     }
 
@@ -227,5 +212,33 @@ public class ActionPanel extends JPanel {
 
     public JButton getDeleteEntryButton() {
         return deleteEntryButton;
+    }
+
+    @Override
+    public void view(UserJoinViewModel viewModel) {
+        // If the user join successfully,
+        if (viewModel.isJoined()) {
+            // disable the signInButton, and enable the signOutButton and addEntryButton
+            this.signInButton.setEnabled(false);
+            this.signOutButton.setEnabled(true);
+            this.addEntryButton.setEnabled(true);
+
+            // the usernameField and passwordField shouldn't be editable
+            this.usernameField.setEditable(false);
+            this.passwordField.setEditable(false);
+
+            // enable importMenu
+            TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
+            tmb.getImportMenu().setEnabled(true);
+
+            // enable billTable
+            MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
+            BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
+            bt.setVisible(true);
+            bt.setEnabled(true);
+        }
+
+        // Show a message dialog with whatever the text from the viewModel
+        JOptionPane.showMessageDialog(this.getParent(), viewModel.getReasonRejected());
     }
 }

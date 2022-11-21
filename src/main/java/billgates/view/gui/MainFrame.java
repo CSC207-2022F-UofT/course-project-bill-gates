@@ -1,5 +1,9 @@
 package billgates.view.gui;
 
+import billgates.database.MySQLDatabaseGateway;
+import billgates.interface_adapters.DatabaseGateway;
+import billgates.usecases.user_join.*;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -14,13 +18,18 @@ public class MainFrame extends JFrame {
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);
 
     private final JPanel contentPane = new JPanel(new BorderLayout());
-    private final ActionPanel actionPanel = new ActionPanel();
+    private final ActionPanel actionPanel = new ActionPanel(this);
     private final BillPanel billPanel = new BillPanel();
     private final JMenuBar menu = new TopMenuBar();
+    private UserJoinController userJoinController;
 
     public static void main(String[] args) {
         MainFrame mainFrame = new MainFrame();
         mainFrame.setVisible(true);
+        UserJoinPresenter userJoinPresenter = new UserJoinPresenter(mainFrame.actionPanel);
+        DatabaseGateway gateway = new MySQLDatabaseGateway();
+        UserJoinInputPort userCase = new UserJoinUseCase(gateway, userJoinPresenter);
+        mainFrame.setUserJoinController(new UserJoinController(userCase));
     }
 
     public MainFrame() {
@@ -52,5 +61,13 @@ public class MainFrame extends JFrame {
 
     public ActionPanel getActionPanel() {
         return actionPanel;
+    }
+
+    public UserJoinController getUserJoinController() {
+        return userJoinController;
+    }
+
+    public void setUserJoinController(UserJoinController userJoinController) {
+        this.userJoinController = userJoinController;
     }
 }
