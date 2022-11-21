@@ -27,6 +27,8 @@ public class Main {
         // init database gateway
         DatabaseGateway databaseGateway = new MySQLDatabaseGateway();
 
+        databaseGateway.setUserId(User.getInstance().getBillId());
+
         // init the main frame
         MainFrame mainFrame = new MainFrame();
         mainFrame.setBillUpdateController(initBillUpdateUseCase(databaseGateway, mainFrame.getBillPanel()));
