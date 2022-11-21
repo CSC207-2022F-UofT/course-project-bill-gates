@@ -1,11 +1,7 @@
 package billgates.view.gui;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -54,5 +50,17 @@ public class BillPanel extends JPanel {
 
     public JTable getBillTable() {
         return this.billTable;
+    }
+
+    // Change color of table header and border in bill panel
+    public void changeColor(Color c){
+        billTable.getTableHeader().setBackground(c);
+        this.setBorder(new CustomTitleBorder("Bills",c));
+    }
+
+    // Change font of table header and border in bill panel
+    public void changeFont(String f){
+        Font newTableFont = new FontSettings(f, BillTable.DEFAULT_FONT_SIZE);
+        this.billTable.getTableHeader().setFont(newTableFont);
     }
 }

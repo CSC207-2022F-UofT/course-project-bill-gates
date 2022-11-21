@@ -6,8 +6,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class CustomTitleBorder extends TitledBorder {
-
+public class CustomTitleBorder extends TitledBorder{
     public static final int DEFAULT_BORDER_THICKNESS = 3;
     public static final int DEFAULT_EMPTY_BORDER_THICKNESS = 7;
     public static final Color DEFAULT_BORDER_TEXT_COLOR = new Color(220, 120, 150);
@@ -22,6 +21,13 @@ public class CustomTitleBorder extends TitledBorder {
         super(OUTSIDE_BORDER, text);
         this.setTitleColor(DEFAULT_BORDER_TEXT_COLOR);
         this.setBorder(BorderFactory.createCompoundBorder(OUTSIDE_BORDER, EMPTY_BORDER));
+    }
+
+    // Add a new constructor to change border color later
+    public CustomTitleBorder(String text, Color c){
+        super(OUTSIDE_BORDER, text);
+        this.setTitleColor(c);
+        this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createCompoundBorder(EMPTY_BORDER, new LineBorder(c, DEFAULT_BORDER_THICKNESS, true)),EMPTY_BORDER));
     }
 
 }
