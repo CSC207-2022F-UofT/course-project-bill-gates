@@ -1,6 +1,12 @@
 package billgates.usecases.bill_update;
 
-// Use Case Layer
+/**
+ * Clean Architecture Layer: Application Business Rules
+ * An input port for the Bill Update use case.
+ *
+ * @author Scott
+ * @see BillUpdateUseCase
+ */
 public interface BillUpdateInputPort {
 
     /**

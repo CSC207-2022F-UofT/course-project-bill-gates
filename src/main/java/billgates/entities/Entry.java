@@ -5,8 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Clean Architecture Layer: Enterprise Business Rules
  * Entry represents an entry in the main bill of the current user.
  * An entry is defined in AbstractEntry.
+ *
+ * @author Scott
  */
 public class Entry extends AbstractEntry {
 

@@ -6,6 +6,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte
+ */
 public class CustomTitleBorder extends TitledBorder {
 
     public static final int DEFAULT_BORDER_THICKNESS = 3;

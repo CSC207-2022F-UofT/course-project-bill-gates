@@ -6,10 +6,24 @@ import billgates.interface_adapters.DatabaseGateway;
 
 import java.util.List;
 
-// Use Case Layer
+/**
+ * Clean Architecture Layer: Application Business Rules
+ * A concrete implementation of the <code>BillUpdateInputPort</code>.
+ *
+ * @author Scott
+ * @see BillUpdateInputPort
+ * @see BillUpdatePresenter
+ */
 public class BillUpdateUseCase implements BillUpdateInputPort {
 
+    /**
+     * The presenter for converting the response model to a view model.
+     */
     private final BillUpdateOutputPort presenter;
+
+    /**
+     * The database gateway for input/output with the database.
+     */
     private final DatabaseGateway gateway;
 
     public BillUpdateUseCase(BillUpdateOutputPort presenter, DatabaseGateway gateway) {

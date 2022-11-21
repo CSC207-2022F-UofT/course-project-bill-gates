@@ -12,6 +12,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte, Scott
+ */
 public class BillPanel extends JPanel implements BillPanelUpdatable {
 
     public static final int DEFAULT_WIDTH = MainFrame.DEFAULT_WIDTH - ActionPanel.DEFAULT_WIDTH - 14;

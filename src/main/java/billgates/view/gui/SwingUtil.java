@@ -2,6 +2,11 @@ package billgates.view.gui;
 
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte
+ */
 public class SwingUtil {
     public static void centerInScreen(Window w) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

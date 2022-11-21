@@ -3,7 +3,11 @@ package billgates.usecases.delete_entry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
-
+/**
+ * Clean Architecture Layer: Application Business Rules
+ *
+ * @author Ellen, Scott
+ */
 public class DeleteEntryUseCase implements DeleteEntryInputPort {
 
     private final DatabaseGateway gateway;

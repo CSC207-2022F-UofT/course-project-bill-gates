@@ -13,6 +13,11 @@ import billgates.usecases.delete_entry.DeleteEntryInputPort;
 import billgates.usecases.delete_entry.DeleteEntryUseCase;
 import billgates.view.gui.MainFrame;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Scott
+ */
 public class Main {
 
     public static void main(String[] args) {

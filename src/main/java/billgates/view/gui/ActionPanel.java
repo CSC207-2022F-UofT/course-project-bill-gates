@@ -6,6 +6,11 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte, Scott
+ */
 public class ActionPanel extends JPanel {
 
     public static final int DEFAULT_WIDTH = (int) (MainFrame.DEFAULT_WIDTH / 3.5);

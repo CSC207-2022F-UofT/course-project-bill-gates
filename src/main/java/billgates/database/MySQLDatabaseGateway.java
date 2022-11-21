@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Ray, Scott
+ */
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection connection = null;
 

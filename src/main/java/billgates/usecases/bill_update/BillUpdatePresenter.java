@@ -6,15 +6,31 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-// An MVC implementation
-// Interface Adapter Layer
+/**
+ * Clean Architecture Layer: Interface Adapters
+ * A presenter in Clean Architecture for the Update Bill use case.
+ * This presenter is implemented based on the MVC architecture (specifically, MVC in Clean Architecture).
+ *
+ * @author Scott
+ * @see BillPanelUpdatable
+ */
 public class BillUpdatePresenter implements BillUpdateOutputPort {
 
+    /**
+     * The default column names of the main bill.
+     */
     public static final String[] MAIN_BILL_COLUMNS = new String[]
             {"ID", "Date", "Value", "Currency", "Description", "From", "To", "Location", "Splitter"};
+
+    /**
+     * The default column names of the splitter bill.
+     */
     public static final String[] SPLITTER_BILL_COLUMNS = new String[]
             {"ID", "Date", "Value", "Currency", "Payee", "Paid Back", "Description", "From", "To", "Location"};
 
+    /**
+     * An updatable view.
+     */
     private final BillPanelUpdatable view;
 
     public BillUpdatePresenter(BillPanelUpdatable view) {

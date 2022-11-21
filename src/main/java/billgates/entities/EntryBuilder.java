@@ -3,6 +3,7 @@ package billgates.entities;
 import java.time.ZonedDateTime;
 
 /**
+ * Clean Architecture Layer: Enterprise Business Rules
  * This is a builder class that help to build an Entry or Splitter Entry.
  * This class implements a builder design pattern.
  * <p>
@@ -10,6 +11,8 @@ import java.time.ZonedDateTime;
  * Each setter method set an attribute of the entry and returns this EntryBuilder.
  * In this way, you can chain setters and build an Entry in one line.
  * After setting all required attributes, you should use build______ method to build an entry or a splitter entry.
+ *
+ * @author Scott
  */
 public class EntryBuilder {
 

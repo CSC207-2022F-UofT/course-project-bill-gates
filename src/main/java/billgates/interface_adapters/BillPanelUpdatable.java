@@ -2,9 +2,21 @@ package billgates.interface_adapters;
 
 import billgates.usecases.bill_update.BillUpdateViewModel;
 
-// Interface Adapter Layer
+/**
+ * Clean Architecture Layer: Interface Adapters
+ * A interface represents that a view is updatable with respect to the <code>BillUpdateViewModel</code>.
+ * The purpose of this interface is dependency inversion.
+ *
+ * @author Scott
+ * @see BillUpdateViewModel
+ */
 public interface BillPanelUpdatable {
 
+    /**
+     * Updates the table according to the <code>viewModel</code>.
+     *
+     * @param viewModel a data structure specifying the data required for this update.
+     */
     void update(BillUpdateViewModel viewModel);
 
 }

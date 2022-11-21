@@ -5,6 +5,11 @@ import billgates.view.BillTableModel;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte, Scott
+ */
 public class BillTable extends JTable {
 
     public static final int DEFAULT_HEADER_HEIGHT = 50;

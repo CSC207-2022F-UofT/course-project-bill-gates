@@ -6,6 +6,11 @@ import billgates.usecases.delete_entry.DeleteEntryController;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte, Scott
+ */
 public class MainFrame extends JFrame {
 
     // window width

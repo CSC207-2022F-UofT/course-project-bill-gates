@@ -3,8 +3,11 @@ package billgates.entities;
 import java.util.Objects;
 
 /**
+ * Clean Architecture Layer: Enterprise Business Rules
  * This is a class that represents an attribute of an entry in a bill.
+ *
  * @param <T>: the actual type of this attribute.
+ * @author Scott
  */
 public class Attribute<T> {
 

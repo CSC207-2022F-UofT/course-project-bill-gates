@@ -4,7 +4,11 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-// Frameworks and Drivers Layer
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Scott
+ */
 public class BillTableModel extends AbstractTableModel {
 
     // columnNames has initial values as defined

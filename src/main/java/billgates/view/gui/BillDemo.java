@@ -14,7 +14,10 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 
 /**
- * This is a demo class for demonstrating the UpdateBillUseCase.
+ * Clean Architecture Layer: Frameworks & Drivers
+ * A demo class for demonstrating the UpdateBillUseCase.
+ *
+ * @author Scott
  */
 public class BillDemo extends JFrame implements BillPanelUpdatable {
 

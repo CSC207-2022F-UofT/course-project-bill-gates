@@ -2,9 +2,25 @@ package billgates.usecases.bill_update;
 
 import java.util.List;
 
+/**
+ * Clean Architecture Layer: Interface Adapters
+ * A view model holding information for the GUi to display.
+ *
+ * @author Scott
+ * @see billgates.interface_adapters.BillPanelUpdatable
+ * @see BillUpdatePresenter
+ */
 public class BillUpdateViewModel {
 
+    /**
+     * The column names of the bill table.
+     */
     private String[] columns;
+
+    /**
+     * The data (entries) of the bill table.
+     * Objects in this list of list have various types.
+     */
     private List<List<Object>> entries;
 
     public BillUpdateViewModel(String[] columns, List<List<Object>> entries) {

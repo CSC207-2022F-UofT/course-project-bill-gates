@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * Clean Architecture Layer: Enterprise Business Rules
  * This is an abstraction of the most fundamental aspect of our software: An entry.
  * An entry is a collection of attributes with various type.
  * An entry represents a record of an occurrence of expenditure or income.
+ *
+ * @author Scott
  */
 public abstract class AbstractEntry {
 
