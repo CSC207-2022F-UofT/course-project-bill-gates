@@ -33,5 +33,9 @@ public interface DatabaseGateway {
     // Creates a new bill with the pre-specified columns
     void createBillTable(int billId);
 
+    // Creates a new splitBill with the pre-specified columns
+    void createSplitBillTable(int billId);
+
+    // Creates the user table
     void createUsersTable();
 }

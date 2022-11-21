@@ -20,6 +20,8 @@ public class MySQLDatabaseGatewayTests {
     public MySQLDatabaseGateway testGateway;
     public int testBillID = 9999;
 
+    public int testSplitBillID = 1234;
+
     public int testUserID = 9999;
 
     public Connection testConnection;
@@ -29,6 +31,8 @@ public class MySQLDatabaseGatewayTests {
     @Before
     public void setUp() {
         this.testGateway = new MySQLDatabaseGateway();
+
+        this.testGateway.setUserId(testUserID);
 
         try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
 
@@ -206,6 +210,62 @@ public class MySQLDatabaseGatewayTests {
 
             // Tests if the obtained list of Bill column names
             assertEquals(obtainedColumnNames, trueColumnNames);
+
+        } catch (RuntimeException | SQLException e) {
+            // Fails the test whenever we encounter an Error
+            // When trying to run getBillData method on BillID testBillID
+            fail();
+        }
+    }
+
+    // Test for creating a splitBillTable
+    @Test(timeout = TEST_TIMEOUT)
+    public void testCreateSplitBillTable() {
+        try {
+            Statement testStatement = this.testConnection.createStatement();
+
+            // Checking if the test table already exists, if it does, then we want to remove it for our tests
+            String checkSplitBillQuery = String.format("SHOW TABLES LIKE 'bill_%d_%d'", this.testBillID, this.testSplitBillID);
+
+            ResultSet resultSet = testStatement.executeQuery(checkSplitBillQuery);
+
+            if (resultSet.next()) {
+                // If the table already exists there (Due to previous failed tests, we want to remove it and recreate)
+                String dropTableQuery = String.format("DROP TABLE bill_%d_%d", this.testBillID, this.testSplitBillID);
+
+                testStatement.execute(dropTableQuery);
+            }
+
+            // Test create the table
+            this.testGateway.createSplitBillTable(this.testSplitBillID);
+
+            String checkQuery = String.format("SHOW COLUMNS FROM bill_%d_%d", this.testBillID, this.testSplitBillID);
+
+            resultSet = testStatement.executeQuery(checkQuery);
+
+            ArrayList<String> obtainedColumnNames = new ArrayList<>();
+
+            ArrayList<String> trueColumnNames = new ArrayList<>(List.of("entry_id",
+                    "value",
+                    "date",
+                    "currency",
+                    "description",
+                    "from",
+                    "to",
+                    "location",
+                    "split_bill_id"));
+
+            while (resultSet.next()) {
+                obtainedColumnNames.add(resultSet.getString("Field"));
+            }
+
+            // Tests if the obtained list of Bill column names
+            assertEquals(obtainedColumnNames, trueColumnNames);
+
+            // Drop the split bill we just created
+            String dropTableQuery = String.format("DROP TABLE bill_%d_%d", this.testBillID, this.testSplitBillID);
+
+            testStatement.execute(dropTableQuery);
 
         } catch (RuntimeException | SQLException e) {
             // Fails the test whenever we encounter an Error
