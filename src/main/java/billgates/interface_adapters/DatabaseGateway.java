@@ -8,6 +8,9 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface DatabaseGateway {
+
+    int userId = -1;
+
     void initializeConnection();
 
     List<QueryUserData> getUserData();
@@ -33,5 +36,9 @@ public interface DatabaseGateway {
     // Creates a new bill with the pre-specified columns
     void createBillTable(int billId);
 
+    // Creates a new splitBill with the pre-specified columns
+    void createSplitBillTable(int billId);
+
+    // Creates the user table
     void createUsersTable();
 }
