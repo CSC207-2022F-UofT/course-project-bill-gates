@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
-    int userId = -1;
+    private int userId = -1;
     private Connection connection = null;
     public final Map<String, String> columnToDatabaseColumn = new HashMap<>();
 
