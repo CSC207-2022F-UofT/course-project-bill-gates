@@ -14,8 +14,6 @@ import java.util.*;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private Connection connection = null;
-
-    private int userId;
     public final Map<String, String> columnToDatabaseColumn = new HashMap<>();
 
     public MySQLDatabaseGateway() {
@@ -30,10 +28,6 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         this.columnToDatabaseColumn.put("To", "to");
         this.columnToDatabaseColumn.put("Location", "location");
         this.columnToDatabaseColumn.put("Splitter", "splitter");
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public void initializeConnection() {
@@ -504,7 +498,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         `from`           TEXT            NOT NULL,
                         `to`             TEXT            NOT NULL,
                         location         TEXT            NOT NULL,
-                        split_bill_id    INT             NOT NULL
+                        payee            TEXT            NOT NULL,
+                        paid_back        BOOLEAN         NOT NULL
                     )
                     """, this.userId, billId);
 

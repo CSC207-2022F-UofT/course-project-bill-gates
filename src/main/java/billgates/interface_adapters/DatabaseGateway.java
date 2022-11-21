@@ -8,6 +8,9 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface DatabaseGateway {
+
+    int userId = -1;
+
     void initializeConnection();
 
     List<QueryUserData> getUserData();
