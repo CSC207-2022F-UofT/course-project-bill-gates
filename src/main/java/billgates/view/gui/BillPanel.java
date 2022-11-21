@@ -15,7 +15,7 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
 
     public static final int DEFAULT_WIDTH = MainFrame.DEFAULT_WIDTH - ActionPanel.DEFAULT_WIDTH - 14;
     // public static final int DEFAULT_HEIGHT = MainFrame.DEFAULT_HEIGHT - 37;
-    private final JTable billTable = new BillTable();
+    private final BillTable billTable = new BillTable();
     private final JScrollPane scrollPane = new JScrollPane(this.billTable);
 
     public BillPanel() {
@@ -49,7 +49,7 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
         db.setEnabled(true);
     }
 
-    public JTable getBillTable() {
+    public BillTable getBillTable() {
         return this.billTable;
     }
 

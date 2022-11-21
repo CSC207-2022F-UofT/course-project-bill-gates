@@ -7,8 +7,6 @@ public class DeleteEntryUseCase implements DeleteEntryInputPort {
 
     private final DatabaseGateway gateway;
 
-
-
     public DeleteEntryUseCase(DatabaseGateway gateway) {
         this.gateway = gateway;
     }
@@ -16,7 +14,6 @@ public class DeleteEntryUseCase implements DeleteEntryInputPort {
 
     @Override
     public void deleteEntry(int billId, int entryId) {
-        gateway.deleteEntry(billId, entryId);
-
+        this.gateway.deleteEntry(billId, entryId);
     }
 }

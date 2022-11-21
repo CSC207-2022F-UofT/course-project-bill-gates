@@ -22,8 +22,6 @@ public class ActionPanel extends JPanel {
 //    public static final int EMPTY_BORDER_THICKNESS = 7;
 //    public static final Color DEFAULT_BORDER_TEXT_COLOR = new Color(220, 120, 150);
 
-    private final BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
-
     private final ImageIcon backIcon = new ImageIcon(Objects.requireNonNull
             (this.getClass().getResource("/back.png")));
     private final SpringLayout signInLayout = new SpringLayout();
@@ -41,7 +39,8 @@ public class ActionPanel extends JPanel {
     private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
 
     public ActionPanel() {
-        this.setLayout(this.layout);
+        BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+        this.setLayout(layout);
         this.initSignInPanel();
         this.initButtonTextArea();
         this.initBorder();

@@ -61,7 +61,7 @@ aid their bill management.
     | `entry_id`    | `INT`            |                                                              |
     | `date`        | 'TIMESTAMP'      | Inherited from the parent entry.                             |
     | `value`       | 'DECIMAL(16, 2)' | We expect `value` to have 16 integer places and 2 decimal places |
-    | `CURRENCY`    | `CHAR(3)`        | Inherited from the parent entry.                             |
+    | `currency`    | `CHAR(3)`        | Inherited from the parent entry.                             |
     | `description` | `TEXT`           |                                                              |
     | `from`        | `TEXT`           | Inherited from the parent entry.                             |
     | `to`          | `TEXT`           | Inherited from the parent entry.                             |

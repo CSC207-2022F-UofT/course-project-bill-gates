@@ -39,4 +39,18 @@ public class BillTable extends JTable {
     public BillTableModel getModel() {
         return this.model;
     }
+
+    /**
+     * Initialize the widths of columns of the bill table.
+     * This method should only be invoked after the component became visible.
+     */
+    public void initTableColumns() {
+        FontMetrics fontMetrics = this.getGraphics().getFontMetrics(new FontSettings(DEFAULT_FONT_SIZE));
+        // id column width
+        this.getColumnModel().getColumn(0).setMinWidth(fontMetrics.stringWidth("000"));
+        this.getColumnModel().getColumn(0).setPreferredWidth(fontMetrics.stringWidth("0000"));
+        // date column width
+        this.getColumnModel().getColumn(1).setMinWidth(fontMetrics.stringWidth("yyyy-MM-dd HH:mm:ss"));
+    }
+
 }

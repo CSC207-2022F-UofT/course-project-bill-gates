@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
 
         // Set the size of the window, and the user cannot resize the window
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        this.setResizable(false);
+        this.setResizable(true);
 
         // Display the window in the center of the screen
         SwingUtil.centerInScreen(this);
