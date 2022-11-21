@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface DatabaseGateway {
 
-    int userId = -1;
-
     void initializeConnection();
+
+    QueryUserData getUserData(String username);
 
     List<QueryUserData> getUserData();
 
@@ -41,4 +41,6 @@ public interface DatabaseGateway {
 
     // Creates the user table
     void createUsersTable();
+
+    void setUserId(int userId);
 }

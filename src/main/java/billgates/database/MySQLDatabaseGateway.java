@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MySQLDatabaseGateway implements DatabaseGateway {
+    int userId = -1;
     private Connection connection = null;
     public final Map<String, String> columnToDatabaseColumn = new HashMap<>();
 
@@ -53,6 +54,33 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public QueryUserData getUserData(String username) {
+        QueryUserData user;
+        try {
+            Statement statement = connection.createStatement();
+
+            String query = String.format("SELECT * FROM users where username = '%s'", username);
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                int userID = resultSet.getInt("user_id");
+                int billID = resultSet.getInt("bill_id");
+                String password = resultSet.getString("password");
+
+                user = new QueryUserData(userID, billID, username, password);
+            } else {
+                throw new RuntimeException(username + " does not exist in the database!");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return user;
     }
 
     @Override
@@ -293,11 +321,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try {
             Statement statement = connection.createStatement();
 
-            String query;
+            String insert;
 
-            // This is the case that we want to Auto-Increment User
+            // This is the case that we want to specify a userId
             if (!(user.getUserID() == -1)) {
-                query = String.format("""
+                insert = String.format("""
                             INSERT INTO users (user_id, username, password, bill_id) VALUE (
                             %d, "%s", "%s", %d
                             )
@@ -306,20 +334,23 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         user.getUsername(),
                         user.getPassword(),
                         user.getBillID());
+                statement.execute(insert);
             } else {
-                // This is the case that we want to specify a userId
-                query = String.format("""
+                // This is the case that we want to Auto-Increment User
+                insert = String.format("""
                             INSERT INTO users (username, password, bill_id) VALUE (
-                            "%s", "%s", %d
+                            "%s", "%s", -1
                             )
                             """,
                         user.getUsername(),
-                        user.getPassword(),
-                        user.getBillID());
+                        user.getPassword());
+                statement.execute(insert);
+                int userId = this.getUserData(user.getUsername()).getUserID();
+                String update = String.format("""
+                        UPDATE users SET bill_id = %d WHERE user_id = %d
+                        """, userId, userId);
+                statement.execute(update);
             }
-
-            statement.execute(query);
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -543,6 +574,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
 }

@@ -1,4 +1,4 @@
-package usecase.alter_entry;
+package billgates.usecases.alter_entry;
 
 import billgates.database.QueryEntryData;
 

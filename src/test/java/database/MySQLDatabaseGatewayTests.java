@@ -1,5 +1,6 @@
 package database;
 
+import billgates.interface_adapters.DatabaseGateway;
 import org.junit.*;
 import static org.junit.Assert.*;
 import billgates.database.*;
@@ -253,7 +254,9 @@ public class MySQLDatabaseGatewayTests {
                     "from",
                     "to",
                     "location",
-                    "split_bill_id"));
+                    "payee",
+                    "paid_back"
+            ));
 
             while (resultSet.next()) {
                 obtainedColumnNames.add(resultSet.getString("Field"));

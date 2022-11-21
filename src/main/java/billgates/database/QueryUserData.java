@@ -16,8 +16,8 @@ public class QueryUserData {
         this.password = password;
     }
 
-    public QueryUserData(int billID, String username, String password) {
-        this.billID = billID;
+    public QueryUserData(String username, String password) {
+        this.billID = this.userID;
         this.username = username;
         this.password = password;
     }

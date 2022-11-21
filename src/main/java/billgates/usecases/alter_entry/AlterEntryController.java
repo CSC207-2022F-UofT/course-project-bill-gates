@@ -1,4 +1,4 @@
-package usecase.alter_entry;
+package billgates.usecases.alter_entry;
 
 public class AlterEntryController {
     private final AlterEntryInputPort useCase;
