@@ -51,7 +51,6 @@ public class ActionButton extends JButton{
 
         // Set the maximum size of the button
         this.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-        allButton.add(this);
     }
 
 }

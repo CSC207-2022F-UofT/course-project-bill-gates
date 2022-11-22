@@ -5,7 +5,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame {
 
     // window width
     public static final int DEFAULT_WIDTH = 1000;
@@ -14,11 +14,12 @@ public class MainFrame extends JFrame{
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);
 
     private final JPanel contentPane = new JPanel(new BorderLayout());
-    private static final ActionPanel actionPanel = new ActionPanel();
-    private static final BillPanel billPanel = new BillPanel();
-    private final JMenuBar menu = new TopMenuBar();
+    private  final ActionPanel actionPanel = new ActionPanel();
+    private final BillPanel billPanel = new BillPanel();
+    private final JMenuBar menu = new TopMenuBar(this);
 
-    public static void main(String[] args) {
+    public static void main(
+            String[] args) {
         MainFrame mainFrame = new MainFrame();
         mainFrame.setVisible(true);
     }
@@ -46,11 +47,12 @@ public class MainFrame extends JFrame{
         this.add(this.billPanel, BorderLayout.CENTER);
     }
 
-    public static BillPanel getBillPanel() {
+    public  BillPanel getBillPanel() {
         return billPanel;
     }
 
-    public static ActionPanel getActionPanel() {
+    public ActionPanel getActionPanel() {
         return actionPanel;
     }
+
 }

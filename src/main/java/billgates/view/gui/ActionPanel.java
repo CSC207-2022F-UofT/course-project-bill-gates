@@ -18,9 +18,6 @@ public class ActionPanel extends JPanel {
     public static final int DEFAULT_SIGN_IN_PANEL_HEIGHT = DEFAULT_HEIGHT / 7;
     public static final int HORIZONTAL_GAP = 5;
     public static final int VERTICAL_GAP = 10;
-    public static final int BORDER_THICKNESS = 3;
-    public static final int EMPTY_BORDER_THICKNESS = 7;
-    public static final Color DEFAULT_BORDER_TEXT_COLOR = new Color(220, 120, 150);
 
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 

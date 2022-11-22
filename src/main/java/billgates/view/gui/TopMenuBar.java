@@ -5,6 +5,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 public class TopMenuBar extends JMenuBar{
@@ -18,11 +19,12 @@ public class TopMenuBar extends JMenuBar{
             Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK, Color.WHITE};
     private final String[] fonts = new String[]{"Modern No. 20", "Times New Roman", "Helvetica", "Arial", "Impact",
             "Verdana", "Century", "Tahoma", "Copperplate"};
+    private MainFrame mainFrame;
 
-    public TopMenuBar() {
+    public TopMenuBar(MainFrame owner) {
         // Set the layout of the top menubar
         this.setLayout(this.layout);
-
+        this.mainFrame = owner;
         this.initMenu();
         this.setBorderPainted(false);
         this.setBackground(ActionTextArea.DEFAULT_BACKGROUND_COLOR);
@@ -34,69 +36,47 @@ public class TopMenuBar extends JMenuBar{
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
         this.add(this.importMenu);
+        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
         this.add(this.settingsMenu);
-
-        // importMenu should be disabled  before signing in
-//        this.importMenu.setEnabled(false);
+        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
+        this.add(this.helpMenu);
 
         // Add function to import menu
-        importMenu.addMenuListener(new MenuListener() {
+        importMenu.addMenuListener(new MenuAdaptor(){
             @Override
             public void menuSelected(MenuEvent e) {
                 importBills();
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-
             }
         });
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
         // Add function to setting menu
-        settingsMenu.addMenuListener(new MenuListener() {
+        settingsMenu.addMenuListener(new MenuAdaptor() {
             @Override
             public void menuSelected(MenuEvent e) {
                 System.out.println("yes");
                 int[] setting = setting();
 
-                MainFrame.getBillPanel().changeColor(colors[setting[0]]);
-                MainFrame.getActionPanel().changeColor(colors[setting[0]]);
+                mainFrame.getBillPanel().changeColor(colors[setting[0]]);
+                mainFrame.getActionPanel().changeColor(colors[setting[0]]);
 
-                MainFrame.getActionPanel().changeFont(fonts[setting[1]]);
-                MainFrame.getBillPanel().changeFont(fonts[setting[1]]);
-
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
+                mainFrame.getActionPanel().changeFont(fonts[setting[1]]);
+                mainFrame.getBillPanel().changeFont(fonts[setting[1]]);
 
             }
         });
-
-
-        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
-
-        this.add(this.helpMenu);
     }
 
     // Function to set up the setting dialog
     private int[] setting() {
-        SettingDialog setdlg = new SettingDialog(this);
+//        SettingDialog setdlg = mainFrame.getSettingDialog();
+        SettingDialog setdlg = new SettingDialog(mainFrame);
         int[] setting = new int[2];
         if (setdlg.exec()) {
             int colorTargetIndex = setdlg.getMyColor();
             int fontTargetIndex = setdlg.getMyFont();
+            SettingDialog.setFontField(fontTargetIndex);
+            SettingDialog.setColorField(colorTargetIndex);
             setting[0] = colorTargetIndex;
             setting[1] = fontTargetIndex;
             return setting;
@@ -114,9 +94,10 @@ public class TopMenuBar extends JMenuBar{
     private void importBills() {
         System.out.println("imported");
         JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Your Bills", "csv", "xlsx");
+        //JDialog chooserDialog = chooser.createDialog(mainFrame);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Your Bills", "csv");
         chooser.setFileFilter(filter);
-        int ret = chooser.showOpenDialog(this);
+        int ret = chooser.showOpenDialog(mainFrame);
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             loadFile(file);
@@ -128,4 +109,17 @@ public class TopMenuBar extends JMenuBar{
         // CONTINUE!!!
         System.out.println("loaded");
     }
+
+    // Create a MenuAdapter to simplify our code
+    public abstract class MenuAdaptor implements MenuListener{
+        protected MenuAdaptor() {}
+
+        public void menuCanceled(MenuEvent e) {}
+
+        public void menuSelected(MenuEvent e) {}
+
+        public void menuDeselected(MenuEvent e) {}
+    }
+
+
 }
