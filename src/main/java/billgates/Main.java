@@ -13,6 +13,9 @@ import billgates.usecases.delete_entry.DeleteEntryInputPort;
 import billgates.usecases.delete_entry.DeleteEntryUseCase;
 import billgates.view.gui.MainFrame;
 
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
@@ -20,7 +23,9 @@ import billgates.view.gui.MainFrame;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(new MetalLookAndFeel());
+
         // TODO: remove this: this is for debugging purposes
         User.getInstance(0, "Scott", "12345678", 0);
 
