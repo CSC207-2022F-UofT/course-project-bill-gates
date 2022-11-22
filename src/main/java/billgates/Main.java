@@ -23,8 +23,11 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
  */
 public class Main {
 
-    public static void main(String[] args) throws UnsupportedLookAndFeelException {
-        UIManager.setLookAndFeel(new MetalLookAndFeel());
+    public static void main(String[] args){
+        try {
+            UIManager.setLookAndFeel(new MetalLookAndFeel());
+        } catch (UnsupportedLookAndFeelException ignored) {
+        }
 
         // TODO: remove this: this is for debugging purposes
         User.getInstance(0, "Scott", "12345678", 0);
