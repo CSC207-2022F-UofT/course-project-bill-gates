@@ -118,7 +118,7 @@ public interface DatabaseGateway {
     void modifyEntry(int billId, QueryEntryData entry);
 
     /**
-     * Creates a bill with the table name "bill_[billId]" in our database
+     * Creates a bill with the table name "bill_{billId}" in our database
      * contains columns with types as specified in README.md
      *
      * @param billId the id of the bill that we are trying create
@@ -126,7 +126,7 @@ public interface DatabaseGateway {
     void createBillTable(int billId);
 
     /**
-     * Creates a split bill with the table name "bill_[userId]_[billId]" in our database
+     * Creates a split bill with the table name "bill_{userId}_{billId}" in our database
      * the userId can be obtained as the User class is designed using a Singleton design pattern
      *
      * @param billId the id of the split bill that we are trying create
