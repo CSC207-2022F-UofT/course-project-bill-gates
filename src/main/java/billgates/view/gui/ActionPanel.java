@@ -59,9 +59,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         // Set the size of signInPanel
         this.signInPanel.setMaximumSize(new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_SIGN_IN_PANEL_HEIGHT));
 
-        // Restrict the input of usernameField and passwordField (user cannot input whitespace)
+        // Restrict the input of usernameField (user cannot input whitespace for their username)
         this.usernameField.setDocument(new RegexDocument("\\S*"));
-        this.passwordField.setDocument(new RegexDocument("\\S*"));
 
         // add and layout components
         // username label

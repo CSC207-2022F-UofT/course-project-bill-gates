@@ -19,7 +19,7 @@ public class RegexDocument extends PlainDocument {
         if (str == null) {
             return;
         }
-        String text = getText(0, offs).concat(str);
+        String text = this.getText(0, offs).concat(str);
         Matcher matcher = this.pattern.matcher(text);
 
         if (matcher.matches()) {
