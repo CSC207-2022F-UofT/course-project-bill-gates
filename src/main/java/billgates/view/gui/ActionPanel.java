@@ -59,6 +59,10 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         // Set the size of signInPanel
         this.signInPanel.setMaximumSize(new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_SIGN_IN_PANEL_HEIGHT));
 
+        // Restrict the input of usernameField and passwordField (user cannot input whitespace)
+        this.usernameField.setDocument(new RegexDocument("\\S*"));
+        this.passwordField.setDocument(new RegexDocument("\\S*"));
+
         // add and layout components
         // username label
         this.signInPanel.add(this.usernameLabel);
@@ -150,7 +154,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         String userPassword = String.valueOf(this.passwordField.getPassword());
 
         // If the username and password are legal, we should then call the controller of UserJoinUseCase
-        if (this.checkUsername() & this.checkPassword()) {
+        if (this.checkUsername() && this.checkPassword()) {
             // Call the UserJoinController
             SwingUtilities.invokeLater(() -> this.mainFrame.getUserJoinController().userJoin(userName, userPassword));
         }
@@ -158,12 +162,28 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     private boolean checkUsername() {
         int usernameLength = this.usernameField.getText().length();
-        return usernameLength <= 10;
+        if (usernameLength <= 0) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Username cannot be empty!");
+            return false;
+        }
+        else if (usernameLength > 10) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Username exceeds the maximum length!");
+            return false;
+        }
+        return true;
     }
 
     private boolean checkPassword() {
         int passwordLength = String.valueOf(this.passwordField.getPassword()).length();
-        return passwordLength <= 16;
+        if (passwordLength <= 0) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Password cannot be empty!");
+            return false;
+        }
+        else if (passwordLength > 16) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Password exceeds the maximum length!");
+            return false;
+        }
+        return true;
     }
 
     private void signOut() {
