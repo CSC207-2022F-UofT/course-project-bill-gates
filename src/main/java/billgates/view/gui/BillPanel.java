@@ -1,7 +1,7 @@
 package billgates.view.gui;
 
 import billgates.interface_adapters.BillPanelUpdatable;
-import billgates.usecases.bill_update.BillUpdateViewModel;
+import billgates.use_cases.bill_update.BillUpdateViewModel;
 import billgates.view.BillTableModel;
 
 import javax.swing.*;

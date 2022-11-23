@@ -1,6 +1,6 @@
 package billgates.interface_adapters;
 
-import billgates.usecases.user_join.UserJoinViewModel;
+import billgates.use_cases.user_join.UserJoinViewModel;
 
 public interface UserJoinUpdatable {
 

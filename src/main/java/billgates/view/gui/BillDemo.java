@@ -3,7 +3,7 @@ package billgates.view.gui;
 import billgates.database.MySQLDatabaseGateway;
 import billgates.entities.User;
 import billgates.interface_adapters.BillPanelUpdatable;
-import billgates.usecases.bill_update.*;
+import billgates.use_cases.bill_update.*;
 import billgates.view.BillTableModel;
 
 import javax.swing.*;

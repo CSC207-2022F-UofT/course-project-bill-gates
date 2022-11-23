@@ -1,6 +1,6 @@
 package billgates.interface_adapters;
 
-import billgates.usecases.bill_update.BillUpdateViewModel;
+import billgates.use_cases.bill_update.BillUpdateViewModel;
 
 /**
  * Clean Architecture Layer: Interface Adapters

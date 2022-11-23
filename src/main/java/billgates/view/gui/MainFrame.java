@@ -1,7 +1,7 @@
 package billgates.view.gui;
 
-import billgates.usecases.bill_update.BillUpdateController;
-import billgates.usecases.delete_entry.DeleteEntryController;
+import billgates.use_cases.bill_update.BillUpdateController;
+import billgates.use_cases.delete_entry.DeleteEntryController;
 
 import javax.swing.*;
 import java.awt.*;
