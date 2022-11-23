@@ -15,13 +15,23 @@ public class InsertEntryUseCase implements InsertEntryInputPort{
     @Override
     public void insertEntry(InsertEntryRequestModel model) {
 
-        //Construct a QueryEntryData for new entry, and the entry id of it is the size of all entries plus one.
         QueryEntryData entry = new QueryEntryData(
                 model.getDate(), model.getValue(),
                 model.getCurrency(), model.getDescription(),
-                model.getFrom(), model.getTo(), model.getLocation(), -1);
+                model.getFrom(), model.getTo(), model.getLocation(), model.getSplitBillId());
 
         //Pass the new QueryEntryData in the Gateway#insertEntry.
         gateway.insertEntry(User.getInstance().getCurrentBillID(), entry);
     }
+
+    public void insertEntry_Splitter(InsertEntryRequestModel model){
+        QueryEntryData entry = new QueryEntryData(
+                model.getDate(), model.getValue(),
+                model.getCurrency(), model.getDescription(),
+                model.getFrom(), model.getTo(), model.getLocation(), model.getSplitBillId());
+
+        gateway.insertEntry(entry.getSplitBillId(), entry);
+    }
+
+
 }

@@ -12,6 +12,8 @@ public class InsertEntryRequestModel {
     private String from = "";
     private String to = "";
     private String location = "";
+    private final int SplitBillId;
+
 
     public InsertEntryRequestModel(ZonedDateTime date,
                                    double value,
@@ -19,7 +21,7 @@ public class InsertEntryRequestModel {
                                    String description,
                                    String from,
                                    String to,
-                                   String location) {
+                                   String location, int SplitBillId) {
         this.date = date;
         this.value = value;
         this.currency = currency;
@@ -27,6 +29,7 @@ public class InsertEntryRequestModel {
         this.from = from;
         this.to = to;
         this.location = location;
+        this.SplitBillId = SplitBillId;;
     }
 
     //Get the "date" information of the new entry.
@@ -63,4 +66,6 @@ public class InsertEntryRequestModel {
     public String getLocation() {
         return location;
     }
+
+    public int getSplitBillId() { return SplitBillId;}
 }
