@@ -148,7 +148,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void signIn() {
-        // Get the username and password from user
+        // Get the username and password from the user
         String userName = this.usernameField.getText();
         String userPassword = String.valueOf(this.passwordField.getPassword());
 
@@ -161,7 +161,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     private boolean checkUsername() {
         int usernameLength = this.usernameField.getText().length();
-        if (usernameLength <= 0) {
+        if (usernameLength == 0) {
             JOptionPane.showMessageDialog(this.mainFrame, "Username cannot be empty!");
             return false;
         }
@@ -174,7 +174,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     private boolean checkPassword() {
         int passwordLength = String.valueOf(this.passwordField.getPassword()).length();
-        if (passwordLength <= 0) {
+        if (passwordLength == 0) {
             JOptionPane.showMessageDialog(this.mainFrame, "Password cannot be empty!");
             return false;
         }
@@ -201,14 +201,13 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         this.passwordField.setText("");
 
         // Disable the importMenu
-        TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-        tmb.getImportMenu().setEnabled(false);
+        TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
+        topMenuBar.getImportMenu().setEnabled(false);
 
         // Disable the billTable
-        MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
-        BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
-        bt.setEnabled(false);
-        bt.setVisible(false);
+        BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
+        billTable.setEnabled(false);
+        billTable.setVisible(false);
 
         // TODO: Call the controller of BillUpdateUseCase
     }
@@ -245,6 +244,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             // enable importMenu
             TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
             topMenuBar.getImportMenu().setEnabled(true);
+
+            // TODO: Call the controller of BillUpdateUseCase
 
             // enable billTable
             BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
