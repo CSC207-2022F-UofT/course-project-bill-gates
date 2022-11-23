@@ -28,7 +28,7 @@ public class UserJoinUseCase implements UserJoinInputPort {
             User.getInstance(queryUserData.getUserID(), queryUserData.getUsername(),
                     queryUserData.getPassword(), queryUserData.getBillID());
             // Notify the user that they have successfully registered
-            outputPort.display(new UserJoinResponseModel(true, "Registered successfully"));
+            this.outputPort.display(new UserJoinResponseModel(true, "Registered successfully"));
         }
         else {
             QueryUserData queryUserData = this.gateway.getUserData(model.getUsername());
@@ -37,11 +37,11 @@ public class UserJoinUseCase implements UserJoinInputPort {
                 User.getInstance(queryUserData.getUserID(), queryUserData.getUsername(),
                         queryUserData.getPassword(), queryUserData.getBillID());
                 // Notify the user that they have successfully login
-                outputPort.display(new UserJoinResponseModel(true, "Logged in successfully"));
+                this.outputPort.display(new UserJoinResponseModel(true, "Logged in successfully"));
             }
             else {
                 // Notify the user that they couldn't log in
-                outputPort.display(new UserJoinResponseModel(false, "Incorrect password " +
+                this.outputPort.display(new UserJoinResponseModel(false, "Incorrect password " +
                         "or the username already exists."));
             }
         }

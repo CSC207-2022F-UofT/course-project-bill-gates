@@ -43,7 +43,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     private final JButton addEntryButton = new ActionButton("Add Entry");
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
     private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
-    private DeleteEntryController deleteEntryController;
     private final MainFrame mainFrame;
 
     public ActionPanel(MainFrame mainFrame) {
@@ -149,9 +148,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         // Get the username and password from user
         String userName = this.usernameField.getText();
         String userPassword = String.valueOf(this.passwordField.getPassword());
-        // These print statements are just for testing (Will be removed later!)
-        System.out.println("Name: " + userName.length());
-        System.out.println("Password: " + userPassword.length());
 
         // If the username and password are legal, we should then call the controller of UserJoinUseCase
         if (this.checkUsername() & this.checkPassword()) {
@@ -228,17 +224,16 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             this.passwordField.setEditable(false);
 
             // enable importMenu
-            TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-            tmb.getImportMenu().setEnabled(true);
+            TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
+            topMenuBar.getImportMenu().setEnabled(true);
 
             // enable billTable
-            MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
-            BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
-            bt.setVisible(true);
-            bt.setEnabled(true);
+            BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
+            billTable.setVisible(true);
+            billTable.setEnabled(true);
         }
 
         // Show a message dialog with whatever the text from the viewModel
-        JOptionPane.showMessageDialog(this.getParent(), viewModel.getReasonRejected());
+        JOptionPane.showMessageDialog(this.mainFrame, viewModel.getReasonRejected());
     }
 }
