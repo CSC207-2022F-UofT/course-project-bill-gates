@@ -26,6 +26,7 @@ public interface DatabaseGateway {
      *
      * @param username the username of the user that we wish to obtain the information from
      * @return a class that contains the user information queried
+     * returns null if the username being queried doesn't exist in users
      * @see QueryUserData
      */
     QueryUserData getUserData(String username);
@@ -68,6 +69,7 @@ public interface DatabaseGateway {
      * @param billId the bill ID that we are trying to obtain the entry from
      * @param entryId the entry ID that we are trying to obtain information from
      * @return a QueryEntryData that contains the information of the entry queried
+     * returns null if the entry_id being queried doesn't exist in the bill
      * @see QueryEntryData
      */
     QueryEntryData getEntryData(int billId, int entryId);

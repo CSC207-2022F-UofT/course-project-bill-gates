@@ -78,7 +78,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
                 user = new QueryUserData(userID, billID, username, password);
             } else {
-                throw new RuntimeException(username + " does not exist in the database!");
+                // Returns null back to the caller to denote that the user wasn't found
+                return null;
             }
 
         } catch (SQLException e) {
@@ -173,14 +174,14 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public QueryEntryData getEntryData(int billId, int entryId) {
-        int splitBillId = -1;
-        double value = 0.0;
-        String currency = "";
-        String description = "";
-        String from = "";
-        String to = "";
-        String location = "";
-        ZonedDateTime zDate = ZonedDateTime.now();
+        int splitBillId;
+        double value;
+        String currency;
+        String description;
+        String from;
+        String to;
+        String location;
+        ZonedDateTime zDate;
         try {
             Statement statement = connection.createStatement();
 
@@ -200,7 +201,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             ResultSet resultSet = statement.executeQuery(query);
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 // Note that, aside from the general types that we have here
                 // All the rest objects will be parsed in a string format
                 value = resultSet.getDouble("value");
@@ -216,6 +217,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
                 // We can pass in the different zones we want to convert in, and we can obtain the value we want
                 zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
+            } else {
+                // Return null to denote that we didn't find any entry with this ID in the bill
+                return null;
             }
 
         } catch (SQLException e) {
@@ -510,7 +514,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         `from`           TEXT            NOT NULL,
                         `to`             TEXT            NOT NULL,
                         location         TEXT            NOT NULL,
-                        split_bill_id    INT             NOT NULL
+                        split_bill_id    INT DEFAULT -1  NOT NULL
                     )
                     """, billId);
 
