@@ -61,7 +61,7 @@ public class User {
     }
 
     /**
-     * Get or create an instance of a user.
+     * Create the instance of User.
      *
      * @param id the id of this user
      * @param name the name of this user
@@ -69,9 +69,8 @@ public class User {
      * @param billID the main bill id of this user
      * @return a new user instance
      */
-    public static User getInstance(int id, String name, String password, int billID) {
-        if (instance == null)
-            instance = new User(id, name, password, billID);
+    public static User createInstance(int id, String name, String password, int billID) {
+        instance = new User(id, name, password, billID);
         return instance;
     }
 

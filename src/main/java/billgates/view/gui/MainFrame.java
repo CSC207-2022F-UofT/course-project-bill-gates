@@ -2,6 +2,7 @@ package billgates.view.gui;
 
 import billgates.use_cases.bill_update.BillUpdateController;
 import billgates.use_cases.delete_entry.DeleteEntryController;
+import billgates.use_cases.user_join.UserJoinController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class MainFrame extends JFrame {
     private final ActionPanel actionPanel = new ActionPanel(this);
     private final BillPanel billPanel = new BillPanel(this);
     private final JMenuBar menu = new TopMenuBar();
+    private UserJoinController userJoinController;
 
     // controllers will be set after constructing the view objects
     private BillUpdateController billUpdateController;
@@ -73,5 +75,13 @@ public class MainFrame extends JFrame {
 
     public void setDeleteEntryController(DeleteEntryController deleteEntryController) {
         this.deleteEntryController = deleteEntryController;
+    }
+
+    public UserJoinController getUserJoinController() {
+        return userJoinController;
+    }
+
+    public void setUserJoinController(UserJoinController userJoinController) {
+        this.userJoinController = userJoinController;
     }
 }

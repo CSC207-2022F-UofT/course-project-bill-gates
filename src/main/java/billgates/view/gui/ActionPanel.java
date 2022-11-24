@@ -1,9 +1,11 @@
 package billgates.view.gui;
 
+import billgates.interface_adapters.UserJoinUpdatable;
+import billgates.use_cases.user_join.UserJoinViewModel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Objects;
  *
  * @author Charlotte, Scott
  */
-public class ActionPanel extends JPanel {
+public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     public static final int DEFAULT_WIDTH = (int) (MainFrame.DEFAULT_WIDTH / 3.5);
     public static final int DEFAULT_HEIGHT = MainFrame.DEFAULT_HEIGHT;
@@ -55,6 +57,9 @@ public class ActionPanel extends JPanel {
         this.add(this.signInPanel);
         // Set the size of signInPanel
         this.signInPanel.setMaximumSize(new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_SIGN_IN_PANEL_HEIGHT));
+
+        // Restrict the input of usernameField (user cannot input whitespace for their username)
+        this.usernameField.setDocument(new RegexDocument("\\S*"));
 
         // add and layout components
         // username label
@@ -142,46 +147,40 @@ public class ActionPanel extends JPanel {
     }
 
     private void signIn() {
-        // Get the username and password from user
+        // Get the username and password from the user
         String userName = this.usernameField.getText();
-        String userPassword = Arrays.toString(this.passwordField.getPassword());
-        System.out.println("Name: " + userName);
-        System.out.println("Password: " + userPassword);
+        String userPassword = String.valueOf(this.passwordField.getPassword());
 
-        // TODO: Call the controller of UserJoinUseCase
-
-        // If the user has successfully signed in,
-        if (this.checkUsername() & this.checkPassword()) {
-            // disable the signInButton, and enable the signOutButton and addEntryButton
-            this.signInButton.setEnabled(false);
-            this.signOutButton.setEnabled(true);
-            this.addEntryButton.setEnabled(true);
-
-            // the usernameField and passwordField shouldn't be editable
-            this.usernameField.setEditable(false);
-            this.passwordField.setEditable(false);
-
-            // enable importMenu
-            TopMenuBar menuBar = (TopMenuBar) this.getRootPane().getJMenuBar();
-            menuBar.getImportMenu().setEnabled(true);
-
-            // enable billTable
-            BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
-            billTable.setVisible(true);
-            billTable.setEnabled(true);
-
-            // if the user had successfully signed in, then we update the bill
-            SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
+        // If the username and password are legal, we should then call the controller of UserJoinUseCase
+        if (this.checkUsername() && this.checkPassword()) {
+            // Call the UserJoinController
+            SwingUtilities.invokeLater(() -> this.mainFrame.getUserJoinController().userJoin(userName, userPassword));
         }
     }
 
     private boolean checkUsername() {
-        // Will be implemented further
+        int usernameLength = this.usernameField.getText().length();
+        if (usernameLength == 0) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Username cannot be empty!");
+            return false;
+        }
+        else if (usernameLength > 10) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Username exceeds the maximum length!");
+            return false;
+        }
         return true;
     }
 
     private boolean checkPassword() {
-        // Will be implemented further
+        int passwordLength = String.valueOf(this.passwordField.getPassword()).length();
+        if (passwordLength == 0) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Password cannot be empty!");
+            return false;
+        }
+        else if (passwordLength > 16) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Password exceeds the maximum length!");
+            return false;
+        }
         return true;
     }
 
@@ -201,11 +200,11 @@ public class ActionPanel extends JPanel {
         this.passwordField.setText("");
 
         // Disable the importMenu
-        TopMenuBar menuBar = (TopMenuBar) this.getRootPane().getJMenuBar();
-        menuBar.getImportMenu().setEnabled(false);
+        TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
+        topMenuBar.getImportMenu().setEnabled(false);
 
         // Disable the billTable
-        BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
+        BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
         billTable.setEnabled(false);
         billTable.setVisible(false);
     }
@@ -235,5 +234,34 @@ public class ActionPanel extends JPanel {
 
     public JButton getDeleteEntryButton() {
         return this.deleteEntryButton;
+    }
+
+    @Override
+    public void view(UserJoinViewModel viewModel) {
+        // If the user join successfully,
+        if (viewModel.isJoined()) {
+            // disable the signInButton, and enable the signOutButton and addEntryButton
+            this.signInButton.setEnabled(false);
+            this.signOutButton.setEnabled(true);
+            this.addEntryButton.setEnabled(true);
+
+            // the usernameField and passwordField shouldn't be editable
+            this.usernameField.setEditable(false);
+            this.passwordField.setEditable(false);
+
+            // enable importMenu
+            TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
+            topMenuBar.getImportMenu().setEnabled(true);
+
+            SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-2));
+
+            // enable billTable
+            BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
+            billTable.setVisible(true);
+            billTable.setEnabled(true);
+        }
+
+        // Show a message dialog with whatever the text from the viewModel
+        JOptionPane.showMessageDialog(this.mainFrame, viewModel.getReasonRejected());
     }
 }
