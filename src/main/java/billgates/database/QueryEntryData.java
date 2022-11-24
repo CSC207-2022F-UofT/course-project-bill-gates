@@ -5,6 +5,11 @@ import billgates.entities.EntryBuilder;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Clean Architecture Layer: Application Business Rules
+ *
+ * @author Ray
+ */
 public class QueryEntryData {
     private int id = -1;
     private final ZonedDateTime date;

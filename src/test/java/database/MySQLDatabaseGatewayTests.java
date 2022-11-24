@@ -1,6 +1,5 @@
 package database;
 
-import billgates.interface_adapters.DatabaseGateway;
 import org.junit.*;
 import static org.junit.Assert.*;
 import billgates.database.*;
@@ -53,27 +52,20 @@ public class MySQLDatabaseGatewayTests {
                 Statement testStatement = this.testConnection.createStatement();
 
                 // Checking if the test table already exists, if it does, then we want to remove it for our tests
-                String checkBillQuery = String.format("SHOW TABLES LIKE 'bill_%d'", this.testBillID);
+                String dropBillQuery = String.format("DROP TABLE IF EXISTS bill_%d", this.testBillID);
 
-                ResultSet resultSet = testStatement.executeQuery(checkBillQuery);
-
-                if (resultSet.next()) {
-                    // If the table already exists there (Due to previous failed tests, we want to remove it and recreate)
-                    String dropTableQuery = String.format("DROP TABLE bill_%d", this.testBillID);
-
-                    testStatement.execute(dropTableQuery);
-                }
+                testStatement.execute(dropBillQuery);
 
                 // Checking if the test user already exists, if it does, then we want to remove it for our tests
                 String checkUserQuery = String.format("SELECT * FROM users WHERE user_id=%d", this.testUserID);
 
-                resultSet = testStatement.executeQuery(checkUserQuery);
+                ResultSet resultSet = testStatement.executeQuery(checkUserQuery);
 
                 if (resultSet.next()) {
                     // If the user already exists there (Due to previous failed tests, we want to remove it and recreate)
-                    String dropTableQuery = String.format("DELETE FROM users WHERE user_id=%d", this.testUserID);
+                    String deleteUserQuery = String.format("DELETE FROM users WHERE user_id=%d", this.testUserID);
 
-                    testStatement.execute(dropTableQuery);
+                    testStatement.execute(deleteUserQuery);
                 }
 
                 // For each test, I want a table called bill9999
@@ -122,7 +114,7 @@ public class MySQLDatabaseGatewayTests {
     public void tearDown() {
         try {
             Statement statement = this.testConnection.createStatement();
-            String dropTableQuery = String.format("DROP TABLE bill_%d", this.testBillID);
+            String dropTableQuery = String.format("DROP TABLE IF EXISTS bill_%d", this.testBillID);
 
             // Dropping the table that we created for testing
             statement.execute(dropTableQuery);
@@ -182,7 +174,7 @@ public class MySQLDatabaseGatewayTests {
         try {
             Statement testStatement = this.testConnection.createStatement();
 
-            String dropTableQuery = String.format("DROP TABLE bill_%d", this.testBillID);
+            String dropTableQuery = String.format("DROP TABLE IF EXISTS bill_%d", this.testBillID);
             // Remove the table created by @before first
             testStatement.execute(dropTableQuery);
 
@@ -225,24 +217,19 @@ public class MySQLDatabaseGatewayTests {
         try {
             Statement testStatement = this.testConnection.createStatement();
 
-            // Checking if the test table already exists, if it does, then we want to remove it for our tests
-            String checkSplitBillQuery = String.format("SHOW TABLES LIKE 'bill_%d_%d'", this.testBillID, this.testSplitBillID);
 
-            ResultSet resultSet = testStatement.executeQuery(checkSplitBillQuery);
+            // Dropping the table if it already exists (due to previous failed tests)
+            String dropTableQuery = String.format("DROP TABLE IF EXISTS bill_%d_%d", this.testBillID, this.testSplitBillID);
 
-            if (resultSet.next()) {
-                // If the table already exists there (Due to previous failed tests, we want to remove it and recreate)
-                String dropTableQuery = String.format("DROP TABLE bill_%d_%d", this.testBillID, this.testSplitBillID);
+            testStatement.execute(dropTableQuery);
 
-                testStatement.execute(dropTableQuery);
-            }
 
             // Test create the table
             this.testGateway.createSplitBillTable(this.testSplitBillID);
 
             String checkQuery = String.format("SHOW COLUMNS FROM bill_%d_%d", this.testBillID, this.testSplitBillID);
 
-            resultSet = testStatement.executeQuery(checkQuery);
+            ResultSet resultSet = testStatement.executeQuery(checkQuery);
 
             ArrayList<String> obtainedColumnNames = new ArrayList<>();
 
@@ -266,7 +253,7 @@ public class MySQLDatabaseGatewayTests {
             assertEquals(obtainedColumnNames, trueColumnNames);
 
             // Drop the split bill we just created
-            String dropTableQuery = String.format("DROP TABLE bill_%d_%d", this.testBillID, this.testSplitBillID);
+            dropTableQuery = String.format("DROP TABLE bill_%d_%d", this.testBillID, this.testSplitBillID);
 
             testStatement.execute(dropTableQuery);
 

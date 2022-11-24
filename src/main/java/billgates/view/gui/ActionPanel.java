@@ -6,14 +6,16 @@ import billgates.usecases.user_join.UserJoinViewModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte, Scott
+ */
 public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     public static final int DEFAULT_WIDTH = (int) (MainFrame.DEFAULT_WIDTH / 3.5);
@@ -25,8 +27,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 //    public static final int BORDER_THICKNESS = 3;
 //    public static final int EMPTY_BORDER_THICKNESS = 7;
 //    public static final Color DEFAULT_BORDER_TEXT_COLOR = new Color(220, 120, 150);
-
-    private final BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 
     private final ImageIcon backIcon = new ImageIcon(Objects.requireNonNull
             (this.getClass().getResource("/back.png")));
@@ -43,11 +43,13 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     private final JButton addEntryButton = new ActionButton("Add Entry");
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
     private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
+
     private final MainFrame mainFrame;
 
     public ActionPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
-        this.setLayout(this.layout);
+        BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+        this.setLayout(layout);
         this.initSignInPanel();
         this.initButtonTextArea();
         this.initBorder();
@@ -133,7 +135,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         this.deleteEntryButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Delete entry event
-        this.addEntryButton.addActionListener((e -> this.deleteEntry()));
+        this.deleteEntryButton.addActionListener((e -> this.deleteEntry()));
         // deleteEntryButton should be disabled at the beginning
         this.deleteEntryButton.setEnabled(false);
 
@@ -208,24 +210,33 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
         billTable.setEnabled(false);
         billTable.setVisible(false);
-
-        // TODO: Call the controller of BillUpdateUseCase
     }
 
     private void backFromSplit() {
-        // TODO: Call the controller of BillUpdateUseCase
+        // set the current bill to the main bill of the user
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-2));
     }
 
     private void addEntry() {
         // TODO: Call the controller of InsertEntryUseCase
+
+        // after adding the entry, update the current bill
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
     }
 
     private void deleteEntry() {
-        // TODO: Call the controller of DeleteEntryUseCase
+        BillTable table = this.mainFrame.getBillPanel().getBillTable();
+        int[] selectedRows = table.getSelectedRows();
+        for (int i : selectedRows) {
+            int entryId = (int) table.getModel().getValueAt(i, 0);
+            System.out.println(entryId);
+            this.mainFrame.getDeleteEntryController().delete(entryId);
+        }
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
     }
 
     public JButton getDeleteEntryButton() {
-        return deleteEntryButton;
+        return this.deleteEntryButton;
     }
 
     @Override

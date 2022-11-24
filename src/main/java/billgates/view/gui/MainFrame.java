@@ -1,14 +1,16 @@
 package billgates.view.gui;
 
-import billgates.database.MySQLDatabaseGateway;
-import billgates.interface_adapters.DatabaseGateway;
-import billgates.usecases.user_join.*;
+import billgates.use_cases.bill_update.BillUpdateController;
+import billgates.use_cases.delete_entry.DeleteEntryController;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte, Scott
+ */
 public class MainFrame extends JFrame {
 
     // window width
@@ -19,18 +21,13 @@ public class MainFrame extends JFrame {
 
     private final JPanel contentPane = new JPanel(new BorderLayout());
     private final ActionPanel actionPanel = new ActionPanel(this);
-    private final BillPanel billPanel = new BillPanel();
+    private final BillPanel billPanel = new BillPanel(this);
     private final JMenuBar menu = new TopMenuBar();
     private UserJoinController userJoinController;
 
-    public static void main(String[] args) {
-        MainFrame mainFrame = new MainFrame();
-        mainFrame.setVisible(true);
-        UserJoinPresenter userJoinPresenter = new UserJoinPresenter(mainFrame.actionPanel);
-        DatabaseGateway gateway = new MySQLDatabaseGateway();
-        UserJoinInputPort userCase = new UserJoinUseCase(gateway, userJoinPresenter);
-        mainFrame.setUserJoinController(new UserJoinController(userCase));
-    }
+    // controllers will be set after constructing the view objects
+    private BillUpdateController billUpdateController;
+    private DeleteEntryController deleteEntryController;
 
     public MainFrame() {
         // Set the title
@@ -40,7 +37,7 @@ public class MainFrame extends JFrame {
 
         // Set the size of the window, and the user cannot resize the window
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        this.setResizable(false);
+        this.setResizable(true);
 
         // Display the window in the center of the screen
         SwingUtil.centerInScreen(this);
@@ -61,6 +58,22 @@ public class MainFrame extends JFrame {
 
     public ActionPanel getActionPanel() {
         return actionPanel;
+    }
+
+    public BillUpdateController getBillUpdateController() {
+        return billUpdateController;
+    }
+
+    public void setBillUpdateController(BillUpdateController billUpdateController) {
+        this.billUpdateController = billUpdateController;
+    }
+
+    public DeleteEntryController getDeleteEntryController() {
+        return deleteEntryController;
+    }
+
+    public void setDeleteEntryController(DeleteEntryController deleteEntryController) {
+        this.deleteEntryController = deleteEntryController;
     }
 
     public UserJoinController getUserJoinController() {

@@ -12,6 +12,11 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Ray, Scott
+ */
 public class MySQLDatabaseGateway implements DatabaseGateway {
     private int userId = -1;
     private Connection connection = null;
@@ -140,12 +145,16 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                 query = String.format("""
                     SELECT * FROM bill_%d
                     WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
+                    ORDER BY date DESC,
+                    entry_id ASC
                     """, billId, startDate.format(formatter), endDate.format(formatter));
             } else {
                 // If not equal, we must have that we are getting a splitterBill
                 query = String.format("""
                     SELECT * FROM bill_%d_%d
                     WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
+                    ORDER BY date DESC,
+                    entry_id ASC
                     """, this.userId, billId, startDate.format(formatter), endDate.format(formatter));
             }
 

@@ -3,6 +3,11 @@ package billgates.view.gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte
+ */
 public class ActionLabel extends JLabel {
 
     public static final int DEFAULT_FONT_SIZE = 13;
