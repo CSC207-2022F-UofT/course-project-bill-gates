@@ -1,9 +1,9 @@
 package billgates;
 
 import billgates.database.MySQLDatabaseGateway;
-import billgates.entities.User;
 import billgates.interface_adapters.BillPanelUpdatable;
 import billgates.interface_adapters.DatabaseGateway;
+import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.bill_update.BillUpdateController;
 import billgates.use_cases.bill_update.BillUpdateOutputPort;
 import billgates.use_cases.bill_update.BillUpdatePresenter;
@@ -11,6 +11,7 @@ import billgates.use_cases.bill_update.BillUpdateUseCase;
 import billgates.use_cases.delete_entry.DeleteEntryController;
 import billgates.use_cases.delete_entry.DeleteEntryInputPort;
 import billgates.use_cases.delete_entry.DeleteEntryUseCase;
+import billgates.use_cases.user_join.*;
 import billgates.view.gui.MainFrame;
 
 import javax.swing.*;
@@ -29,18 +30,14 @@ public class Main {
         } catch (UnsupportedLookAndFeelException ignored) {
         }
 
-        // TODO: remove this: this is for debugging purposes
-        User.getInstance(0, "Scott", "12345678", 0);
-
         // init database gateway
         DatabaseGateway databaseGateway = new MySQLDatabaseGateway();
-
-        databaseGateway.setUserId(User.getInstance().getBillId());
 
         // init the main frame
         MainFrame mainFrame = new MainFrame();
         mainFrame.setBillUpdateController(initBillUpdateUseCase(databaseGateway, mainFrame.getBillPanel()));
         mainFrame.setDeleteEntryController(initDeleteEntryUseCase(databaseGateway));
+        mainFrame.setUserJoinController(initUserJoinUseCase(databaseGateway, mainFrame.getActionPanel()));
 
         mainFrame.setVisible(true);
         // init column widths
@@ -58,6 +55,13 @@ public class Main {
     private static DeleteEntryController initDeleteEntryUseCase(DatabaseGateway databaseGateway) {
         DeleteEntryInputPort useCase = new DeleteEntryUseCase(databaseGateway);
         return new DeleteEntryController(useCase);
+    }
+
+    private static UserJoinController initUserJoinUseCase(DatabaseGateway databaseGateway,
+                                                          UserJoinUpdatable updatable) {
+        UserJoinOutputPort userJoinPresenter = new UserJoinPresenter(updatable);
+        UserJoinInputPort userJoinUseCase = new UserJoinUseCase(databaseGateway, userJoinPresenter);
+        return new UserJoinController(userJoinUseCase);
     }
 
     // add new functions to init all other use cases

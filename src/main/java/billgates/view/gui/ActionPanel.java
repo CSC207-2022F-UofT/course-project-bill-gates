@@ -1,14 +1,11 @@
 package billgates.view.gui;
 
 import billgates.interface_adapters.UserJoinUpdatable;
-import billgates.usecases.delete_entry.DeleteEntryController;
-import billgates.usecases.user_join.UserJoinViewModel;
+import billgates.use_cases.user_join.UserJoinViewModel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -256,10 +253,10 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
             topMenuBar.getImportMenu().setEnabled(true);
 
-            // TODO: Call the controller of BillUpdateUseCase
+            SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-2));
 
             // enable billTable
-            BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
+            BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
             billTable.setVisible(true);
             billTable.setEnabled(true);
         }
