@@ -1,5 +1,15 @@
 package billgates.use_cases.user_join;
 
+/**
+ * Clean Architecture Layer: Application Business Rules
+ * A response model of the User Join use case.
+ * It is used to transfer data from the use case to the presenter.
+ *
+ * @author Xinxiang
+ * @see UserJoinUseCase
+ * @see UserJoinOutputPort
+ * @see UserJoinPresenter
+ */
 public class UserJoinResponseModel {
 
     private boolean isJoined;

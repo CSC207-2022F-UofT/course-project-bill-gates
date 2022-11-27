@@ -10,7 +10,8 @@ package billgates.use_cases.user_join;
 public interface UserJoinInputPort {
 
     /**
-     * This method will detect 3 different scenarios and take following actions:
+     * This method will detect 3 different scenarios from the
+     * <code>UserJoinRequestModel</code> model and take following actions:
      * Case 1: If the username is not in the database,
      * a new user is created and recorded in the database. i.e, register a new user.
      * Case 2: If the username is in the database and the password matches,
