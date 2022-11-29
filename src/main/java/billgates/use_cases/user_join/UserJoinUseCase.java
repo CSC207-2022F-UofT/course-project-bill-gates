@@ -6,8 +6,26 @@ import billgates.interface_adapters.DatabaseGateway;
 
 import java.util.List;
 
+/**
+ * Clean Architecture Layer: Application Business Rules
+ * A concrete implementation of the <code>UserJoinInputPort</code>.
+ *
+ * @author Xinxiang, Scott, Charlotte
+ * @see UserJoinInputPort
+ * @see UserJoinPresenter
+ * @see UserJoinRequestModel
+ */
+
 public class UserJoinUseCase implements UserJoinInputPort {
+
+    /**
+     * The presenter for converting the response model to a view model.
+     */
     private final DatabaseGateway gateway;
+
+    /**
+     * The database gateway for input/output with the database.
+     */
     private final UserJoinOutputPort outputPort;
 
     public UserJoinUseCase(DatabaseGateway gateway, UserJoinOutputPort outputPort) {
