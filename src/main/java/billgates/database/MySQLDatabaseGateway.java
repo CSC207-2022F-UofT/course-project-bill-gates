@@ -141,23 +141,12 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             String query;
 
-            // If equal, we are getting the bill corresponding to this user
-            if (this.userId == billId) {
-                query = String.format("""
-                    SELECT * FROM bill_%d
-                    WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
-                    ORDER BY date DESC,
-                    entry_id ASC
-                    """, billId, startDate.format(formatter), endDate.format(formatter));
-            } else {
-                // If not equal, we must have that we are getting a splitterBill
-                query = String.format("""
-                    SELECT * FROM bill_%d_%d
-                    WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
-                    ORDER BY date DESC,
-                    entry_id ASC
-                    """, this.userId, billId, startDate.format(formatter), endDate.format(formatter));
-            }
+            query = String.format("""
+                SELECT * FROM bill_%d
+                WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
+                ORDER BY date DESC,
+                entry_id ASC
+                """, billId, startDate.format(formatter), endDate.format(formatter));
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -188,16 +177,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             // If equal, we are getting the bill corresponding to this user
-            if (this.userId == billId) {
-                query = String.format("""
-                    SELECT * FROM bill_%d WHERE entry_id = %d
-                    """, billId, entryId);
-            } else {
-                // If not equal, we are getting the entry from the split bill
-                query = String.format("""
-                    SELECT * FROM bill_%d_%d WHERE entry_id = %d
-                    """, this.userId, billId, entryId);
-            }
+            query = String.format("""
+                SELECT * FROM bill_%d WHERE entry_id = %d
+                """, billId, entryId);
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -248,78 +230,37 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             // This is the case where we don't want autoincrement
             if (!(entry.getId() == -1)) {
-                // If equal, we are inserting the entry into the user's bill
-                if (this.userId == billId) {
-                    query = String.format("""
-                            INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
-                            %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
-                            )
-                            """,
-                            billId,
-                            entry.getId(),
-                            entry.getValue(),
-                            entry.getDate().format(formatter),
-                            entry.getCurrency(),
-                            entry.getDescription(),
-                            entry.getFrom(),
-                            entry.getTo(),
-                            entry.getLocation(),
-                            entry.getSplitBillId());
-                } else {
-                    // If not equal, we are inserting the entry into the split bill
-                    query = String.format("""
-                            INSERT INTO bill_%d%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
-                            %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
-                            )
-                            """,
-                            this.userId,
-                            billId,
-                            entry.getId(),
-                            entry.getValue(),
-                            entry.getDate().format(formatter),
-                            entry.getCurrency(),
-                            entry.getDescription(),
-                            entry.getFrom(),
-                            entry.getTo(),
-                            entry.getLocation(),
-                            entry.getSplitBillId());
-                }
+                query = String.format("""
+                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
+                        %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
+                        )
+                        """,
+                        billId,
+                        entry.getId(),
+                        entry.getValue(),
+                        entry.getDate().format(formatter),
+                        entry.getCurrency(),
+                        entry.getDescription(),
+                        entry.getFrom(),
+                        entry.getTo(),
+                        entry.getLocation(),
+                        entry.getSplitBillId());
             } else {
                 // This is the case where we want auto increment
-
-                if (this.userId == billId) {
-                    query = String.format("""
-                            INSERT INTO bill_%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
-                            %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
-                            )
-                            """,
-                            billId,
-                            entry.getValue(),
-                            entry.getDate().format(formatter),
-                            entry.getCurrency(),
-                            entry.getDescription(),
-                            entry.getFrom(),
-                            entry.getTo(),
-                            entry.getLocation(),
-                            entry.getSplitBillId());
-                } else {
-                    // If not equal, we are inserting the entry into the split bill
-                    query = String.format("""
-                            INSERT INTO bill_%d_%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
-                            %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
-                            )
-                            """,
-                            this.userId,
-                            billId,
-                            entry.getValue(),
-                            entry.getDate().format(formatter),
-                            entry.getCurrency(),
-                            entry.getDescription(),
-                            entry.getFrom(),
-                            entry.getTo(),
-                            entry.getLocation(),
-                            entry.getSplitBillId());
-                }
+                query = String.format("""
+                        INSERT INTO bill_%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
+                        %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
+                        )
+                        """,
+                        billId,
+                        entry.getValue(),
+                        entry.getDate().format(formatter),
+                        entry.getCurrency(),
+                        entry.getDescription(),
+                        entry.getFrom(),
+                        entry.getTo(),
+                        entry.getLocation(),
+                        entry.getSplitBillId());
             }
 
             statement.execute(query);
@@ -376,17 +317,9 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             String query;
 
-            // If equal, we are deleting the entry from the user's bill
-            if (this.userId == billId) {
-                query = String.format("""
-                    DELETE FROM bill_%d WHERE entry_id = %d
-                    """, billId, entryId);
-            } else {
-                // If not equal, we are deleting the entry from the user's split bill
-                query = String.format("""
-                    DELETE FROM bill_%d_%d WHERE entry_id = %d
-                    """, this.userId, billId, entryId);
-            }
+            query = String.format("""
+                DELETE FROM bill_%d WHERE entry_id = %d
+                """, billId, entryId);
 
             statement.execute(query);
 
@@ -407,27 +340,14 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             // If equal, we are modifying the entry from the user's bill
-            if (this.userId == billId) {
-                query = String.format("""
-                            UPDATE bill_%d
-                            SET %s = "%s"
-                            WHERE entry_id = %d
-                            """, billId,
-                        this.columnToDatabaseColumn.get(column),
-                        newValue,
-                        entryId);
-            } else {
-                // If not equal, we are modifying the entry from the user's split bill
-                query = String.format("""
-                            UPDATE bill_%d_%d
-                            SET %s = "%s"
-                            WHERE entry_id = %d
-                            """, this.userId,
-                        billId,
-                        this.columnToDatabaseColumn.get(column),
-                        newValue,
-                        entryId);
-            }
+            query = String.format("""
+                        UPDATE bill_%d
+                        SET %s = "%s"
+                        WHERE entry_id = %d
+                        """, billId,
+                    this.columnToDatabaseColumn.get(column),
+                    newValue,
+                    entryId);
 
             statement.execute(query);
 
@@ -446,49 +366,27 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             // If equal, we are modifying the entry from the user's bill
-            if (this.userId == billId) {
-                query = String.format("""
-                            UPDATE bill_%d
-                            SET value = %f,
-                                date = "%s",
-                                currency = "%s",
-                                description = "%s",
-                                `from` = "%s",
-                                `to` = "%s",
-                                location = "%s"
-                            WHERE entry_id = %d
-                            """, billId,
-                        entry.getValue(),
-                        entry.getDate().format(formatter),
-                        entry.getCurrency(),
-                        entry.getDescription(),
-                        entry.getFrom(),
-                        entry.getTo(),
-                        entry.getLocation(),
-                        entry.getId());
-            } else {
-                // If not equal, we are modifying the entry from the user's split bill
-                query = String.format("""
-                            UPDATE bill_%d_%d
-                            SET value = %f,
-                                date = "%s",
-                                currency = "%s",
-                                description = "%s",
-                                `from` = "%s",
-                                `to` = "%s",
-                                location = "%s"
-                            WHERE entry_id = %d
-                            """, this.userId,
-                        billId,
-                        entry.getValue(),
-                        entry.getDate().format(formatter),
-                        entry.getCurrency(),
-                        entry.getDescription(),
-                        entry.getFrom(),
-                        entry.getTo(),
-                        entry.getLocation(),
-                        entry.getId());
-            }
+            query = String.format("""
+                        UPDATE bill_%d
+                        SET value = %f,
+                            date = "%s",
+                            currency = "%s",
+                            description = "%s",
+                            `from` = "%s",
+                            `to` = "%s",
+                            location = "%s",
+                            split_bill_id = %d
+                        WHERE entry_id = %d
+                        """, billId,
+                    entry.getValue(),
+                    entry.getDate().format(formatter),
+                    entry.getCurrency(),
+                    entry.getDescription(),
+                    entry.getFrom(),
+                    entry.getTo(),
+                    entry.getLocation(),
+                    entry.getId(),
+                    entry.getSplitBillId());
 
             statement.execute(query);
 
