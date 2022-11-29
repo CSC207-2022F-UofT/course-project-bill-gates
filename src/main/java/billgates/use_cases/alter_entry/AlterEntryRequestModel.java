@@ -4,6 +4,15 @@ import billgates.database.QueryEntryData;
 
 import java.time.ZonedDateTime;
 
+/**
+ * Clean Architecture Layer: Application Business Rules
+ * A response model of the AlterEntry use case.
+ * It is used to build up data from the use case to form a changed entry.
+ *
+ * @author Brandon Fu
+ * @see AlterEntryUseCase
+ */
+
 public class AlterEntryRequestModel {
     private String currency;
     private ZonedDateTime date;
