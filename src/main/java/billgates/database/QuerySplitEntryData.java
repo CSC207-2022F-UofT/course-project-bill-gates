@@ -7,6 +7,8 @@ import java.time.ZonedDateTime;
 /**
  * Clean Architecture Layer: Application Business Rules
  *
+ * Note: The entry_id that is in this case is the entry_id of the splitter bill
+ * IT IS NOT THE SAME AS THE ORIGINAL ENTRY THAT WE SPLITTED ON
  * @author Ray
  */
 public class QuerySplitEntryData extends QueryEntry{

@@ -1,8 +1,6 @@
 package billgates.interface_adapters;
 
-import billgates.database.QueryBillData;
-import billgates.database.QueryEntryData;
-import billgates.database.QueryUserData;
+import billgates.database.*;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -50,6 +48,15 @@ public interface DatabaseGateway {
     QueryBillData getBillData(int billId);
 
     /**
+     * Obtains information from the whole Split Bill table associated with splitBillId
+     *
+     * @param splitBillId the splitBillId that we wish to query
+     * @return a QuerySplitBillData that encapsulates all the QuerySplitEntryData within it
+     * @see QuerySplitBillData
+     */
+    QuerySplitBillData getSplitBillData(int splitBillId);
+
+    /**
      * Obtains information from the whole bill table associated with the billId
      * with a specific date range
      *
@@ -62,9 +69,9 @@ public interface DatabaseGateway {
     QueryBillData getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate);
 
     /**
-     * Obtains information from a specific entry (using entry_id)
-     * in a specific bill (using bill_id)
-     * the result (username, password, userId, billId) is bundled by QueryUserData class
+     * Obtains information from a specific entry (using entryId)
+     * in a specific bill (using billId)
+     * the result information is bundled by QueryEntryData class
      *
      * @param billId the bill ID that we are trying to obtain the entry from
      * @param entryId the entry ID that we are trying to obtain information from
@@ -75,13 +82,35 @@ public interface DatabaseGateway {
     QueryEntryData getEntryData(int billId, int entryId);
 
     /**
+     * Obtains information from a specific entry (using entryId, THE ID OF THE SPLIT ENTRY)
+     * in a specific SPLIT bill (using billId)
+     * the result entry information is bundled by QuerySplitEntryData class
+     *
+     * @param billId the bill ID that we are trying to obtain the entry from
+     * @param entryId the entry ID that we are trying to obtain information from
+     * @return a QueryEntryData that contains the information of the entry queried
+     * returns null if the entry_id being queried doesn't exist in the bill
+     * @see QuerySplitEntryData
+     */
+    QuerySplitEntryData getSplitEntryData(int billId, int entryId);
+
+    /**
      * Inserts the entry into the specified bill (using billId) in the database
      *
      * @param billId the bill ID that we are trying to insert the entry into
-     * @param entry the QueryEntryData that we are trying to insert into
+     * @param entry the QueryEntryData that we are trying to insert
      * @see QueryEntryData
      */
     void insertEntry(int billId, QueryEntryData entry);
+
+    /**
+     * Inserts the SPLIT entry into the specified SPLIT bill (using billId) in the database
+     *
+     * @param billId the SPLIT bill ID that we are trying to insert the entry into
+     * @param entry the QuerySplitEntryData that we are trying to insert
+     * @see QuerySplitEntryData
+     */
+    void insertSplitEntry(int billId, QuerySplitEntryData entry);
 
     /**
      * Inserts the user into the users table in the database
@@ -100,6 +129,14 @@ public interface DatabaseGateway {
     void deleteEntry(int billId, int entryId);
 
     /**
+     * Deletes the split entry with SPLIT entryId from the specified SPLIT bill (using billId)
+     *
+     * @param billId the id of the SPLIT bill that we are trying to remove the specific entry from
+     * @param entryId the id of SPLIT entry that we are trying to delete
+     */
+    void deleteSplitEntry(int billId, int entryId);
+
+    /**
      * Modifies the entry with entryId from the specified bill (using billId)
      * modifies the value in the specified column to be the newValue
      *
@@ -111,6 +148,17 @@ public interface DatabaseGateway {
     void modifyEntry(int billId, int entryId, String column, String newValue);
 
     /**
+     * Modifies the SPLIT entry with SPLIT entryId from the specified bill (using billId)
+     * modifies the value in the specified column to be the newValue
+     *
+     * @param billId the id of the bill that we are trying to modify the specific entry from
+     * @param entryId the id of entry that we are trying to delete
+     * @param column the column in the entry that we are trying to modify
+     * @param newValue the new value that will be overwritten in the column
+     */
+    void modifySplitEntry(int billId, int entryId, String column, String newValue);
+
+    /**
      * Overwrites the entry completely with the entry_id contained in entry
      * in the bill specified by billId
      *
@@ -118,6 +166,15 @@ public interface DatabaseGateway {
      * @param entry a QueryEntryData object that contains all the information of the new entry
      */
     void modifyEntry(int billId, QueryEntryData entry);
+
+    /**
+     * Overwrites the SPLIT entry completely with the SPLIT entry_id contained in entry
+     * in the bill specified by billId
+     *
+     * @param billId the id of the SPLIT bill that we are trying to modify the specific entry from
+     * @param entry a QuerySplitEntryData object that contains all the information of the new entry
+     */
+    void modifySplitEntry(int billId, QuerySplitEntryData entry);
 
     /**
      * Creates a bill with the table name "bill_{billId}" in our database
