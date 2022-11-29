@@ -573,8 +573,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                     entry.getFrom(),
                     entry.getTo(),
                     entry.getLocation(),
-                    entry.getId(),
-                    entry.getSplitBillId());
+                    entry.getSplitBillId(),
+                    entry.getId());
 
             statement.execute(query);
 
