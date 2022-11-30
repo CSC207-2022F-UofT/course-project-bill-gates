@@ -7,12 +7,15 @@ import java.time.ZonedDateTime;
 /**
  * Clean Architecture Layer: Application Business Rules
  *
+ * Note: The entry_id that is in this case is the entry_id of the splitter bill
+ * IT IS NOT THE SAME AS THE ORIGINAL ENTRY THAT WE SPLITTED ON
  * @author Ray
  */
-public class QueryEntryData extends QueryEntry{
-    private int splitBillId = -1;
+public class QuerySplitEntryData extends QueryEntry{
+    private String payee = "";
+    private boolean isPaidBack = false;
 
-    public QueryEntryData(int id,
+    public QuerySplitEntryData(int id,
                           ZonedDateTime date,
                           double value,
                           String currency,
@@ -20,34 +23,47 @@ public class QueryEntryData extends QueryEntry{
                           String from,
                           String to,
                           String location,
-                          int splitBillId) {
+                          String payee,
+                               boolean isPaidBack) {
         super(id, date, value, currency, description, from, to, location);
-        this.splitBillId = splitBillId;
+        this.payee = payee;
+        this.isPaidBack = isPaidBack;
+
     }
 
-    public QueryEntryData(ZonedDateTime date,
+    public QuerySplitEntryData(ZonedDateTime date,
                           double value,
                           String currency,
                           String description,
                           String from,
                           String to,
                           String location,
-                          int splitBillId) {
+                          String payee,
+                               boolean isPaidBack) {
         super(date, value, currency, description, from, to, location);
-        this.splitBillId = splitBillId;
+        this.payee = payee;
+        this.isPaidBack = isPaidBack;
     }
 
-    public QueryEntryData(int id,
+    public QuerySplitEntryData(int id,
                           ZonedDateTime date,
                           double value) {
         // Constructor for not all values provided
         super(id, date, value);
     }
 
-    public QueryEntryData(ZonedDateTime date,
+    public QuerySplitEntryData(ZonedDateTime date,
                           double value) {
         // Constructor for not all values provided, with no ID provided
         super(date, value);
+    }
+
+    public String getPayee() {
+        return this.payee;
+    }
+
+    public boolean getIsPaidBack() {
+        return this.isPaidBack;
     }
 
     public EntryBuilder toEntryBuilder() {
@@ -60,11 +76,8 @@ public class QueryEntryData extends QueryEntry{
                 .setFrom(this.getFrom())
                 .setTo(this.getTo())
                 .setLocation(this.getLocation())
-                .setSplitterBillId(this.getSplitBillId());
-    }
-
-    public int getSplitBillId() {
-        return splitBillId;
+                .setPayee(this.getPayee())
+                .setIsPaidBack(this.getIsPaidBack());
     }
 
 }
