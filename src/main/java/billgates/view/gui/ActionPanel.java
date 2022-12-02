@@ -190,6 +190,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         this.signOutButton.setEnabled(false);
         this.addEntryButton.setEnabled(false);
         this.deleteEntryButton.setEnabled(false);
+        this.backButton.setEnabled(false);
 
         // The usernameField and passwordField should be editable after signing out
         this.usernameField.setEditable(true);
