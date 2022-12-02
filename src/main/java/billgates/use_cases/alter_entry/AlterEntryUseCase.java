@@ -76,7 +76,7 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
     public void alterEntry(int entryId, Object newValue, String alterColumn) {
         int billId = User.getInstance().getCurrentBillID();
         String newValueString = newValue.toString();
-        gateway.modifyEntry(billId, entryId, alterColumn, newValueString);
+        this.gateway.modifyEntry(billId, entryId, alterColumn, newValueString);
     }
 
 }
