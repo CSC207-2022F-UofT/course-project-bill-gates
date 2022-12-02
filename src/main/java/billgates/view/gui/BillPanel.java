@@ -103,19 +103,13 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
                 if (row == -1 || column == -1)
                     return;
                 String name = BillPanel.this.billTable.getColumnName(column);
-                if ("Splitter".equals(name))
+                if (!"Splitter".equals(name))
                     return;
-                String splitter = (String) BillPanel.this.billTable.getModel().getValueAt(row, column);
-                if ("No".equals(splitter)) {
-                    // TODO: call the update bill use case
-                }
                 // get the entry id
                 int entryId = (int) BillPanel.this.getBillTable().getModel().getValueAt(row, 0);
-                // for debugging TODO: delete it
-                // System.out.println(entryId);
                 // call the bill update use case on the entryId
-                // TODO: uncomment the line below. I commented because I have not yet implemented.
-                // SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(entryId));
+                SwingUtilities.invokeLater(() ->
+                        BillPanel.this.mainFrame.getBillUpdateController().update(entryId));
             }
         }
     }

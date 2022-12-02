@@ -41,10 +41,21 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
         user.setCurrentBillID(billId);
         // we query the database asynchronously to make the program run smoother
         Thread thread = new Thread(() -> {
-            // TODO: if the splitter bill does not exist, then we create a splitter bill
-            // get all entries of the current bill
-            List<Entry> result = this.gateway.getBillData(user.getCurrentBillID()).getEntries()
-                    .stream().map(d -> d.toEntryBuilder().buildEntry()).toList();
+            List<Entry> result;
+            if (user.getBillId() != user.getCurrentBillID()) {
+                // if we are updating the splitter bill, then we create the splitter bill if
+                // not exist
+                this.gateway.createSplitBillTable(user.getCurrentBillID());
+                // modify the split_bill_id column
+                this.gateway.modifyEntry(user.getBillId(), user.getCurrentBillID(),
+                        "Splitter", String.valueOf(user.getCurrentBillID()));
+                // get all entries of the current bill
+                result = this.gateway.getSplitBillData(user.getCurrentBillID()).getEntries()
+                        .stream().map(d -> d.toEntryBuilder().buildEntry()).toList();
+            } else {
+                result = this.gateway.getBillData(user.getCurrentBillID()).getEntries()
+                        .stream().map(d -> d.toEntryBuilder().buildEntry()).toList();
+            }
             // transform all entries to lists of raw objects like int, ZonedDateTime, ...
             List<List<Object>> list = result.stream().map(Entry::toObjects).toList();
             // if the current bill id is not the same as the bill id,

@@ -114,7 +114,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         this.backButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Back from splitting bills event
-        this.addEntryButton.addActionListener((e -> this.backFromSplit()));
+        this.backButton.addActionListener((e -> this.backFromSplit()));
         // backButton should be disabled at the beginning
         this.backButton.setEnabled(false);
 
@@ -204,7 +204,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         topMenuBar.getImportMenu().setEnabled(false);
 
         // Disable the billTable
-        BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
+        BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
         billTable.setEnabled(false);
         billTable.setVisible(false);
     }
@@ -244,6 +244,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             this.signInButton.setEnabled(false);
             this.signOutButton.setEnabled(true);
             this.addEntryButton.setEnabled(true);
+            this.backButton.setEnabled(true);
 
             // the usernameField and passwordField shouldn't be editable
             this.usernameField.setEditable(false);
