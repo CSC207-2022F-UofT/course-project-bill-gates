@@ -157,7 +157,7 @@ public class ActionPanel extends JPanel {
 
             // enable importMenu
             TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-            tmb.getImportMenu().setEnabled(true);
+            tmb.getFileMenu().setEnabled(true);
 
             // enable billTable
             MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
@@ -194,7 +194,7 @@ public class ActionPanel extends JPanel {
 
         // Disable the importMenu
         TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-        tmb.getImportMenu().setEnabled(false);
+        tmb.getFileMenu().setEnabled(false);
 
         // Disable the billTable
         MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
@@ -226,6 +226,7 @@ public class ActionPanel extends JPanel {
         this.setBorder(new CustomTitleBorder("Action", c));
         this.statisticsTextArea.setBorder(new CustomTitleBorder("Statistics", c));
         this.statisticsTextArea.setForeground(c);
+        ActionButton.allButton.forEach(b -> b.setBackground(c));
     }
 
     // Change font in ActionPanel and statistic text area

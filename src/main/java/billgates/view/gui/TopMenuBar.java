@@ -2,24 +2,23 @@ package billgates.view.gui;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.File;
 
-public class TopMenuBar extends JMenuBar{
+public class TopMenuBar extends JMenuBar {
 
     public static final int DEFAULT_HEIGHT = 23;
     private final BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
-    private final JMenu importMenu = new GeneralMenu("Import");
+    private final JMenu fileMenu = new GeneralMenu("File");
     private final JMenu settingsMenu = new GeneralMenu("Settings");
     private final JMenu helpMenu = new GeneralMenu("Help");
-    private final Color[] colors = new Color[]{new Color(240, 140, 170), Color.RED, Color.ORANGE,
+    private final static Color[] COLORS = new Color[]{new Color(240, 140, 170), Color.RED, Color.ORANGE,
             Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK, Color.WHITE};
-    private final String[] fonts = new String[]{"Modern No. 20", "Times New Roman", "Helvetica", "Arial", "Impact",
+    private final static String[] FONTS = new String[]{"Modern No. 20", "Times New Roman", "Helvetica", "Arial", "Impact",
             "Verdana", "Century", "Tahoma", "Copperplate"};
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
+    private SettingDialog settingDialog;
 
     public TopMenuBar(MainFrame owner) {
         // Set the layout of the top menubar
@@ -35,35 +34,37 @@ public class TopMenuBar extends JMenuBar{
         // Add menus with gaps
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
-        this.add(this.importMenu);
+        this.add(this.fileMenu);
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
         this.add(this.settingsMenu);
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
         this.add(this.helpMenu);
 
+        // Add MenuItem import in File
+        JMenuItem importMenuItem = new JMenuItem("Import File");
+        fileMenu.add(importMenuItem);
+
         // Add function to import menu
-        importMenu.addMenuListener(new MenuAdaptor(){
-            @Override
-            public void menuSelected(MenuEvent e) {
-                importBills();
-            }
+        importMenuItem.addActionListener( e -> {
+            importBills();
         });
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
+        // Add MenuItem change color and font in setting
+        JMenuItem appearanceMenuItem = new JMenuItem("Appearance");
+        settingsMenu.add(appearanceMenuItem);
+
         // Add function to setting menu
-        settingsMenu.addMenuListener(new MenuAdaptor() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                System.out.println("yes");
-                int[] setting = setting();
+        appearanceMenuItem.addActionListener( e -> {
+            System.out.println("yes");
+            int[] setting = setting();
 
-                mainFrame.getBillPanel().changeColor(colors[setting[0]]);
-                mainFrame.getActionPanel().changeColor(colors[setting[0]]);
+            mainFrame.getBillPanel().changeColor(COLORS[setting[0]]);
+            mainFrame.getActionPanel().changeColor(COLORS[setting[0]]);
 
-                mainFrame.getActionPanel().changeFont(fonts[setting[1]]);
-                mainFrame.getBillPanel().changeFont(fonts[setting[1]]);
+            mainFrame.getActionPanel().changeFont(FONTS[setting[1]]);
+            mainFrame.getBillPanel().changeFont(FONTS[setting[1]]);
 
-            }
         });
     }
 
@@ -81,13 +82,13 @@ public class TopMenuBar extends JMenuBar{
             setting[1] = fontTargetIndex;
             return setting;
         }
-        setting[0] = 0;
-        setting[1] = 0;
+        setting[0] = settingDialog.getMyColor();
+        setting[1] = settingDialog.getMyFont();
         return setting;
     }
 
-    public JMenu getImportMenu() {
-        return importMenu;
+    public JMenuItem getFileMenu() {
+        return fileMenu;
     }
 
     // Function to choose file in your computer
@@ -109,17 +110,4 @@ public class TopMenuBar extends JMenuBar{
         // CONTINUE!!!
         System.out.println("loaded");
     }
-
-    // Create a MenuAdapter to simplify our code
-    public abstract class MenuAdaptor implements MenuListener{
-        protected MenuAdaptor() {}
-
-        public void menuCanceled(MenuEvent e) {}
-
-        public void menuSelected(MenuEvent e) {}
-
-        public void menuDeselected(MenuEvent e) {}
-    }
-
-
 }

@@ -54,7 +54,7 @@ public class BillPanel extends JPanel {
 
     // Change color of table header and border in bill panel
     public void changeColor(Color c){
-        billTable.getTableHeader().setBackground(c);
+        this.billTable.getTableHeader().setBackground(c);
         this.setBorder(new CustomTitleBorder("Bills",c));
     }
 
