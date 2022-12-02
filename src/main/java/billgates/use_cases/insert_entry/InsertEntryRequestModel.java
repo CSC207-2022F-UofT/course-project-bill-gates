@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 
 public class InsertEntryRequestModel {
 
-    //These are the information about the new entry added.
+    //These are the information about the new normal entry and new splitter entry added.
     private final ZonedDateTime date;
     private final double value;
     private String currency = "";
@@ -12,6 +12,10 @@ public class InsertEntryRequestModel {
     private String from = "";
     private String to = "";
     private String location = "";
+
+    private String payee = "";
+
+    private boolean isPaidBack = false;
 
     public InsertEntryRequestModel(ZonedDateTime date,
                                    double value,
@@ -27,6 +31,26 @@ public class InsertEntryRequestModel {
         this.from = from;
         this.to = to;
         this.location = location;
+    }
+
+    public InsertEntryRequestModel(ZonedDateTime date,
+                                   double value,
+                                   String currency,
+                                   String description,
+                                   String from,
+                                   String to,
+                                   String location,
+                                   String payee,
+                                   boolean isPaidBack) {
+        this.date = date;
+        this.value = value;
+        this.currency = currency;
+        this.description = description;
+        this.from = from;
+        this.to = to;
+        this.location = location;
+        this.payee = payee;
+        this.isPaidBack = isPaidBack;
     }
 
     //Get the "date" information of the new entry.
@@ -62,5 +86,15 @@ public class InsertEntryRequestModel {
     //Get the "location" information of the new entry.
     public String getLocation() {
         return location;
+    }
+
+    //Get the "payee" information of the new entry.
+    public String getPayee() {
+        return payee;
+    }
+
+    // Get the "if is paid back" information of the new entry.
+    public boolean getIsPaidBack() {
+        return isPaidBack;
     }
 }
