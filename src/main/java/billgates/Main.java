@@ -11,6 +11,9 @@ import billgates.use_cases.bill_update.BillUpdateUseCase;
 import billgates.use_cases.delete_entry.DeleteEntryController;
 import billgates.use_cases.delete_entry.DeleteEntryInputPort;
 import billgates.use_cases.delete_entry.DeleteEntryUseCase;
+import billgates.use_cases.insert_entry.InsertEntryController;
+import billgates.use_cases.insert_entry.InsertEntryInputPort;
+import billgates.use_cases.insert_entry.InsertEntryUseCase;
 import billgates.use_cases.user_join.*;
 import billgates.view.gui.MainFrame;
 
@@ -38,6 +41,7 @@ public class Main {
         mainFrame.setBillUpdateController(initBillUpdateUseCase(databaseGateway, mainFrame.getBillPanel()));
         mainFrame.setDeleteEntryController(initDeleteEntryUseCase(databaseGateway));
         mainFrame.setUserJoinController(initUserJoinUseCase(databaseGateway, mainFrame.getActionPanel()));
+        mainFrame.setInsertEntryController(initInsertEntryUseCase(databaseGateway));
 
         mainFrame.setVisible(true);
         // init column widths
@@ -62,6 +66,11 @@ public class Main {
         UserJoinOutputPort userJoinPresenter = new UserJoinPresenter(updatable);
         UserJoinInputPort userJoinUseCase = new UserJoinUseCase(databaseGateway, userJoinPresenter);
         return new UserJoinController(userJoinUseCase);
+    }
+
+    private static InsertEntryController initInsertEntryUseCase(DatabaseGateway databaseGateway) {
+        InsertEntryInputPort useCase = new InsertEntryUseCase(databaseGateway);
+        return new InsertEntryController(useCase);
     }
 
     // add new functions to init all other use cases
