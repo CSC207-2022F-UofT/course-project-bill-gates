@@ -25,16 +25,16 @@ public class InsertEntryUseCase implements InsertEntryInputPort {
                     model.getFrom(), model.getTo(), model.getLocation(), -1);
 
             //Pass the new QueryEntryData in the Gateway#insertEntry.
-            gateway.insertEntry(User.getInstance().getCurrentBillID(), entry);
+            this.gateway.insertEntry(User.getInstance().getCurrentBillID(), entry);
         } else {
             //Construct a QuerySplitEntryData for new splitter entry.
-            QuerySplitEntryData entry = new QuerySplitEntryData(User.getInstance().getCurrentBillID(), model.getDate(),
+            QuerySplitEntryData entry = new QuerySplitEntryData(model.getDate(),
                     model.getValue(), model.getCurrency(),
                     model.getDescription(), model.getFrom(), model.getTo(), model.getLocation(), model.getPayee(),
                     model.getIsPaidBack());
 
             //Pass the new QuerySplitEntryData in the Gateway #insertSplitEntry.
-            gateway.insertSplitEntry(User.getInstance().getCurrentBillID(), entry);
+            this.gateway.insertSplitEntry(User.getInstance().getCurrentBillID(), entry);
         }
 
     }
