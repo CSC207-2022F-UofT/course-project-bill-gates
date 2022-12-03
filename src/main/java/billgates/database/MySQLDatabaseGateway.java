@@ -33,7 +33,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         this.columnToDatabaseColumn.put("From", "from");
         this.columnToDatabaseColumn.put("To", "to");
         this.columnToDatabaseColumn.put("Location", "location");
-        this.columnToDatabaseColumn.put("Splitter", "splitter");
+        this.columnToDatabaseColumn.put("Splitter", "split_bill_id");
         this.columnToDatabaseColumn.put("Payee", "payee");
         this.columnToDatabaseColumn.put("Paid Back", "paid_back");
     }
@@ -630,7 +630,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    CREATE TABLE bill_%d
+                    CREATE TABLE IF NOT EXISTS bill_%d
                     (
                         entry_id         INT             AUTO_INCREMENT
                                                          PRIMARY KEY,
@@ -658,7 +658,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             Statement statement = connection.createStatement();
 
             String query = String.format("""
-                    CREATE TABLE bill_%d_%d
+                    CREATE TABLE IF NOT EXISTS bill_%d_%d
                     (
                         entry_id         INT             AUTO_INCREMENT
                                                          PRIMARY KEY,
@@ -699,7 +699,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
 
             String query = """
-                    CREATE TABLE users
+                    CREATE TABLE IF NOT EXISTS users
                     (
                         user_id  INT AUTO_INCREMENT
                                  PRIMARY KEY,
