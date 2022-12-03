@@ -40,8 +40,7 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
         }
         user.setCurrentBillID(billId);
         // get all entries of the current bill
-        List<Entry> result = this.gateway.getBillData(user.getCurrentBillID()).getEntries()
-                .stream().map(d -> d.toEntryBuilder().buildEntry()).toList();
+        List<Entry> result = this.gateway.getBillData(user.getCurrentBillID());
         List<List<Object>> list = result.stream().map(Entry::toObjects).toList();
         // if the current bill id is not the same as the bill id, then the current bill is a splitter bill
         this.presenter.updateBill(new BillUpdateResponseModel(list, user.getCurrentBillID() != user.getBillId()));
