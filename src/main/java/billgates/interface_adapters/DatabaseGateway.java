@@ -1,6 +1,9 @@
 package billgates.interface_adapters;
 
 import billgates.database.*;
+import billgates.entities.Entry;
+import billgates.entities.QueryUserData;
+import billgates.entities.SplitterEntry;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -42,19 +45,19 @@ public interface DatabaseGateway {
      * Obtains information from the whole bill table associated with the billId
      *
      * @param billId the billId that we wish to query
-     * @return a QueryBillData that encapsulates all the QueryEntryData within it
-     * @see QueryBillData
+     * @return a list of Entry objects
+     * @see Entry
      */
-    QueryBillData getBillData(int billId);
+    List<Entry> getBillData(int billId);
 
     /**
      * Obtains information from the whole Split Bill table associated with splitBillId
      *
      * @param splitBillId the splitBillId that we wish to query
-     * @return a QuerySplitBillData that encapsulates all the QuerySplitEntryData within it
-     * @see QuerySplitBillData
+     * @return a list of SplitterEntry objects
+     * @see billgates.entities.SplitterEntry
      */
-    QuerySplitBillData getSplitBillData(int splitBillId);
+    List<SplitterEntry> getSplitBillData(int splitBillId);
 
     /**
      * Obtains information from the whole bill table associated with the billId
@@ -63,54 +66,54 @@ public interface DatabaseGateway {
      * @param billId the bill ID that we are trying to obtain information from
      * @param startDate a ZonedDateTime object that marks the start date of this query
      * @param endDate a ZonedDateTime object that marks the end date of this query
-     * @return a QueryBillData that encapsulates all the QueryEntryData within the date range
-     * @see QueryBillData
+     * @return a list of Entry that is within the specified date range
+     * @see billgates.entities.Entry
      */
-    QueryBillData getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate);
+    List<Entry> getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate);
 
     /**
      * Obtains information from a specific entry (using entryId)
      * in a specific bill (using billId)
-     * the result information is bundled by QueryEntryData class
+     * the result information is bundled by the Entry class
      *
      * @param billId the bill ID that we are trying to obtain the entry from
      * @param entryId the entry ID that we are trying to obtain information from
-     * @return a QueryEntryData that contains the information of the entry queried
+     * @return an Entry with the information
      * returns null if the entry_id being queried doesn't exist in the bill
-     * @see QueryEntryData
+     * @see Entry
      */
-    QueryEntryData getEntryData(int billId, int entryId);
+    Entry getEntryData(int billId, int entryId);
 
     /**
      * Obtains information from a specific entry (using entryId, THE ID OF THE SPLIT ENTRY)
      * in a specific SPLIT bill (using billId)
-     * the result entry information is bundled by QuerySplitEntryData class
+     * the result entry information is bundled by SplitterEntry class
      *
      * @param billId the bill ID that we are trying to obtain the entry from
      * @param entryId the entry ID that we are trying to obtain information from
-     * @return a QueryEntryData that contains the information of the entry queried
+     * @return a SplitterEntry that contains the information of the entry queried
      * returns null if the entry_id being queried doesn't exist in the bill
-     * @see QuerySplitEntryData
+     * @see SplitterEntry
      */
-    QuerySplitEntryData getSplitEntryData(int billId, int entryId);
+    SplitterEntry getSplitEntryData(int billId, int entryId);
 
     /**
      * Inserts the entry into the specified bill (using billId) in the database
      *
      * @param billId the bill ID that we are trying to insert the entry into
-     * @param entry the QueryEntryData that we are trying to insert
-     * @see QueryEntryData
+     * @param entry the Entry that we are trying to insert
+     * @see Entry
      */
-    void insertEntry(int billId, QueryEntryData entry);
+    void insertEntry(int billId, Entry entry);
 
     /**
      * Inserts the SPLIT entry into the specified SPLIT bill (using billId) in the database
      *
      * @param billId the SPLIT bill ID that we are trying to insert the entry into
-     * @param entry the QuerySplitEntryData that we are trying to insert
-     * @see QuerySplitEntryData
+     * @param entry the SplitterEntry that we are trying to insert
+     * @see SplitterEntry
      */
-    void insertSplitEntry(int billId, QuerySplitEntryData entry);
+    void insertSplitEntry(int billId, SplitterEntry entry);
 
     /**
      * Inserts the user into the users table in the database
@@ -165,7 +168,7 @@ public interface DatabaseGateway {
      * @param billId the id of the bill that we are trying to modify the specific entry from
      * @param entry a QueryEntryData object that contains all the information of the new entry
      */
-    void modifyEntry(int billId, QueryEntryData entry);
+    void modifyEntry(int billId, Entry entry);
 
     /**
      * Overwrites the SPLIT entry completely with the SPLIT entry_id contained in entry
@@ -174,7 +177,7 @@ public interface DatabaseGateway {
      * @param billId the id of the SPLIT bill that we are trying to modify the specific entry from
      * @param entry a QuerySplitEntryData object that contains all the information of the new entry
      */
-    void modifySplitEntry(int billId, QuerySplitEntryData entry);
+    void modifySplitEntry(int billId, SplitterEntry entry);
 
     /**
      * Creates a bill with the table name "bill_{billId}" in our database

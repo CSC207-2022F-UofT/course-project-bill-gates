@@ -1,4 +1,4 @@
-package billgates.database;
+package billgates.entities;
 
 import java.util.List;
 

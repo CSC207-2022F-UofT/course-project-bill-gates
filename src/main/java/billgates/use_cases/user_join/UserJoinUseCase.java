@@ -1,6 +1,6 @@
 package billgates.use_cases.user_join;
 
-import billgates.database.QueryUserData;
+import billgates.entities.QueryUserData;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 

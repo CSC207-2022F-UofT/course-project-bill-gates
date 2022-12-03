@@ -1,6 +1,7 @@
 package billgates.entities;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Clean Architecture Layer: Enterprise Business Rules
@@ -87,7 +88,8 @@ public class EntryBuilder {
     }
 
     public EntryBuilder setDate(ZonedDateTime date) {
-        this.date = date;
+        // Truncates the date unit to only seconds
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
         return this;
     }
 

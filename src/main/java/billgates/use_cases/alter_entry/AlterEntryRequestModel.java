@@ -1,7 +1,5 @@
 package billgates.use_cases.alter_entry;
 
-import billgates.database.QueryEntryData;
-
 import java.time.ZonedDateTime;
 
 /**
