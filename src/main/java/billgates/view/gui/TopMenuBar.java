@@ -18,7 +18,6 @@ public class TopMenuBar extends JMenuBar {
     private final static String[] FONTS = new String[]{"Modern No. 20", "Times New Roman", "Helvetica", "Arial", "Impact",
             "Verdana", "Century", "Tahoma", "Copperplate"};
     private final MainFrame mainFrame;
-    private SettingDialog settingDialog;
 
     public TopMenuBar(MainFrame owner) {
         // Set the layout of the top menubar
@@ -70,7 +69,7 @@ public class TopMenuBar extends JMenuBar {
 
     // Function to set up the setting dialog
     private int[] setting() {
-//        SettingDialog setdlg = mainFrame.getSettingDialog();
+//        SettingDialog setdlg = new SettingDialog(mainFrame);
         SettingDialog setdlg = new SettingDialog(mainFrame);
         int[] setting = new int[2];
         if (setdlg.exec()) {
@@ -82,8 +81,8 @@ public class TopMenuBar extends JMenuBar {
             setting[1] = fontTargetIndex;
             return setting;
         }
-        setting[0] = settingDialog.getMyColor();
-        setting[1] = settingDialog.getMyFont();
+        setting[0] = setdlg.getMyColor();
+        setting[1] = setdlg.getMyFont();
         return setting;
     }
 

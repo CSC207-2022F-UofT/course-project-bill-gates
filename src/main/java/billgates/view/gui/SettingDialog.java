@@ -21,7 +21,7 @@ public class SettingDialog extends JDialog {
     // Set up setting dialog to change background color and font style
     public SettingDialog(MainFrame owner) {
         super(owner);
-        mainFrame = owner;
+        this.mainFrame = owner;
 
         // Set the font
         this.setFont(new Font("Modern No. 20", Font.BOLD, 14));
@@ -37,8 +37,8 @@ public class SettingDialog extends JDialog {
 
         //Set the sub-action root panel
         JPanel subAction = new JPanel();
-        subAction.add(confirmButton);
-        subAction.add(cancelButton);
+        subAction.add(this.confirmButton);
+        subAction.add(this.cancelButton);
 
         // Set the color-field and font-field
         JLabel backgroundButton = new JLabel("Background Color");
@@ -74,17 +74,17 @@ public class SettingDialog extends JDialog {
         fontChooseBox.add(fontField);
 
         //Add the panels to root panel to set up our layout
-        root.add(colorChooseBox, BorderLayout.CENTER);
-        root.add(fontChooseBox, BorderLayout.CENTER);
-        root.add(subAction, BorderLayout.SOUTH);
+        this.add(colorChooseBox, BorderLayout.CENTER);
+        this.add(fontChooseBox, BorderLayout.CENTER);
+        this.add(subAction, BorderLayout.SOUTH);
 
         // Case 1: Click cancelButton
-        cancelButton.addActionListener(e -> {
+        this.cancelButton.addActionListener(e -> {
             setVisible(false);
         });
 
         // Case 2: Choose different color and font
-        confirmButton.addActionListener((e ->
+        this.confirmButton.addActionListener((e ->
         {
             colorIndex = colorField.getSelectedIndex();
             colorField.setSelectedIndex(colorIndex);
@@ -94,8 +94,8 @@ public class SettingDialog extends JDialog {
 
             confirmed = true;
 
-            JOptionPane.showMessageDialog(null, "Page has been set!", "All Set", JOptionPane.PLAIN_MESSAGE);
-            setVisible(false);
+            JOptionPane.showMessageDialog(this, "Page has been set!", "All Set", JOptionPane.PLAIN_MESSAGE);
+            this.setVisible(false);
         }));
     }
 
