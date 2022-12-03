@@ -5,12 +5,16 @@ import billgates.use_cases.insert_entry.InsertEntryRequestModel;
 import billgates.use_cases.user_join.UserJoinViewModel;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.*;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.sql.SQLOutput;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -26,9 +30,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     public static final int DEFAULT_SIGN_IN_PANEL_HEIGHT = DEFAULT_HEIGHT / 7;
     public static final int HORIZONTAL_GAP = 5;
     public static final int VERTICAL_GAP = 10;
-//    public static final int BORDER_THICKNESS = 3;
-//    public static final int EMPTY_BORDER_THICKNESS = 7;
-//    public static final Color DEFAULT_BORDER_TEXT_COLOR = new Color(220, 120, 150);
 
     private final ImageIcon backIcon = new ImageIcon(Objects.requireNonNull
             (this.getClass().getResource("/back.png")));
@@ -206,7 +207,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
         // Disable the importMenu
         TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
-        topMenuBar.getImportMenu().setEnabled(false);
+        topMenuBar.getFileMenu().setEnabled(false);
 
         // Disable the billTable
         BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
@@ -298,7 +299,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
             // enable importMenu
             TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
-            topMenuBar.getImportMenu().setEnabled(true);
+            topMenuBar.getFileMenu().setEnabled(true);
 
             SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-2));
 
@@ -310,5 +311,27 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
         // Show a message dialog with whatever the text from the viewModel
         JOptionPane.showMessageDialog(this.mainFrame, viewModel.getReasonRejected());
+    }
+
+    // Change color in ActionPanel and statistic text area
+    public void changeColor(Color c) {
+        this.setBorder(new CustomTitleBorder("Action", c));
+        this.statisticsTextArea.setBorder(new CustomTitleBorder("Statistics", c));
+        this.statisticsTextArea.setForeground(c);
+        ActionButton.allButton.forEach(b -> b.setBackground(c));
+    }
+
+    // Change font in ActionPanel and statistic text area
+    public void changeFont(String f){
+        Font newButtonFont = new FontSettings(f, ActionButton.DEFAULT_FONT_SIZE);
+        for(ActionButton ab: ActionButton.allButton){
+            ab.setFont(newButtonFont);
+        }
+        Font newLabelFont = new FontSettings(f, ActionLabel.DEFAULT_FONT_SIZE);
+        for(ActionLabel al: ActionLabel.allLabel){
+            al.setFont(newLabelFont);
+        }
+        Font newTextFont = new FontSettings(f, ActionTextArea.DEFAULT_FONT_SIZE);
+        this.statisticsTextArea.setFont(newTextFont);
     }
 }

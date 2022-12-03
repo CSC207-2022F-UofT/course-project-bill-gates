@@ -4,6 +4,8 @@ import billgates.view.BillTableModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers

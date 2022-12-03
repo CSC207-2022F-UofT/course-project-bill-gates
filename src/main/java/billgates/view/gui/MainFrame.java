@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Scott
+ * @author Charlotte, Scott, Eva
  */
 public class MainFrame extends JFrame {
 
@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
     private final JPanel contentPane = new JPanel(new BorderLayout());
     private final ActionPanel actionPanel = new ActionPanel(this);
     private final BillPanel billPanel = new BillPanel(this);
-    private final JMenuBar menu = new TopMenuBar();
+    private final JMenuBar menu = new TopMenuBar(this);
     private UserJoinController userJoinController;
 
     // controllers will be set after constructing the view objects
