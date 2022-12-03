@@ -2,6 +2,18 @@ package billgates.use_cases.insert_entry;
 
 import java.time.ZonedDateTime;
 
+/**
+ * Clean Architecture Layer: Application Business Rules
+ * A request model of the Insert Entry use case.
+ * It is used to transfer input data as a whole
+ * from the controller to the use case.
+ *
+ * @author Ruby, Ellen
+ * @see InsertEntryInputPort
+ * @see InsertEntryController
+ * @see InsertEntryUseCase
+ */
+
 public class InsertEntryRequestModel {
 
     //These are the information about the new normal entry and new splitter entry added.
@@ -55,46 +67,46 @@ public class InsertEntryRequestModel {
 
     //Get the "date" information of the new entry.
     public ZonedDateTime getDate() {
-        return date;
+        return this.date;
     }
 
     //Get the "value" information of the new entry.
     public double getValue() {
-        return value;
+        return this.value;
     }
 
     //Get the "currency" information of the new entry.
     public String getCurrency() {
-        return currency;
+        return this.currency;
     }
 
     //Get the "description" information of the new entry.
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     //Get the "from" information of the new entry.
     public String getFrom() {
-        return from;
+        return this.from;
     }
 
     //Get the "to" information of the new entry.
     public String getTo() {
-        return to;
+        return this.to;
     }
 
     //Get the "location" information of the new entry.
     public String getLocation() {
-        return location;
+        return this.location;
     }
 
     //Get the "payee" information of the new entry.
     public String getPayee() {
-        return payee;
+        return this.payee;
     }
 
     // Get the "if is paid back" information of the new entry.
     public boolean getIsPaidBack() {
-        return isPaidBack;
+        return this.isPaidBack;
     }
 }
