@@ -7,7 +7,10 @@ import billgates.use_cases.user_join.UserJoinViewModel;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -246,7 +249,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
                 "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             String date1 = dateField.getText();
-            ZonedDateTime date = ZonedDateTime.parse(date1);
+            LocalDateTime localDateTime = LocalDateTime.parse(date1, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            ZonedDateTime date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
             String value1 = valueField.getText();
             double value = Double.parseDouble(value1);
             String currency = currencyField.getText();

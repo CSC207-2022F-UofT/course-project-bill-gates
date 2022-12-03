@@ -60,11 +60,11 @@ public class MainFrame extends JFrame {
     }
 
     public ActionPanel getActionPanel() {
-        return actionPanel;
+        return this.actionPanel;
     }
 
     public BillUpdateController getBillUpdateController() {
-        return billUpdateController;
+        return this.billUpdateController;
     }
 
     public void setBillUpdateController(BillUpdateController billUpdateController) {
@@ -72,7 +72,7 @@ public class MainFrame extends JFrame {
     }
 
     public DeleteEntryController getDeleteEntryController() {
-        return deleteEntryController;
+        return this.deleteEntryController;
     }
 
     public void setDeleteEntryController(DeleteEntryController deleteEntryController) {
@@ -80,7 +80,7 @@ public class MainFrame extends JFrame {
     }
 
     public UserJoinController getUserJoinController() {
-        return userJoinController;
+        return this.userJoinController;
     }
 
     public void setUserJoinController(UserJoinController userJoinController) {
@@ -88,7 +88,7 @@ public class MainFrame extends JFrame {
     }
 
     public InsertEntryController getInsertEntryController() {
-        return insertEntryController;
+        return this.insertEntryController;
     }
 
     public void setInsertEntryController(InsertEntryController insertEntryController) {
