@@ -6,7 +6,7 @@ import billgates.interface_adapters.DatabaseGateway;
 /**
  * Clean Architecture Layer: Application Business Rules
  *
- * A concrete implementation of the <code>DeleteEntryUseCase</code>.
+ * A concrete implementation of the <code>DeleteEntryInputPort</code>.
  *
  * @author Ellen, Scott
  *
