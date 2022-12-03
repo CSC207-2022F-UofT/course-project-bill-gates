@@ -5,11 +5,9 @@ import billgates.interface_adapters.DatabaseGateway;
 
 /**
  * Clean Architecture Layer: Application Business Rules
- *
  * A concrete implementation of the <code>DeleteEntryInputPort</code>.
  *
  * @author Ellen, Scott
- *
  * @see DeleteEntryInputPort
  */
 
