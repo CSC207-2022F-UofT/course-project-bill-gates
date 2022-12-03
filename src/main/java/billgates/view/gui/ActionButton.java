@@ -4,7 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
-public class ActionButton extends JButton{
+
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte
+ */
+public class ActionButton extends JButton {
 
     public static final List<ActionButton> allButton = new ArrayList<>();
     public static final int DEFAULT_WIDTH = 160;

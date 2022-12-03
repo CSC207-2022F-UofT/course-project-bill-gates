@@ -1,6 +1,8 @@
 package billgates.view.gui;
 
-import javax.imageio.ImageIO;
+import billgates.interface_adapters.UserJoinUpdatable;
+import billgates.use_cases.user_join.UserJoinViewModel;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -10,7 +12,12 @@ import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ActionPanel extends JPanel {
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte, Scott
+ */
+public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     public static final int DEFAULT_WIDTH = (int) (MainFrame.DEFAULT_WIDTH / 3.5);
     public static final int DEFAULT_HEIGHT = MainFrame.DEFAULT_HEIGHT;
@@ -18,8 +25,6 @@ public class ActionPanel extends JPanel {
     public static final int DEFAULT_SIGN_IN_PANEL_HEIGHT = DEFAULT_HEIGHT / 7;
     public static final int HORIZONTAL_GAP = 5;
     public static final int VERTICAL_GAP = 10;
-
-    private final BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 
     private final ImageIcon backIcon = new ImageIcon(Objects.requireNonNull
             (this.getClass().getResource("/back.png")));
@@ -37,8 +42,12 @@ public class ActionPanel extends JPanel {
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
     private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
 
-    public ActionPanel() {
-        this.setLayout(this.layout);
+    private final MainFrame mainFrame;
+
+    public ActionPanel(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
+        BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+        this.setLayout(layout);
         this.initSignInPanel();
         this.initButtonTextArea();
         this.initBorder();
@@ -49,6 +58,9 @@ public class ActionPanel extends JPanel {
         this.add(this.signInPanel);
         // Set the size of signInPanel
         this.signInPanel.setMaximumSize(new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_SIGN_IN_PANEL_HEIGHT));
+
+        // Restrict the input of usernameField (user cannot input whitespace for their username)
+        this.usernameField.setDocument(new RegexDocument("\\S*"));
 
         // add and layout components
         // username label
@@ -121,7 +133,7 @@ public class ActionPanel extends JPanel {
         this.deleteEntryButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Delete entry event
-        this.addEntryButton.addActionListener((e -> this.deleteEntry()));
+        this.deleteEntryButton.addActionListener((e -> this.deleteEntry()));
         // deleteEntryButton should be disabled at the beginning
         this.deleteEntryButton.setEnabled(false);
 
@@ -136,44 +148,40 @@ public class ActionPanel extends JPanel {
     }
 
     private void signIn() {
-        // Get the username and password from user
+        // Get the username and password from the user
         String userName = this.usernameField.getText();
-        String userPassword = Arrays.toString(this.passwordField.getPassword());
-        System.out.println("Name: " + userName);
-        System.out.println("Password: " + userPassword);
+        String userPassword = String.valueOf(this.passwordField.getPassword());
 
-        // TODO: Call the controller of UserJoinUseCase
-
-        // If the user has successfully signed in,
-        if (this.checkUsername() & this.checkPassword()) {
-            // disable the signInButton, and enable the signOutButton and addEntryButton
-            this.signInButton.setEnabled(false);
-            this.signOutButton.setEnabled(true);
-            this.addEntryButton.setEnabled(true);
-
-            // the usernameField and passwordField shouldn't be editable
-            this.usernameField.setEditable(false);
-            this.passwordField.setEditable(false);
-
-            // enable importMenu
-            TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-            tmb.getFileMenu().setEnabled(true);
-
-            // enable billTable
-            MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
-            BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
-            bt.setVisible(true);
-            bt.setEnabled(true);
+        // If the username and password are legal, we should then call the controller of UserJoinUseCase
+        if (this.checkUsername() && this.checkPassword()) {
+            // Call the UserJoinController
+            SwingUtilities.invokeLater(() -> this.mainFrame.getUserJoinController().userJoin(userName, userPassword));
         }
     }
 
     private boolean checkUsername() {
-        // Will be implemented further
+        int usernameLength = this.usernameField.getText().length();
+        if (usernameLength == 0) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Username cannot be empty!");
+            return false;
+        }
+        else if (usernameLength > 10) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Username exceeds the maximum length!");
+            return false;
+        }
         return true;
     }
 
     private boolean checkPassword() {
-        // Will be implemented further
+        int passwordLength = String.valueOf(this.passwordField.getPassword()).length();
+        if (passwordLength == 0) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Password cannot be empty!");
+            return false;
+        }
+        else if (passwordLength > 16) {
+            JOptionPane.showMessageDialog(this.mainFrame, "Password exceeds the maximum length!");
+            return false;
+        }
         return true;
     }
 
@@ -193,36 +201,73 @@ public class ActionPanel extends JPanel {
         this.passwordField.setText("");
 
         // Disable the importMenu
-        TopMenuBar tmb = (TopMenuBar) this.getRootPane().getJMenuBar();
-        tmb.getFileMenu().setEnabled(false);
+        TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
+        topMenuBar.getFileMenu().setEnabled(false);
 
         // Disable the billTable
-        MainFrame mf = (MainFrame) SwingUtilities.getWindowAncestor(this);
-        BillTable bt = (BillTable) mf.getBillPanel().getBillTable();
-        bt.setEnabled(false);
-        bt.setVisible(false);
-
-        // TODO: Call the controller of BillUpdateUseCase
+        BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
+        billTable.setEnabled(false);
+        billTable.setVisible(false);
     }
 
     private void backFromSplit() {
-        // TODO: Call the controller of BillUpdateUseCase
+        // set the current bill to the main bill of the user
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-2));
     }
 
     private void addEntry() {
         // TODO: Call the controller of InsertEntryUseCase
+
+        // after adding the entry, update the current bill
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
     }
 
     private void deleteEntry() {
-        // TODO: Call the controller of DeleteEntryUseCase
+        BillTable table = this.mainFrame.getBillPanel().getBillTable();
+        int[] selectedRows = table.getSelectedRows();
+        for (int i : selectedRows) {
+            int entryId = (int) table.getModel().getValueAt(i, 0);
+            System.out.println(entryId);
+            this.mainFrame.getDeleteEntryController().delete(entryId);
+        }
+        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
     }
 
     public JButton getDeleteEntryButton() {
-        return deleteEntryButton;
+        return this.deleteEntryButton;
+    }
+
+    @Override
+    public void view(UserJoinViewModel viewModel) {
+        // If the user join successfully,
+        if (viewModel.isJoined()) {
+            // disable the signInButton, and enable the signOutButton and addEntryButton
+            this.signInButton.setEnabled(false);
+            this.signOutButton.setEnabled(true);
+            this.addEntryButton.setEnabled(true);
+
+            // the usernameField and passwordField shouldn't be editable
+            this.usernameField.setEditable(false);
+            this.passwordField.setEditable(false);
+
+            // enable importMenu
+            TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
+            topMenuBar.getFileMenu().setEnabled(true);
+
+            SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-2));
+
+            // enable billTable
+            BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
+            billTable.setVisible(true);
+            billTable.setEnabled(true);
+        }
+
+        // Show a message dialog with whatever the text from the viewModel
+        JOptionPane.showMessageDialog(this.mainFrame, viewModel.getReasonRejected());
     }
 
     // Change color in ActionPanel and statistic text area
-    public void changeColor(Color c){
+    public void changeColor(Color c) {
         this.setBorder(new CustomTitleBorder("Action", c));
         this.statisticsTextArea.setBorder(new CustomTitleBorder("Statistics", c));
         this.statisticsTextArea.setForeground(c);

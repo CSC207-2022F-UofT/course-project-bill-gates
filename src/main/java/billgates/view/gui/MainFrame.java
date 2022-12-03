@@ -1,10 +1,17 @@
 package billgates.view.gui;
 
+import billgates.use_cases.bill_update.BillUpdateController;
+import billgates.use_cases.delete_entry.DeleteEntryController;
+import billgates.use_cases.user_join.UserJoinController;
+
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte, Scott, Eva
+ */
 public class MainFrame extends JFrame {
 
     // window width
@@ -14,14 +21,14 @@ public class MainFrame extends JFrame {
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);
 
     private final JPanel contentPane = new JPanel(new BorderLayout());
-    private final ActionPanel actionPanel = new ActionPanel();
-    private final BillPanel billPanel = new BillPanel();
+    private final ActionPanel actionPanel = new ActionPanel(this);
+    private final BillPanel billPanel = new BillPanel(this);
     private final JMenuBar menu = new TopMenuBar(this);
+    private UserJoinController userJoinController;
 
-    public static void main(String[] args) {
-        MainFrame mainFrame = new MainFrame();
-        mainFrame.setVisible(true);
-    }
+    // controllers will be set after constructing the view objects
+    private BillUpdateController billUpdateController;
+    private DeleteEntryController deleteEntryController;
 
     public MainFrame() {
         // Set the title
@@ -31,7 +38,7 @@ public class MainFrame extends JFrame {
 
         // Set the size of the window, and the user cannot resize the window
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        this.setResizable(false);
+        this.setResizable(true);
 
         // Display the window in the center of the screen
         SwingUtil.centerInScreen(this);
@@ -47,11 +54,34 @@ public class MainFrame extends JFrame {
     }
 
     public BillPanel getBillPanel() {
-        return billPanel;
+        return this.billPanel;
     }
 
     public ActionPanel getActionPanel() {
         return actionPanel;
     }
 
+    public BillUpdateController getBillUpdateController() {
+        return billUpdateController;
+    }
+
+    public void setBillUpdateController(BillUpdateController billUpdateController) {
+        this.billUpdateController = billUpdateController;
+    }
+
+    public DeleteEntryController getDeleteEntryController() {
+        return deleteEntryController;
+    }
+
+    public void setDeleteEntryController(DeleteEntryController deleteEntryController) {
+        this.deleteEntryController = deleteEntryController;
+    }
+
+    public UserJoinController getUserJoinController() {
+        return userJoinController;
+    }
+
+    public void setUserJoinController(UserJoinController userJoinController) {
+        this.userJoinController = userJoinController;
+    }
 }

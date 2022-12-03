@@ -4,6 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
+
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte
+ */
 public class ActionLabel extends JLabel {
     public static final List<ActionLabel> allLabel = new ArrayList<>();
     public static final int DEFAULT_FONT_SIZE = 13;

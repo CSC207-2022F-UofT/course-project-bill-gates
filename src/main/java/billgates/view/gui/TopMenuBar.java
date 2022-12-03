@@ -6,6 +6,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte
+ */
 public class TopMenuBar extends JMenuBar {
 
     public static final int DEFAULT_HEIGHT = 23;
