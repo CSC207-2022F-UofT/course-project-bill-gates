@@ -1,6 +1,6 @@
 package billgates.use_cases.alter_entry;
 
-import billgates.database.QueryEntryData;
+import billgates.entities.Entry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
@@ -32,7 +32,7 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
     public void alterEntry(int entryId, Map<String, Object> changeMap) {
         int billId = User.getInstance().getCurrentBillID();
 
-        QueryEntryData oldEntry = this.gateway.getEntryData(billId, entryId);
+        Entry oldEntry = this.gateway.getEntryData(billId, entryId);
         AlterEntryRequestModel model = new AlterEntryRequestModel(oldEntry);
         for (Map.Entry<String, Object> changeSet : changeMap.entrySet()) {
             String alterColumn = changeSet.getKey();
@@ -62,7 +62,7 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
             }
         }
 
-        gateway.modifyEntry(billId, model.getQueryEntryData(entryId));
+        gateway.modifyEntry(billId, model.getEntryData(entryId));
 
     }
 
