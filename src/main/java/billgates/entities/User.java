@@ -6,7 +6,8 @@ import java.util.Objects;
  * Clean Architecture Layer: Enterprise Business Rules
  * This class represents a user entity in our program.
  * Only one user is allowed in the running time of our program.
- * We implement the User using singleton design pattern.
+ * <p>
+ * Design Pattern: Singleton
  * The UserJoinUseCase will initialize the user by calling getInstance(parameters).
  * Other use cases can use getInstance() (the one without parameters) to obtain the current user.
  *
