@@ -1,11 +1,12 @@
 package billgates.entities;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Clean Architecture Layer: Enterprise Business Rules
+ * Design Pattern: Builder
  * This is a builder class that help to build an Entry or Splitter Entry.
- * This class implements a builder design pattern.
  * <p>
  * The instance variables define the default values for each attribute.
  * Each setter method set an attribute of the entry and returns this EntryBuilder.
@@ -32,9 +33,6 @@ public class EntryBuilder {
     }
 
     public Entry buildEntry() {
-        if (this.id == -1) {
-            throw new InvalidEntryException("Invalid entry ID!");
-        }
         return new Entry(
                 new Attribute<>(this.id, "id"),
                 new Attribute<>(this.date, "date"),
@@ -49,9 +47,6 @@ public class EntryBuilder {
     }
 
     public SplitterEntry buildSplitterEntry() {
-        if (this.id == -1) {
-            throw new InvalidEntryException("Invalid entry ID!");
-        }
         return new SplitterEntry(
                 new Attribute<>(this.id, "id"),
                 new Attribute<>(this.date, "date"),
@@ -87,7 +82,8 @@ public class EntryBuilder {
     }
 
     public EntryBuilder setDate(ZonedDateTime date) {
-        this.date = date;
+        // Truncates the date unit to only seconds
+        this.date = date.truncatedTo(ChronoUnit.SECONDS);
         return this;
     }
 

@@ -50,11 +50,9 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
                 this.gateway.modifyEntry(user.getBillId(), user.getCurrentBillID(),
                         "Splitter", String.valueOf(user.getCurrentBillID()));
                 // get all entries of the current bill
-                result = this.gateway.getSplitBillData(user.getCurrentBillID()).getEntries()
-                        .stream().map(d -> d.toEntryBuilder().buildSplitterEntry()).toList();
+                result = this.gateway.getSplitBillData(user.getCurrentBillID());
             } else {
-                result = this.gateway.getBillData(user.getCurrentBillID()).getEntries()
-                        .stream().map(d -> d.toEntryBuilder().buildEntry()).toList();
+                result = this.gateway.getBillData(user.getCurrentBillID());
             }
             // transform all entries to lists of raw objects like int, ZonedDateTime, ...
             List<List<Object>> list = result.stream().map(AbstractEntry::toObjects).toList();

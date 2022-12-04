@@ -1,5 +1,6 @@
 package billgates.database;
 
+import billgates.entities.*;
 import billgates.Main;
 import billgates.interface_adapters.DatabaseGateway;
 
@@ -120,7 +121,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
-    public QueryBillData getBillData(int billId) {
+    public List<Entry> getBillData(int billId) {
         Instant instantStart = Instant.ofEpochMilli(0);
 
         // This is the date of the end of the world
@@ -135,8 +136,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
-    public QuerySplitBillData getSplitBillData(int splitBillId) {
-        List<QuerySplitEntryData> entries = new ArrayList<>();
+    public List<SplitterEntry> getSplitBillData(int splitBillId) {
+        List<SplitterEntry> entries = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
@@ -159,12 +160,12 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             throw new RuntimeException(e);
         }
 
-        return new QuerySplitBillData(splitBillId, entries);
+        return entries;
     }
 
     @Override
-    public QueryBillData getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate) {
-        List<QueryEntryData> entries = new ArrayList<>();
+    public List<Entry> getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate) {
+        List<Entry> entries = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
         try {
@@ -189,11 +190,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             throw new RuntimeException(e);
         }
 
-        return new QueryBillData(billId, entries);
+        return entries;
     }
 
     @Override
-    public QueryEntryData getEntryData(int billId, int entryId) {
+    public Entry getEntryData(int billId, int entryId) {
         int splitBillId;
         double value;
         String currency;
@@ -239,19 +240,21 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             throw new RuntimeException(e);
         }
 
-        return new QueryEntryData(entryId,
-                zDate,
-                value,
-                currency,
-                description,
-                from,
-                to,
-                location,
-                splitBillId);
+        return new EntryBuilder()
+                .setId(entryId)
+                .setValue(value)
+                .setDate(zDate)
+                .setCurrency(currency)
+                .setDescription(description)
+                .setFrom(from)
+                .setTo(to)
+                .setLocation(location)
+                .setSplitterBillId(splitBillId)
+                .buildEntry();
     }
 
     @Override
-    public QuerySplitEntryData getSplitEntryData(int billId, int entryId) {
+    public SplitterEntry getSplitEntryData(int billId, int entryId) {
         double value;
         String currency;
         String description;
@@ -299,20 +302,22 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             throw new RuntimeException(e);
         }
 
-        return new QuerySplitEntryData(entryId,
-                zDate,
-                value,
-                currency,
-                description,
-                from,
-                to,
-                location,
-                payee,
-                isPaidBack);
+        return new EntryBuilder()
+                .setId(entryId)
+                .setValue(value)
+                .setDate(zDate)
+                .setCurrency(currency)
+                .setDescription(description)
+                .setFrom(from)
+                .setTo(to)
+                .setLocation(location)
+                .setPayee(payee)
+                .setIsPaidBack(isPaidBack)
+                .buildSplitterEntry();
     }
 
     @Override
-    public void insertEntry(int billId, QueryEntryData entry) {
+    public void insertEntry(int billId, Entry entry) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
@@ -321,22 +326,22 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             // This is the case where we don't want autoincrement
-            if (!(entry.getId() == -1)) {
+            if (!(entry.getId().getAttribute() == -1)) {
                 query = String.format("""
                         INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
                         %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
                         )
                         """,
                         billId,
-                        entry.getId(),
-                        entry.getValue(),
-                        entry.getDate().format(formatter),
-                        entry.getCurrency(),
-                        entry.getDescription(),
-                        entry.getFrom(),
-                        entry.getTo(),
-                        entry.getLocation(),
-                        entry.getSplitBillId());
+                        entry.getId().getAttribute(),
+                        entry.getValue().getAttribute(),
+                        entry.getDate().getAttribute().format(formatter),
+                        entry.getCurrency().getAttribute(),
+                        entry.getDescription().getAttribute(),
+                        entry.getFrom().getAttribute(),
+                        entry.getTo().getAttribute(),
+                        entry.getLocation().getAttribute(),
+                        entry.getSplitterBillId().getAttribute());
             } else {
                 // This is the case where we want auto increment
                 query = String.format("""
@@ -345,14 +350,14 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         )
                         """,
                         billId,
-                        entry.getValue(),
-                        entry.getDate().format(formatter),
-                        entry.getCurrency(),
-                        entry.getDescription(),
-                        entry.getFrom(),
-                        entry.getTo(),
-                        entry.getLocation(),
-                        entry.getSplitBillId());
+                        entry.getValue().getAttribute(),
+                        entry.getDate().getAttribute().format(formatter),
+                        entry.getCurrency().getAttribute(),
+                        entry.getDescription().getAttribute(),
+                        entry.getFrom().getAttribute(),
+                        entry.getTo().getAttribute(),
+                        entry.getLocation().getAttribute(),
+                        entry.getSplitterBillId().getAttribute());
             }
 
             statement.execute(query);
@@ -363,7 +368,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
-    public void insertSplitEntry(int billId, QuerySplitEntryData entry) {
+    public void insertSplitEntry(int billId, SplitterEntry entry) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
@@ -372,7 +377,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             // This is the case where we don't want autoincrement
-            if (!(entry.getId() == -1)) {
+            if (!(entry.getId().getAttribute() == -1)) {
                 query = String.format("""
                         INSERT INTO bill_%d_%d (entry_id, value, date, currency, description, `from`, `to`, location, payee, paid_back) VALUE (
                         %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s"
@@ -380,16 +385,16 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         """,
                         this.userId,
                         billId,
-                        entry.getId(),
-                        entry.getValue(),
-                        entry.getDate().format(formatter),
-                        entry.getCurrency(),
-                        entry.getDescription(),
-                        entry.getFrom(),
-                        entry.getTo(),
-                        entry.getLocation(),
-                        entry.getPayee(),
-                        entry.getIsPaidBack());
+                        entry.getId().getAttribute(),
+                        entry.getValue().getAttribute(),
+                        entry.getDate().getAttribute().format(formatter),
+                        entry.getCurrency().getAttribute(),
+                        entry.getDescription().getAttribute(),
+                        entry.getFrom().getAttribute(),
+                        entry.getTo().getAttribute(),
+                        entry.getLocation().getAttribute(),
+                        entry.getPayee().getAttribute(),
+                        entry.getIsPaidBack().getAttribute());
             } else {
                 // This is the case where we want auto increment
                 query = String.format("""
@@ -399,15 +404,15 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         """,
                         this.userId,
                         billId,
-                        entry.getValue(),
-                        entry.getDate().format(formatter),
-                        entry.getCurrency(),
-                        entry.getDescription(),
-                        entry.getFrom(),
-                        entry.getTo(),
-                        entry.getLocation(),
-                        entry.getPayee(),
-                        entry.getIsPaidBack());
+                        entry.getValue().getAttribute(),
+                        entry.getDate().getAttribute().format(formatter),
+                        entry.getCurrency().getAttribute(),
+                        entry.getDescription().getAttribute(),
+                        entry.getFrom().getAttribute(),
+                        entry.getTo().getAttribute(),
+                        entry.getLocation().getAttribute(),
+                        entry.getPayee().getAttribute(),
+                        entry.getIsPaidBack().getAttribute());
             }
 
             statement.execute(query);
@@ -547,7 +552,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
-    public void modifyEntry(int billId, QueryEntryData entry) {
+    public void modifyEntry(int billId, Entry entry) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
@@ -567,15 +572,15 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                             split_bill_id = %d
                         WHERE entry_id = %d
                         """, billId,
-                    entry.getValue(),
-                    entry.getDate().format(formatter),
-                    entry.getCurrency(),
-                    entry.getDescription(),
-                    entry.getFrom(),
-                    entry.getTo(),
-                    entry.getLocation(),
-                    entry.getSplitBillId(),
-                    entry.getId());
+                    entry.getValue().getAttribute(),
+                    entry.getDate().getAttribute().format(formatter),
+                    entry.getCurrency().getAttribute(),
+                    entry.getDescription().getAttribute(),
+                    entry.getFrom().getAttribute(),
+                    entry.getTo().getAttribute(),
+                    entry.getLocation().getAttribute(),
+                    entry.getSplitterBillId().getAttribute(),
+                    entry.getId().getAttribute());
 
             statement.execute(query);
 
@@ -585,7 +590,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
-    public void modifySplitEntry(int billId, QuerySplitEntryData entry) {
+    public void modifySplitEntry(int billId, SplitterEntry entry) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
@@ -607,16 +612,16 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         WHERE entry_id = %d
                         """, this.userId,
                     billId,
-                    entry.getValue(),
-                    entry.getDate().format(formatter),
-                    entry.getCurrency(),
-                    entry.getDescription(),
-                    entry.getFrom(),
-                    entry.getTo(),
-                    entry.getLocation(),
-                    entry.getPayee(),
-                    entry.getIsPaidBack(),
-                    entry.getId());
+                    entry.getValue().getAttribute(),
+                    entry.getDate().getAttribute().format(formatter),
+                    entry.getCurrency().getAttribute(),
+                    entry.getDescription().getAttribute(),
+                    entry.getFrom().getAttribute(),
+                    entry.getTo().getAttribute(),
+                    entry.getLocation().getAttribute(),
+                    entry.getPayee().getAttribute(),
+                    entry.getIsPaidBack().getAttribute(),
+                    entry.getId().getAttribute());
 
             statement.execute(query);
 
@@ -689,16 +694,6 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         try {
             Statement statement = connection.createStatement();
 
-            String checkQuery = "SHOW TABLES LIKE 'users'";
-
-            ResultSet resultSet = statement.executeQuery(checkQuery);
-
-            // Checks if the table already exists, if not, continue creating the table
-            if (resultSet.next()) {
-                return;
-            }
-
-
             String query = """
                     CREATE TABLE IF NOT EXISTS users
                     (
@@ -720,6 +715,16 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public static void main(String[] args) {
+        MySQLDatabaseGateway testGateway = new MySQLDatabaseGateway();
+
+        testGateway.setUserId(9999);
+
+        Entry obtainedEntry = testGateway.getEntryData(9999, 1);
+
+        System.out.println(obtainedEntry.getDescription().getAttribute());
     }
 
 }
