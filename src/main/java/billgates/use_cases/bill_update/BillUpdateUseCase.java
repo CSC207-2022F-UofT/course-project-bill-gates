@@ -1,7 +1,6 @@
 package billgates.use_cases.bill_update;
 
 import billgates.entities.AbstractEntry;
-import billgates.entities.Entry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
@@ -42,7 +41,7 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
         user.setCurrentBillID(billId);
         // we query the database asynchronously to make the program run smoother
         Thread thread = new Thread(() -> {
-            List<AbstractEntry> result;
+            List<? extends AbstractEntry> result;
             if (user.getBillId() != user.getCurrentBillID()) {
                 // if we are updating the splitter bill, then we create the splitter bill if
                 // not exist
