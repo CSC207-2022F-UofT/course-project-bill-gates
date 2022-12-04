@@ -1,6 +1,7 @@
 package billgates.use_cases.alter_entry;
 
-import billgates.database.QueryEntryData;
+import billgates.entities.Entry;
+import billgates.entities.EntryBuilder;
 
 import java.time.ZonedDateTime;
 
@@ -22,14 +23,14 @@ public class AlterEntryRequestModel {
     private String to;
     private String location;
 
-    public AlterEntryRequestModel(QueryEntryData oldEntry) {
-        date = oldEntry.getDate();
-        value = oldEntry.getValue();
-        currency = oldEntry.getCurrency();
-        description = oldEntry.getDescription();
-        from = oldEntry.getFrom();
-        to = oldEntry.getTo();
-        location = oldEntry.getLocation();
+    public AlterEntryRequestModel(Entry oldEntry) {
+        date = oldEntry.getDate().getAttribute();
+        value = oldEntry.getValue().getAttribute();
+        currency = oldEntry.getCurrency().getAttribute();
+        description = oldEntry.getDescription().getAttribute();
+        from = oldEntry.getFrom().getAttribute();
+        to = oldEntry.getTo().getAttribute();
+        location = oldEntry.getLocation().getAttribute();
     }
 
 
@@ -70,8 +71,17 @@ public class AlterEntryRequestModel {
         this.currency = currency;
     }
 
-    public QueryEntryData getQueryEntryData(int entryID) {
-        return new QueryEntryData(date, value, currency, description, from, to, location, -1);
+    public Entry getEntryData(int entryID) {
+        return new EntryBuilder()
+                .setDate(date)
+                .setValue(value)
+                .setCurrency(currency)
+                .setDescription(description)
+                .setFrom(from)
+                .setTo(to)
+                .setLocation(location)
+                .setSplitterBillId(-1)
+                .buildEntry();
 
     }
 }

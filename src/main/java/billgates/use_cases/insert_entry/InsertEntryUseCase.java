@@ -1,7 +1,8 @@
 package billgates.use_cases.insert_entry;
 
-import billgates.database.QueryEntryData;
-import billgates.database.QuerySplitEntryData;
+import billgates.entities.Entry;
+import billgates.entities.EntryBuilder;
+import billgates.entities.SplitterEntry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
@@ -27,24 +28,39 @@ public class InsertEntryUseCase implements InsertEntryInputPort {
     @Override
     public void insertEntry(InsertEntryRequestModel model) {
 
-        //Check if we are adding a normal entry to the main bill or a splitter entry to the splitter bill.
+        // Check if we are adding a normal entry to the main bill or a splitter entry to the splitter bill.
         if (User.getInstance().getBillId() == User.getInstance().getCurrentBillID()) {
-            //Construct a QueryEntryData for new entry, and the entry id of it is the size of all entries plus one.
-            QueryEntryData entry = new QueryEntryData(
-                    model.getDate(), model.getValue(),
-                    model.getCurrency(), model.getDescription(),
-                    model.getFrom(), model.getTo(), model.getLocation(), -1);
+            // Construct an entry using the entry builder
+            // Default with a splitterBillId being -1
+            // Default with the entryId with -1
+            Entry entry = new EntryBuilder()
+                    .setDate(model.getDate())
+                    .setValue(model.getValue())
+                    .setCurrency(model.getCurrency())
+                    .setDescription(model.getDescription())
+                    .setFrom(model.getFrom())
+                    .setTo(model.getTo())
+                    .setLocation(model.getLocation())
+                    .setSplitterBillId(-1)
+                    .buildEntry();
 
-            //Pass the new QueryEntryData in the Gateway#insertEntry.
+            // Pass the new QueryEntryData in the Gateway#insertEntry.
             this.gateway.insertEntry(User.getInstance().getCurrentBillID(), entry);
         } else {
-            //Construct a QuerySplitEntryData for new splitter entry.
-            QuerySplitEntryData entry = new QuerySplitEntryData(model.getDate(),
-                    model.getValue(), model.getCurrency(),
-                    model.getDescription(), model.getFrom(), model.getTo(), model.getLocation(), model.getPayee(),
-                    model.getIsPaidBack());
+            // Construct a QuerySplitEntryData for new splitter entry.
+            SplitterEntry entry = new EntryBuilder()
+                    .setDate(model.getDate())
+                    .setValue(model.getValue())
+                    .setCurrency(model.getCurrency())
+                    .setDescription(model.getDescription())
+                    .setFrom(model.getFrom())
+                    .setTo(model.getTo())
+                    .setLocation(model.getLocation())
+                    .setPayee(model.getPayee())
+                    .setIsPaidBack(model.getIsPaidBack())
+                    .buildSplitterEntry();
 
-            //Pass the new QuerySplitEntryData in the Gateway #insertSplitEntry.
+            // Pass the new QuerySplitEntryData in the Gateway #insertSplitEntry.
             this.gateway.insertSplitEntry(User.getInstance().getCurrentBillID(), entry);
         }
 
