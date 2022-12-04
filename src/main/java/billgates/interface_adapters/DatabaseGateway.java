@@ -9,10 +9,10 @@ import java.util.List;
 
 /**
  * Clean Architecture Layer: Application Business Rules
+ * Design Pattern: Strategy
  * This class is being used by multiple use cases to retrieve, insert, and modify information
  * that is used for the application.
  * <p>
- * Design Pattern: Strategy
  * We can implement the database gateway in multiple different types of databases
  * The current implemented database by default, uses MySQL Database
  *

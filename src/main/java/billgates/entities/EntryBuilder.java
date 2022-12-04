@@ -5,9 +5,9 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * Clean Architecture Layer: Enterprise Business Rules
+ * Design Pattern: Builder
  * This is a builder class that help to build an Entry or Splitter Entry.
  * <p>
- * Design Pattern: Builder
  * The instance variables define the default values for each attribute.
  * Each setter method set an attribute of the entry and returns this EntryBuilder.
  * In this way, you can chain setters and build an Entry in one line.
