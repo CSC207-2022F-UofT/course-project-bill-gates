@@ -3,10 +3,13 @@ package billgates.view.gui;
 import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.insert_entry.InsertEntryRequestModel;
 import billgates.use_cases.user_join.UserJoinViewModel;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -221,7 +224,11 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void addEntry() {
-        JTextField dateField = new JTextField(20);
+        // Create a date picker that begin with Monday.
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        DatePicker datePicker2 = new DatePicker(dateSettings);
+
         JTextField valueField = new JTextField(20);
         JTextField currencyField = new JTextField(20);
         JTextField descriptionField = new JTextField(20);
@@ -232,7 +239,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         JPanel myPanel = new JPanel();
         myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.PAGE_AXIS));
         myPanel.add(new JLabel("date:"));
-        myPanel.add(dateField);
+        myPanel.add(datePicker2);
         myPanel.add(new JLabel("value:"));
         myPanel.add(valueField);
         myPanel.add(new JLabel("currency:"));
@@ -249,7 +256,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         int result = JOptionPane.showConfirmDialog(null, myPanel,
                 "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            String date1 = dateField.getText();
+            String date1 = datePicker2.getText();
             LocalDateTime localDateTime = LocalDateTime.parse(date1, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             ZonedDateTime date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
             String value1 = valueField.getText();
