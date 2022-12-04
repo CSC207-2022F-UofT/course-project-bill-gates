@@ -2,6 +2,8 @@ package billgates.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
@@ -10,6 +12,7 @@ import java.awt.*;
  */
 public class ActionButton extends JButton {
 
+    public static final List<ActionButton> allButton = new ArrayList<>();
     public static final int DEFAULT_WIDTH = 160;
     public static final int DEFAULT_HEIGHT = 40;
     public static final int DEFAULT_FONT_SIZE = 16;
@@ -30,6 +33,7 @@ public class ActionButton extends JButton {
 
         // Set the size of the button
         this.setMaximumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        allButton.add(this);
     }
 
     public ActionButton(String text, ImageIcon icon) {

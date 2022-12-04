@@ -1,11 +1,20 @@
 package billgates.view.gui;
 
 import billgates.interface_adapters.UserJoinUpdatable;
+import billgates.use_cases.insert_entry.InsertEntryRequestModel;
 import billgates.use_cases.user_join.UserJoinViewModel;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.*;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.sql.SQLOutput;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -21,9 +30,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     public static final int DEFAULT_SIGN_IN_PANEL_HEIGHT = DEFAULT_HEIGHT / 7;
     public static final int HORIZONTAL_GAP = 5;
     public static final int VERTICAL_GAP = 10;
-//    public static final int BORDER_THICKNESS = 3;
-//    public static final int EMPTY_BORDER_THICKNESS = 7;
-//    public static final Color DEFAULT_BORDER_TEXT_COLOR = new Color(220, 120, 150);
 
     private final ImageIcon backIcon = new ImageIcon(Objects.requireNonNull
             (this.getClass().getResource("/back.png")));
@@ -114,7 +120,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         this.backButton.setAlignmentX(CENTER_ALIGNMENT);
         this.add(Box.createRigidArea(new Dimension(0, VERTICAL_GAP)));
         // Back from splitting bills event
-        this.addEntryButton.addActionListener((e -> this.backFromSplit()));
+        this.backButton.addActionListener((e -> this.backFromSplit()));
         // backButton should be disabled at the beginning
         this.backButton.setEnabled(false);
 
@@ -190,6 +196,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         this.signOutButton.setEnabled(false);
         this.addEntryButton.setEnabled(false);
         this.deleteEntryButton.setEnabled(false);
+        this.backButton.setEnabled(false);
 
         // The usernameField and passwordField should be editable after signing out
         this.usernameField.setEditable(true);
@@ -201,10 +208,10 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
         // Disable the importMenu
         TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
-        topMenuBar.getImportMenu().setEnabled(false);
+        topMenuBar.getFileMenu().setEnabled(false);
 
         // Disable the billTable
-        BillTable billTable = (BillTable) this.mainFrame.getBillPanel().getBillTable();
+        BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
         billTable.setEnabled(false);
         billTable.setVisible(false);
     }
@@ -215,7 +222,49 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void addEntry() {
-        // TODO: Call the controller of InsertEntryUseCase
+        JTextField dateField = new JTextField(20);
+        JTextField valueField = new JTextField(20);
+        JTextField currencyField = new JTextField(20);
+        JTextField descriptionField = new JTextField(20);
+        JTextField fromField = new JTextField(20);
+        JTextField toField = new JTextField(20);
+        JTextField locationField = new JTextField(20);
+
+        JPanel myPanel = new JPanel();
+        myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.PAGE_AXIS));
+        myPanel.add(new JLabel("date:"));
+        myPanel.add(dateField);
+        myPanel.add(new JLabel("value:"));
+        myPanel.add(valueField);
+        myPanel.add(new JLabel("currency:"));
+        myPanel.add(currencyField);
+        myPanel.add(new JLabel("description:"));
+        myPanel.add(descriptionField);
+        myPanel.add(new JLabel("from:"));
+        myPanel.add(fromField);
+        myPanel.add(new JLabel("to:"));
+        myPanel.add(toField);
+        myPanel.add(new JLabel("location:"));
+        myPanel.add(locationField);
+
+        int result = JOptionPane.showConfirmDialog(null, myPanel,
+                "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String date1 = dateField.getText();
+            LocalDateTime localDateTime = LocalDateTime.parse(date1, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            ZonedDateTime date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
+            String value1 = valueField.getText();
+            double value = Double.parseDouble(value1);
+            String currency = currencyField.getText();
+            String description = descriptionField.getText();
+            String from = fromField.getText();
+            String to = toField.getText();
+            String location = locationField.getText();
+
+            InsertEntryRequestModel model = new InsertEntryRequestModel(date, value, currency, description,
+                    from, to, location);
+            this.mainFrame.getInsertEntryController().insert(model);
+        }
 
         // after adding the entry, update the current bill
         SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
@@ -244,6 +293,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             this.signInButton.setEnabled(false);
             this.signOutButton.setEnabled(true);
             this.addEntryButton.setEnabled(true);
+            this.backButton.setEnabled(true);
 
             // the usernameField and passwordField shouldn't be editable
             this.usernameField.setEditable(false);
@@ -251,7 +301,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
             // enable importMenu
             TopMenuBar topMenuBar = (TopMenuBar) this.mainFrame.getJMenuBar();
-            topMenuBar.getImportMenu().setEnabled(true);
+            topMenuBar.getFileMenu().setEnabled(true);
 
             SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-2));
 
@@ -263,5 +313,27 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
         // Show a message dialog with whatever the text from the viewModel
         JOptionPane.showMessageDialog(this.mainFrame, viewModel.getReasonRejected());
+    }
+
+    // Change color in ActionPanel and statistic text area
+    public void changeColor(Color c) {
+        this.setBorder(new CustomTitleBorder("Action", c));
+        this.statisticsTextArea.setBorder(new CustomTitleBorder("Statistics", c));
+        this.statisticsTextArea.setForeground(c);
+        ActionButton.allButton.forEach(b -> b.setBackground(c));
+    }
+
+    // Change font in ActionPanel and statistic text area
+    public void changeFont(String f){
+        Font newButtonFont = new FontSettings(f, ActionButton.DEFAULT_FONT_SIZE);
+        for(ActionButton ab: ActionButton.allButton){
+            ab.setFont(newButtonFont);
+        }
+        Font newLabelFont = new FontSettings(f, ActionLabel.DEFAULT_FONT_SIZE);
+        for(ActionLabel al: ActionLabel.allLabel){
+            al.setFont(newLabelFont);
+        }
+        Font newTextFont = new FontSettings(f, ActionTextArea.DEFAULT_FONT_SIZE);
+        this.statisticsTextArea.setFont(newTextFont);
     }
 }

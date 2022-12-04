@@ -6,8 +6,19 @@ import billgates.entities.SplitterEntry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
+/**
+ * Clean Architecture Layer: Application Business Rules
+ * A concrete implementation of the <code>InsertEntryInputPort</code>.
+ *
+ * @author Ruby, Ellen
+ * @see InsertEntryInputPort
+ */
+
 public class InsertEntryUseCase implements InsertEntryInputPort {
 
+    /**
+     * The database gateway for input/output with the database.
+     */
     private final DatabaseGateway gateway;
 
     public InsertEntryUseCase(DatabaseGateway gateway) {

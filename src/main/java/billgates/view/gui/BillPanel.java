@@ -66,14 +66,29 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
         return this.billTable;
     }
 
+    // Change color of table header and border in bill panel
+    public void changeColor(Color c){
+        this.billTable.getTableHeader().setBackground(c);
+        this.setBorder(new CustomTitleBorder("Bills",c));
+    }
+
+    // Change font of table header and border in bill panel
+    public void changeFont(String f){
+        Font newTableFont = new FontSettings(f, BillTable.DEFAULT_FONT_SIZE);
+        this.billTable.getTableHeader().setFont(newTableFont);
+    }
+
     @Override
     public void update(BillUpdateViewModel viewModel) {
-        String[] columns = viewModel.getColumns();
-        List<List<Object>> entries = viewModel.getEntries();
-        BillTableModel model = this.getBillTable().getModel();
-        model.setColumnNames(columns);
-        model.setData(entries);
-        this.getBillTable().updateUI();
+        // we use invoke later here because this method is called from other threads.
+        SwingUtilities.invokeLater(() -> {
+            String[] columns = viewModel.getColumns();
+            List<List<Object>> entries = viewModel.getEntries();
+            BillTableModel model = this.getBillTable().getModel();
+            model.setColumnNames(columns);
+            model.setData(entries);
+            this.getBillTable().updateUI();
+        });
     }
 
     /**
@@ -93,7 +108,6 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
         @Override
         public void mousePressed(MouseEvent e) {
             if (e.getClickCount() == 2) {
-                System.out.println(2);
                 // trigger to splitter bill
                 Point point = new Point(e.getX(), e.getY());
                 int row = BillPanel.this.billTable.rowAtPoint(point);
@@ -101,19 +115,13 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
                 if (row == -1 || column == -1)
                     return;
                 String name = BillPanel.this.billTable.getColumnName(column);
-                if ("Splitter".equals(name))
+                if (!"Splitter".equals(name))
                     return;
-                String splitter = (String) BillPanel.this.billTable.getModel().getValueAt(row, column);
-                if ("No".equals(splitter)) {
-                    // TODO: call create splitter bill use case
-                }
                 // get the entry id
                 int entryId = (int) BillPanel.this.getBillTable().getModel().getValueAt(row, 0);
-                // for debugging TODO: delete it
-                System.out.println(entryId);
                 // call the bill update use case on the entryId
-                // TODO: uncomment the line below. I commented because I don't have create splitter use case now.
-                // SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(entryId));
+                SwingUtilities.invokeLater(() ->
+                        BillPanel.this.mainFrame.getBillUpdateController().update(entryId));
             }
         }
     }

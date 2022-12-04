@@ -1,5 +1,6 @@
 package billgates.use_cases.bill_update;
 
+import billgates.entities.AbstractEntry;
 import billgates.entities.Entry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
@@ -39,10 +40,28 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
             case -2 -> billId = user.getBillId();
         }
         user.setCurrentBillID(billId);
-        // get all entries of the current bill
-        List<Entry> result = this.gateway.getBillData(user.getCurrentBillID());
-        List<List<Object>> list = result.stream().map(Entry::toObjects).toList();
-        // if the current bill id is not the same as the bill id, then the current bill is a splitter bill
-        this.presenter.updateBill(new BillUpdateResponseModel(list, user.getCurrentBillID() != user.getBillId()));
+        // we query the database asynchronously to make the program run smoother
+        Thread thread = new Thread(() -> {
+            List<AbstractEntry> result;
+            if (user.getBillId() != user.getCurrentBillID()) {
+                // if we are updating the splitter bill, then we create the splitter bill if
+                // not exist
+                this.gateway.createSplitBillTable(user.getCurrentBillID());
+                // modify the split_bill_id column
+                this.gateway.modifyEntry(user.getBillId(), user.getCurrentBillID(),
+                        "Splitter", String.valueOf(user.getCurrentBillID()));
+                // get all entries of the current bill
+                result = this.gateway.getSplitBillData(user.getCurrentBillID());
+            } else {
+                result = this.gateway.getBillData(user.getCurrentBillID());
+            }
+            // transform all entries to lists of raw objects like int, ZonedDateTime, ...
+            List<List<Object>> list = result.stream().map(AbstractEntry::toObjects).toList();
+            // if the current bill id is not the same as the bill id,
+            // then the current bill is a splitter bill
+            this.presenter.updateBill(new BillUpdateResponseModel(list,
+                    user.getCurrentBillID() != user.getBillId()));
+        });
+        thread.start();
     }
 }

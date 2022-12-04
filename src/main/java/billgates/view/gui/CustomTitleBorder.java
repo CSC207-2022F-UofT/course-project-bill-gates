@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte
+ * @author Charlotte, Eva
  */
 public class CustomTitleBorder extends TitledBorder {
 
@@ -27,6 +27,13 @@ public class CustomTitleBorder extends TitledBorder {
         super(OUTSIDE_BORDER, text);
         this.setTitleColor(DEFAULT_BORDER_TEXT_COLOR);
         this.setBorder(BorderFactory.createCompoundBorder(OUTSIDE_BORDER, EMPTY_BORDER));
+    }
+
+    // Add a new constructor to change border color later
+    public CustomTitleBorder(String text, Color c){
+        super(OUTSIDE_BORDER, text);
+        this.setTitleColor(c);
+        this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createCompoundBorder(EMPTY_BORDER, new LineBorder(c, DEFAULT_BORDER_THICKNESS, true)),EMPTY_BORDER));
     }
 
 }

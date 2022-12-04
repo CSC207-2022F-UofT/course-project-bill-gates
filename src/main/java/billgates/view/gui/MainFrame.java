@@ -2,6 +2,7 @@ package billgates.view.gui;
 
 import billgates.use_cases.bill_update.BillUpdateController;
 import billgates.use_cases.delete_entry.DeleteEntryController;
+import billgates.use_cases.insert_entry.InsertEntryController;
 import billgates.use_cases.user_join.UserJoinController;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import java.awt.*;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Scott
+ * @author Charlotte, Scott, Eva
  */
 public class MainFrame extends JFrame {
 
@@ -23,12 +24,13 @@ public class MainFrame extends JFrame {
     private final JPanel contentPane = new JPanel(new BorderLayout());
     private final ActionPanel actionPanel = new ActionPanel(this);
     private final BillPanel billPanel = new BillPanel(this);
-    private final JMenuBar menu = new TopMenuBar();
+    private final JMenuBar menu = new TopMenuBar(this);
     private UserJoinController userJoinController;
 
     // controllers will be set after constructing the view objects
     private BillUpdateController billUpdateController;
     private DeleteEntryController deleteEntryController;
+    private InsertEntryController insertEntryController;
 
     public MainFrame() {
         // Set the title
@@ -58,11 +60,11 @@ public class MainFrame extends JFrame {
     }
 
     public ActionPanel getActionPanel() {
-        return actionPanel;
+        return this.actionPanel;
     }
 
     public BillUpdateController getBillUpdateController() {
-        return billUpdateController;
+        return this.billUpdateController;
     }
 
     public void setBillUpdateController(BillUpdateController billUpdateController) {
@@ -70,7 +72,7 @@ public class MainFrame extends JFrame {
     }
 
     public DeleteEntryController getDeleteEntryController() {
-        return deleteEntryController;
+        return this.deleteEntryController;
     }
 
     public void setDeleteEntryController(DeleteEntryController deleteEntryController) {
@@ -78,10 +80,18 @@ public class MainFrame extends JFrame {
     }
 
     public UserJoinController getUserJoinController() {
-        return userJoinController;
+        return this.userJoinController;
     }
 
     public void setUserJoinController(UserJoinController userJoinController) {
         this.userJoinController = userJoinController;
+    }
+
+    public InsertEntryController getInsertEntryController() {
+        return this.insertEntryController;
+    }
+
+    public void setInsertEntryController(InsertEntryController insertEntryController) {
+        this.insertEntryController = insertEntryController;
     }
 }
