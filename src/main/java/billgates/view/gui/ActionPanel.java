@@ -3,22 +3,9 @@ package billgates.view.gui;
 import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.insert_entry.InsertEntryRequestModel;
 import billgates.use_cases.user_join.UserJoinViewModel;
-import com.github.lgooddatepicker.components.DateTimePicker;
-
-
-
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.sql.SQLOutput;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -225,52 +212,12 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void addEntry() {
-        // Create a date picker that begin with Monday.
-        DateTimePicker dateTimePicker1 = new DateTimePicker();
-        add(dateTimePicker1);
+        AddEntryDialog addEntryDialog = new AddEntryDialog(mainFrame);
 
-        JTextField valueField = new JTextField(20);
-        JTextField currencyField = new JTextField(20);
-        JTextField descriptionField = new JTextField(20);
-        JTextField fromField = new JTextField(20);
-        JTextField toField = new JTextField(20);
-        JTextField locationField = new JTextField(20);
-
-        JPanel myPanel = new JPanel();
-        myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.PAGE_AXIS));
-        myPanel.add(new JLabel("date:"));
-        myPanel.add(dateTimePicker1);
-        myPanel.add(new JLabel("value:"));
-        myPanel.add(valueField);
-        myPanel.add(new JLabel("currency:"));
-        myPanel.add(currencyField);
-        myPanel.add(new JLabel("description:"));
-        myPanel.add(descriptionField);
-        myPanel.add(new JLabel("from:"));
-        myPanel.add(fromField);
-        myPanel.add(new JLabel("to:"));
-        myPanel.add(toField);
-        myPanel.add(new JLabel("location:"));
-        myPanel.add(locationField);
-
-        int result = JOptionPane.showConfirmDialog(null, myPanel,
-                "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            String date1 = dateTimePicker1.getDatePicker().getName();
-            LocalDateTime localDateTime = LocalDateTime.parse(date1, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            ZonedDateTime date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
-            String value1 = valueField.getText();
-            double value = Double.parseDouble(value1);
-            String currency = currencyField.getText();
-            String description = descriptionField.getText();
-            String from = fromField.getText();
-            String to = toField.getText();
-            String location = locationField.getText();
-
-            InsertEntryRequestModel model = new InsertEntryRequestModel(date, value, currency, description,
-                    from, to, location);
-            this.mainFrame.getInsertEntryController().insert(model);
-        }
+        InsertEntryRequestModel model = new InsertEntryRequestModel(addEntryDialog.getDate(), addEntryDialog.getValue(),
+                addEntryDialog.getCurrency(), addEntryDialog.getDescription(),
+                addEntryDialog.getFrom(), addEntryDialog.getTo(), addEntryDialog.getLocation_text());
+        this.mainFrame.getInsertEntryController().insert(model);
 
         // after adding the entry, update the current bill
         SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
