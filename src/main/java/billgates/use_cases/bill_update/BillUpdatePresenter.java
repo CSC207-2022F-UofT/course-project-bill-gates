@@ -1,5 +1,6 @@
 package billgates.use_cases.bill_update;
 
+import billgates.Main;
 import billgates.interface_adapters.BillPanelUpdatable;
 
 import java.time.ZonedDateTime;
@@ -43,7 +44,7 @@ public class BillUpdatePresenter implements BillUpdateOutputPort {
         // format dates
         for (List<Object> list : entries) {
             ZonedDateTime date = (ZonedDateTime) list.get(1);
-            String formatted = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String formatted = date.format(DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
             list.set(1, formatted);
         }
         String[] columns;
