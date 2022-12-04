@@ -1,6 +1,6 @@
 package billgates.use_cases.bill_update;
 
-import billgates.entities.Entry;
+import billgates.entities.AbstractEntry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
@@ -41,7 +41,7 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
         user.setCurrentBillID(billId);
         // we query the database asynchronously to make the program run smoother
         Thread thread = new Thread(() -> {
-            List<Entry> result;
+            List<? extends AbstractEntry> result;
             if (user.getBillId() != user.getCurrentBillID()) {
                 // if we are updating the splitter bill, then we create the splitter bill if
                 // not exist
@@ -51,13 +51,13 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
                         "Splitter", String.valueOf(user.getCurrentBillID()));
                 // get all entries of the current bill
                 result = this.gateway.getSplitBillData(user.getCurrentBillID()).getEntries()
-                        .stream().map(d -> d.toEntryBuilder().buildEntry()).toList();
+                        .stream().map(d -> d.toEntryBuilder().buildSplitterEntry()).toList();
             } else {
                 result = this.gateway.getBillData(user.getCurrentBillID()).getEntries()
                         .stream().map(d -> d.toEntryBuilder().buildEntry()).toList();
             }
             // transform all entries to lists of raw objects like int, ZonedDateTime, ...
-            List<List<Object>> list = result.stream().map(Entry::toObjects).toList();
+            List<List<Object>> list = result.stream().map(AbstractEntry::toObjects).toList();
             // if the current bill id is not the same as the bill id,
             // then the current bill is a splitter bill
             this.presenter.updateBill(new BillUpdateResponseModel(list,
