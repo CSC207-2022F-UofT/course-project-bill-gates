@@ -1,6 +1,7 @@
 package billgates.database;
 
 import billgates.entities.*;
+import billgates.Main;
 import billgates.interface_adapters.DatabaseGateway;
 
 import billgates.entities.EntryBuilder;
@@ -167,7 +168,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public List<Entry> getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate) {
         List<Entry> entries = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
         try {
             Statement statement = connection.createStatement();
@@ -320,7 +321,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void insertEntry(int billId, Entry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
@@ -371,7 +372,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void insertSplitEntry(int billId, SplitterEntry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
@@ -513,7 +514,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             // If equal, we are modifying the entry from the user's bill
             query = String.format("""
                         UPDATE bill_%d
-                        SET %s = "%s"
+                        SET `%s` = '%s'
                         WHERE entry_id = %d
                         """, billId,
                     this.columnToDatabaseColumn.get(column),
@@ -537,7 +538,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             // If equal, we are modifying the entry from the user's bill
             query = String.format("""
                         UPDATE bill_%d_%d
-                        SET %s = "%s"
+                        SET `%s` = '%s'
                         WHERE entry_id = %d
                         """, this.userId,
                     billId,
@@ -555,7 +556,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void modifyEntry(int billId, Entry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
@@ -593,7 +594,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void modifySplitEntry(int billId, SplitterEntry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 

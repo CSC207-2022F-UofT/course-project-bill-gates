@@ -1,20 +1,17 @@
 package billgates.view.gui;
 
+import billgates.Main;
 import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.insert_entry.InsertEntryRequestModel;
 import billgates.use_cases.user_join.UserJoinViewModel;
 
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.sql.SQLOutput;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -251,7 +248,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
                 "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             String date1 = dateField.getText();
-            LocalDateTime localDateTime = LocalDateTime.parse(date1, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime localDateTime = LocalDateTime.parse(date1, DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
             ZonedDateTime date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
             String value1 = valueField.getText();
             double value = Double.parseDouble(value1);

@@ -1,11 +1,13 @@
 package billgates.view.gui;
 
+import billgates.Main;
 import billgates.view.BillTableModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
@@ -48,7 +50,7 @@ public class BillTable extends JTable {
     }
 
     /**
-     * Initialize the widths of columns of the bill table.
+     * Initializes the widths of columns of the bill table and the cell editors for some columns.
      * This method should only be invoked after the component became visible.
      */
     public void initTableColumns() {
@@ -57,7 +59,18 @@ public class BillTable extends JTable {
         this.getColumnModel().getColumn(0).setMinWidth(fontMetrics.stringWidth("000"));
         this.getColumnModel().getColumn(0).setPreferredWidth(fontMetrics.stringWidth("0000"));
         // date column width
-        this.getColumnModel().getColumn(1).setMinWidth(fontMetrics.stringWidth("yyyy-MM-dd HH:mm:ss"));
+        this.getColumnModel().getColumn(1).setMinWidth(fontMetrics.stringWidth(Main.DATETIME_PATTERN));
+
+        this.getColumn("Currency").setCellEditor(new ConstraintTableCellEditor(new JTextField(),
+                s -> s.length() == 3));
+        this.getColumn("Date").setCellEditor(new ConstraintTableCellEditor(new JTextField(), s -> {
+            try {
+                LocalDateTime.parse(s, DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
+            } catch (DateTimeParseException e) {
+                return false;
+            }
+            return true;
+        }));
     }
 
 }

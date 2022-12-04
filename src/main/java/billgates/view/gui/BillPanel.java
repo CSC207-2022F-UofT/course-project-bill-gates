@@ -55,8 +55,11 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
      */
     private void billTableModelAltered(TableModelEvent event) {
         if (event.getType() == TableModelEvent.UPDATE) {
-            // TODO: call the alter entry use case
-
+            BillTableModel tableModel = this.billTable.getModel();
+            String columnName = tableModel.getColumnName(event.getColumn());
+            Object value = tableModel.getValueAt(event.getFirstRow(), event.getColumn());
+            int entryId = (int) tableModel.getValueAt(event.getFirstRow(), 0);
+            this.mainFrame.getAlterEntryController().alterEntry(entryId, value, columnName);
             // we want to update current table
             SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
         }
@@ -67,13 +70,13 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
     }
 
     // Change color of table header and border in bill panel
-    public void changeColor(Color c){
+    public void changeColor(Color c) {
         this.billTable.getTableHeader().setBackground(c);
-        this.setBorder(new CustomTitleBorder("Bills",c));
+        this.setBorder(new CustomTitleBorder("Bills", c));
     }
 
     // Change font of table header and border in bill panel
-    public void changeFont(String f){
+    public void changeFont(String f) {
         Font newTableFont = new FontSettings(f, BillTable.DEFAULT_FONT_SIZE);
         this.billTable.getTableHeader().setFont(newTableFont);
     }

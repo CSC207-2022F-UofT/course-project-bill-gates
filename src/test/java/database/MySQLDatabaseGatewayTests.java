@@ -1,5 +1,10 @@
 package database;
 
+import billgates.Main;
+import billgates.database.MySQLDatabaseGateway;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import billgates.entities.Entry;
 import billgates.entities.EntryBuilder;
 import billgates.entities.QueryUserData;
@@ -18,6 +23,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class MySQLDatabaseGatewayTests {
     public MySQLDatabaseGateway testGateway;
@@ -670,7 +678,7 @@ public class MySQLDatabaseGatewayTests {
                     0,
                     ZoneId.systemDefault());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             this.testGateway.modifyEntry(this.testBillID, testEntryID, "Date", testDate.format(formatter));
 
