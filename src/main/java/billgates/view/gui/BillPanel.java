@@ -54,7 +54,8 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
      * @param event a TableModelEvent representing any change in the table
      */
     private void billTableModelAltered(TableModelEvent event) {
-        if (event.getType() == TableModelEvent.UPDATE) {
+        if (event.getType() == TableModelEvent.UPDATE &&
+                event.getFirstRow() != TableModelEvent.HEADER_ROW) {
             BillTableModel tableModel = this.billTable.getModel();
             String columnName = tableModel.getColumnName(event.getColumn());
             Object value = tableModel.getValueAt(event.getFirstRow(), event.getColumn());
@@ -90,6 +91,7 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
             BillTableModel model = this.getBillTable().getModel();
             model.setColumnNames(columns);
             model.setData(entries);
+            model.fireTableStructureChanged();
             this.getBillTable().updateUI();
         });
     }
