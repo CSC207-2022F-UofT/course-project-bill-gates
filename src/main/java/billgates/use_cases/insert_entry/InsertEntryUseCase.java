@@ -27,8 +27,8 @@ public class InsertEntryUseCase implements InsertEntryInputPort {
 
     @Override
     public void insertEntry(InsertEntryRequestModel model) {
-
-        // Check if we are adding a normal entry to the main bill or a splitter entry to the splitter bill.
+        // Check if we are adding a normal entry to the main bill
+        // or a splitter entry to the splitter bill.
         if (User.getInstance().getBillId() == User.getInstance().getCurrentBillID()) {
             // Construct an entry using the entry builder
             // Default with a splitterBillId being -1

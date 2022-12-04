@@ -19,11 +19,11 @@ public class InsertEntryRequestModel {
     //These are the information about the new normal entry and new splitter entry added.
     private final ZonedDateTime date;
     private final double value;
-    private String currency = "";
-    private String description = "";
-    private String from = "";
-    private String to = "";
-    private String location = "";
+    private final String currency;
+    private final String description;
+    private final String from;
+    private final String to;
+    private final String location;
 
     private String payee = "";
 

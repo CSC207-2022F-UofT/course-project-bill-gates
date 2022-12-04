@@ -13,19 +13,20 @@ import java.io.File;
 public class TopMenuBar extends JMenuBar {
 
     public static final int DEFAULT_HEIGHT = 23;
-    private final BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
+    private final static Color[] COLORS = new Color[]{new Color(240, 140, 170), Color.RED,
+            Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK, Color.WHITE
+    };
+    private final static String[] FONTS = new String[]{"Modern No. 20", "Times New Roman",
+            "Helvetica", "Arial", "Impact", "Verdana", "Century", "Tahoma", "Copperplate"};
     private final JMenu fileMenu = new GeneralMenu("File");
     private final JMenu settingsMenu = new GeneralMenu("Settings");
     private final JMenu helpMenu = new GeneralMenu("Help");
-    private final static Color[] COLORS = new Color[]{new Color(240, 140, 170), Color.RED, Color.ORANGE,
-            Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK, Color.WHITE};
-    private final static String[] FONTS = new String[]{"Modern No. 20", "Times New Roman", "Helvetica", "Arial", "Impact",
-            "Verdana", "Century", "Tahoma", "Copperplate"};
     private final MainFrame mainFrame;
 
     public TopMenuBar(MainFrame owner) {
         // Set the layout of the top menubar
-        this.setLayout(this.layout);
+        BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
+        this.setLayout(layout);
         this.mainFrame = owner;
         this.initMenu();
         this.setBorderPainted(false);
@@ -48,9 +49,7 @@ public class TopMenuBar extends JMenuBar {
         fileMenu.add(importMenuItem);
 
         // Add function to import menu
-        importMenuItem.addActionListener( e -> {
-            importBills();
-        });
+        importMenuItem.addActionListener(e -> importBills());
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
         // Add MenuItem change color and font in setting
@@ -58,7 +57,7 @@ public class TopMenuBar extends JMenuBar {
         settingsMenu.add(appearanceMenuItem);
 
         // Add function to setting menu
-        appearanceMenuItem.addActionListener( e -> {
+        appearanceMenuItem.addActionListener(e -> {
             int[] setting = setting();
 
             mainFrame.getBillPanel().changeColor(COLORS[setting[0]]);

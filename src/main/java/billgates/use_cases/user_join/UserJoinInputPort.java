@@ -19,6 +19,7 @@ public interface UserJoinInputPort {
      * Case 3: If the username is in the database and the password doesn't match,
      * either the username is not valid for a register or the password is incorrect,
      * and the corresponding user is not logged in.
+     *
      * @param model the model that needs certain actions above.
      */
     void join(UserJoinRequestModel model);

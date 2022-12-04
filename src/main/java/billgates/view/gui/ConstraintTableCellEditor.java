@@ -11,9 +11,8 @@ import java.util.function.Predicate;
  * When the user inputs an invalid string, this editor will mark the cell with a red border and
  * prevent setting the invalid value.
  *
- * @see BillTable#initTableColumns()
- *
  * @author Scott
+ * @see BillTable#initTableColumns()
  */
 public class ConstraintTableCellEditor extends DefaultCellEditor {
 

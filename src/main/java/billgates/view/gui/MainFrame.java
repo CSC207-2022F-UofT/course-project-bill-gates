@@ -22,7 +22,6 @@ public class MainFrame extends JFrame {
     public static final int DEFAULT_HEIGHT = 618;
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);
 
-    private final JPanel contentPane = new JPanel(new BorderLayout());
     private final ActionPanel actionPanel = new ActionPanel(this);
     private final BillPanel billPanel = new BillPanel(this);
     private final JMenuBar menu = new TopMenuBar(this);
@@ -49,7 +48,8 @@ public class MainFrame extends JFrame {
         // Display the window in the center of the screen
         SwingUtil.centerInScreen(this);
 
-        this.setContentPane(this.contentPane);
+        JPanel contentPane = new JPanel(new BorderLayout());
+        this.setContentPane(contentPane);
 
         // Set the menu bar
         this.setJMenuBar(menu);
@@ -65,6 +65,10 @@ public class MainFrame extends JFrame {
 
     public ActionPanel getActionPanel() {
         return this.actionPanel;
+    }
+
+    public JMenuBar getMenu() {
+        return menu;
     }
 
     public boolean isSplitterBill() {

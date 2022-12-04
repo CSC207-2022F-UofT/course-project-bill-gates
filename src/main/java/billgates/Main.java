@@ -32,7 +32,7 @@ public class Main {
 
     public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new MetalLookAndFeel());
         } catch (UnsupportedLookAndFeelException ignored) {
@@ -58,7 +58,8 @@ public class Main {
                                                               BillPanelUpdatable updatable) {
         // init bill update use case
         BillUpdateOutputPort billUpdatePresenter = new BillUpdatePresenter(updatable);
-        BillUpdateUseCase billUpdateUseCase = new BillUpdateUseCase(billUpdatePresenter, databaseGateway);
+        BillUpdateUseCase billUpdateUseCase = new BillUpdateUseCase(billUpdatePresenter,
+                databaseGateway);
         return new BillUpdateController(billUpdateUseCase);
     }
 

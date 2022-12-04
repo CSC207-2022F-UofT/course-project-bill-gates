@@ -36,7 +36,8 @@ public class UserJoinUseCase implements UserJoinInputPort {
     @Override
     public void join(UserJoinRequestModel model) {
         List<QueryUserData> usersData = this.gateway.getUserData();
-        boolean exist = usersData.stream().anyMatch(d -> d.getUsername().equals(model.getUsername()));
+        boolean exist = usersData.stream()
+                .anyMatch(d -> d.getUsername().equals(model.getUsername()));
         // if the user does not exist
         if (!exist) {
             // register

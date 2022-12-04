@@ -19,7 +19,8 @@ import java.util.List;
  */
 public class BillPanel extends JPanel implements BillPanelUpdatable {
 
-    public static final int DEFAULT_WIDTH = MainFrame.DEFAULT_WIDTH - ActionPanel.DEFAULT_WIDTH - 14;
+    public static final int DEFAULT_WIDTH =
+            MainFrame.DEFAULT_WIDTH - ActionPanel.DEFAULT_WIDTH - 14;
     // public static final int DEFAULT_HEIGHT = MainFrame.DEFAULT_HEIGHT - 37;
 
     private final MainFrame mainFrame;

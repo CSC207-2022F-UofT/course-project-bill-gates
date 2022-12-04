@@ -11,9 +11,10 @@ import java.time.temporal.ChronoUnit;
  * The instance variables define the default values for each attribute.
  * Each setter method set an attribute of the entry and returns this EntryBuilder.
  * In this way, you can chain setters and build an Entry in one line.
- * After setting all required attributes, you should use build______ method to build an entry or a splitter entry.
+ * After setting all required attributes, you should use build______ method to build an entry or a
+ * splitter entry.
  *
- * @author Scott
+ * @author Scott, Ray
  */
 public class EntryBuilder {
 

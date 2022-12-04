@@ -59,7 +59,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     private void initSignInPanel() {
         this.add(this.signInPanel);
         // Set the size of signInPanel
-        this.signInPanel.setMaximumSize(new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_SIGN_IN_PANEL_HEIGHT));
+        this.signInPanel.setMaximumSize(
+                new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_SIGN_IN_PANEL_HEIGHT));
 
         // Restrict the input of usernameField (user cannot input whitespace for their username)
         this.usernameField.setDocument(new RegexDocument("\\S*"));
@@ -154,10 +155,11 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         String userName = this.usernameField.getText();
         String userPassword = String.valueOf(this.passwordField.getPassword());
 
-        // If the username and password are legal, we should then call the controller of UserJoinUseCase
+        // If the username and password are legal, we then call the controller of UserJoinUseCase
         if (this.checkUsername() && this.checkPassword()) {
             // Call the UserJoinController
-            SwingUtilities.invokeLater(() -> this.mainFrame.getUserJoinController().userJoin(userName, userPassword));
+            SwingUtilities.invokeLater(() ->
+                    this.mainFrame.getUserJoinController().userJoin(userName, userPassword));
         }
     }
 
@@ -166,8 +168,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         if (usernameLength == 0) {
             JOptionPane.showMessageDialog(this.mainFrame, "Username cannot be empty!");
             return false;
-        }
-        else if (usernameLength > 10) {
+        } else if (usernameLength > 10) {
             JOptionPane.showMessageDialog(this.mainFrame, "Username exceeds the maximum length!");
             return false;
         }
@@ -179,8 +180,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         if (passwordLength == 0) {
             JOptionPane.showMessageDialog(this.mainFrame, "Password cannot be empty!");
             return false;
-        }
-        else if (passwordLength > 16) {
+        } else if (passwordLength > 16) {
             JOptionPane.showMessageDialog(this.mainFrame, "Password exceeds the maximum length!");
             return false;
         }
@@ -188,7 +188,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void signOut() {
-        // Enable the signInButton, and disable the signOutButton and , addEntryButton, and deleteEntryButton
+        // init button status
         this.signInButton.setEnabled(true);
         this.signOutButton.setEnabled(false);
         this.addEntryButton.setEnabled(false);
@@ -248,7 +248,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
                 "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             String date1 = dateField.getText();
-            LocalDateTime localDateTime = LocalDateTime.parse(date1, DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
+            LocalDateTime localDateTime = LocalDateTime.parse(date1,
+                    DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
             ZonedDateTime date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
             String value1 = valueField.getText();
             double value = Double.parseDouble(value1);
@@ -258,8 +259,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             String to = toField.getText();
             String location = locationField.getText();
 
-            InsertEntryRequestModel model = new InsertEntryRequestModel(date, value, currency, description,
-                    from, to, location);
+            InsertEntryRequestModel model = new InsertEntryRequestModel(date, value, currency,
+                    description, from, to, location);
             this.mainFrame.getInsertEntryController().insert(model);
         }
 
@@ -323,13 +324,13 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     // Change font in ActionPanel and statistic text area
-    public void changeFont(String f){
+    public void changeFont(String f) {
         Font newButtonFont = new FontSettings(f, ActionButton.DEFAULT_FONT_SIZE);
-        for(ActionButton ab: ActionButton.allButton){
+        for (ActionButton ab : ActionButton.allButton) {
             ab.setFont(newButtonFont);
         }
         Font newLabelFont = new FontSettings(f, ActionLabel.DEFAULT_FONT_SIZE);
-        for(ActionLabel al: ActionLabel.allLabel){
+        for (ActionLabel al : ActionLabel.allLabel) {
             al.setFont(newLabelFont);
         }
         Font newTextFont = new FontSettings(f, ActionTextArea.DEFAULT_FONT_SIZE);

@@ -1,7 +1,5 @@
 package billgates.entities;
 
-import java.util.List;
-
 /**
  * Clean Architecture Layer: Application Business Rules
  *
@@ -9,10 +7,10 @@ import java.util.List;
  */
 public class QueryUserData {
 
-    private int userID = -1;
     private final int billID;
     private final String username;
     private final String password;
+    private int userID = -1;
 
     public QueryUserData(int userID, int billID, String username, String password) {
         this.userID = userID;
