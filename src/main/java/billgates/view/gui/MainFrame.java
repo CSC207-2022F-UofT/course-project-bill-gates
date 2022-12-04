@@ -26,6 +26,8 @@ public class MainFrame extends JFrame {
     private final ActionPanel actionPanel = new ActionPanel(this);
     private final BillPanel billPanel = new BillPanel(this);
     private final JMenuBar menu = new TopMenuBar(this);
+
+    private boolean isSplitterBill = false;
     private UserJoinController userJoinController;
 
     // controllers will be set after constructing the view objects
@@ -63,6 +65,14 @@ public class MainFrame extends JFrame {
 
     public ActionPanel getActionPanel() {
         return this.actionPanel;
+    }
+
+    public boolean isSplitterBill() {
+        return isSplitterBill;
+    }
+
+    public void setSplitterBill(boolean splitterBill) {
+        isSplitterBill = splitterBill;
     }
 
     public BillUpdateController getBillUpdateController() {

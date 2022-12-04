@@ -1,7 +1,6 @@
 package billgates.view.gui;
 
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
@@ -60,7 +59,6 @@ public class TopMenuBar extends JMenuBar {
 
         // Add function to setting menu
         appearanceMenuItem.addActionListener( e -> {
-            System.out.println("yes");
             int[] setting = setting();
 
             mainFrame.getBillPanel().changeColor(COLORS[setting[0]]);
@@ -97,7 +95,6 @@ public class TopMenuBar extends JMenuBar {
 
     // Function to choose file in your computer
     private void importBills() {
-        System.out.println("imported");
         JFileChooser chooser = new JFileChooser();
         //JDialog chooserDialog = chooser.createDialog(mainFrame);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Your Bills", "csv");

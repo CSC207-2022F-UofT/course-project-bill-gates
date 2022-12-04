@@ -72,11 +72,18 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
      * @param newValue    the value we want the date to change to, object type
      * @param alterColumn the String representation of the column we want to change
      */
-
     public void alterEntry(int entryId, Object newValue, String alterColumn) {
-        int billId = User.getInstance().getCurrentBillID();
+        User user = User.getInstance();
+        int billId = user.getCurrentBillID();
         String newValueString = newValue.toString();
-        this.gateway.modifyEntry(billId, entryId, alterColumn, newValueString);
+        if (billId == user.getBillId()) {
+            this.gateway.modifyEntry(billId, entryId, alterColumn, newValueString);
+        } else {
+            if ("Paid Back".equals(alterColumn)) {
+                newValueString = ((boolean) newValue) ? "1" : "0";
+            }
+            this.gateway.modifySplitEntry(billId, entryId, alterColumn, newValueString);
+        }
     }
 
 }

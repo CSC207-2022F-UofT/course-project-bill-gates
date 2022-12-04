@@ -59,7 +59,8 @@ public class BillUpdatePresenter implements BillUpdateOutputPort {
                 list.set(index, splitter == -1 ? "No" : "Yes");
             }
         }
-        BillUpdateViewModel viewModel = new BillUpdateViewModel(columns, entries);
+        BillUpdateViewModel viewModel = new BillUpdateViewModel(columns, entries,
+                model.isSplitterBill());
         this.view.update(viewModel);
     }
 }

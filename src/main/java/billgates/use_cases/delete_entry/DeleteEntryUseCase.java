@@ -24,7 +24,12 @@ public class DeleteEntryUseCase implements DeleteEntryInputPort {
 
     @Override
     public void deleteEntry(int entryId) {
-        int billId = User.getInstance().getCurrentBillID();
-        this.gateway.deleteEntry(billId, entryId);
+        User user = User.getInstance();
+        int billId = user.getCurrentBillID();
+        if (billId == user.getBillId()) {
+            this.gateway.deleteEntry(billId, entryId);
+        } else {
+            this.gateway.deleteSplitEntry(billId, entryId);
+        }
     }
 }
