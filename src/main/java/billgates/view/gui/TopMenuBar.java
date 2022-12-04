@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 /**
@@ -43,9 +44,13 @@ public class TopMenuBar extends JMenuBar {
         this.add(this.settingsMenu);
         this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
         this.add(this.helpMenu);
+        this.add(Box.createRigidArea(new Dimension(ActionPanel.VERTICAL_GAP, 0)));
 
         // Add MenuItem import in File
         JMenuItem importMenuItem = new JMenuItem("Import File");
+        KeyStroke keyStrokeToImport
+                = KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK);
+        importMenuItem.setAccelerator(keyStrokeToImport);
         fileMenu.add(importMenuItem);
 
         // Add function to import menu
@@ -56,6 +61,9 @@ public class TopMenuBar extends JMenuBar {
 
         // Add MenuItem change color and font in setting
         JMenuItem appearanceMenuItem = new JMenuItem("Appearance");
+        KeyStroke keyStrokeToSet
+                = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.SHIFT_DOWN_MASK);
+        appearanceMenuItem.setAccelerator(keyStrokeToSet);
         settingsMenu.add(appearanceMenuItem);
 
         // Add function to setting menu
@@ -69,6 +77,30 @@ public class TopMenuBar extends JMenuBar {
             mainFrame.getActionPanel().changeFont(FONTS[setting[1]]);
             mainFrame.getBillPanel().changeFont(FONTS[setting[1]]);
 
+        });
+
+        // Add MenuItem functions in help
+        JMenuItem functionMenuItem = new JMenuItem("How to use");
+        KeyStroke keyStrokeToUse
+                = KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.SHIFT_DOWN_MASK);
+        functionMenuItem.setAccelerator(keyStrokeToUse);
+        helpMenu.add(functionMenuItem);
+
+        // Add function to help menu
+        functionMenuItem.addActionListener( e -> {
+            showFunctions();
+        });
+
+        // Add MenuItem shortcut key in help
+        JMenuItem shortcutMenuItem = new JMenuItem("Shortcut key");
+        KeyStroke keyStrokeShortcut
+                = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK);
+        shortcutMenuItem.setAccelerator(keyStrokeShortcut);
+        helpMenu.add(shortcutMenuItem);
+
+        // Add function to help menu
+        shortcutMenuItem.addActionListener( e -> {
+            shortcut();
         });
     }
 
@@ -113,5 +145,43 @@ public class TopMenuBar extends JMenuBar {
     public void loadFile(File file) {
         // CONTINUE!!!
         System.out.println("loaded");
+    }
+
+    //Function to show a description of the function of this app
+    private void showFunctions(){
+        JOptionPane.showMessageDialog(null, "<html>Username, Password, and Sign In:" +
+                        "<br>You will need to enter a username and password to sign in. " +
+                        "If you have not signed in with this username <br>before, " +
+                        "you will be automatically registered and signed in when you click the \"Sign in\" button. " +
+                        "If you have <br>signed in with this username before and entered the correct password, " +
+                        "you will be successfully signed in <br>when you click the \"Sign in\" button." +
+                        "<br>Sign Out:" +
+                        "<br>When you click the \"Sign Out\" button, " +
+                        "you will be signed out from the account you just signed in to." +
+                        "<br>Back:" +
+                        "<br>Return from the splitter's bill to the main bill." +
+                        "<br>Add entry:" +
+                        "<br>Add a new entry to the bill. " +
+                        "You need to enter the information for this new entry from the pop-up window." +
+                        "<br>Delete entry:" +
+                        "<br>Delete the selected entry from the bill." +
+                        "<br>MenuBar -> File -> Import File:" +
+                        "<br>Select a csv file and add the information in it to the bill as new entries." +
+                        "<br>MenuBar -> Settings -> Appearance:" +
+                        "<br>Change the background color or font." +
+                        "<br>MenuBar -> Help -> How to use:" +
+                        "<br>Some description of how to use Bill Gates." +
+                        "<br>MenuBar -> Help -> Shortcut key:" +
+                        "<br>Some descriptions of how to use the shortcut keys.",
+                "How to use the Bill Gates", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    //Function to show that how to use shortcut key
+    private void shortcut(){
+        JOptionPane.showMessageDialog(null, "<html>Shift + I: MenuBar -> File -> Import File"
+                        +"<br>Shift + A: MenuBar -> Settings -> Appearance"
+                        +"<br>Shift + H: MenuBar -> Help -> How to use"
+                        +"<br>Shift + S: MenuBar -> Help -> Shortcut key",
+                "Shortcut key", JOptionPane.PLAIN_MESSAGE);
     }
 }
