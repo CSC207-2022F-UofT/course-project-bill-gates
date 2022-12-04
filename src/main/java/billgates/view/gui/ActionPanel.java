@@ -272,7 +272,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         int[] selectedRows = table.getSelectedRows();
         for (int i : selectedRows) {
             int entryId = (int) table.getModel().getValueAt(i, 0);
-            System.out.println(entryId);
             this.mainFrame.getDeleteEntryController().delete(entryId);
         }
         SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
@@ -280,6 +279,10 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     public JButton getDeleteEntryButton() {
         return this.deleteEntryButton;
+    }
+
+    public JButton getBackButton() {
+        return backButton;
     }
 
     @Override
@@ -290,7 +293,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             this.signInButton.setEnabled(false);
             this.signOutButton.setEnabled(true);
             this.addEntryButton.setEnabled(true);
-            this.backButton.setEnabled(true);
 
             // the usernameField and passwordField shouldn't be editable
             this.usernameField.setEditable(false);

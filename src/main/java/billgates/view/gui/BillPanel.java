@@ -88,11 +88,18 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
         SwingUtilities.invokeLater(() -> {
             String[] columns = viewModel.getColumns();
             List<List<Object>> entries = viewModel.getEntries();
+            boolean isSplitterBill = viewModel.isSplitterBill();
             BillTableModel model = this.getBillTable().getModel();
-            model.setColumnNames(columns);
             model.setData(entries);
-            model.fireTableStructureChanged();
-            this.getBillTable().updateUI();
+            if (isSplitterBill != this.mainFrame.isSplitterBill()) {
+                model.setColumnNames(columns);
+                model.fireTableStructureChanged();
+                this.billTable.initTableColumns();
+                JButton backButton = this.mainFrame.getActionPanel().getBackButton();
+                backButton.setEnabled(!backButton.isEnabled());
+            }
+            this.billTable.updateUI();
+            this.mainFrame.setSplitterBill(isSplitterBill);
         });
     }
 
