@@ -2,29 +2,27 @@ package billgates.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SettingDialog extends JDialog {
-    private final JButton confirmButton = new JButton("Confirm");
-    private final JButton cancelButton = new JButton("Cancel");
     private static final JComboBox<String> colorField = new JComboBox<>();
     private static final JComboBox<String> fontField = new JComboBox<>();
-    private final static Color[] COLORS = new Color[]{ActionButton.DEFAULT_BACKGROUND_COLOR, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK, Color.WHITE};
-    private final static String[] FONTS = new String[]{"Modern No. 20", "Times New Roman", "Helvetica", "Arial", "Impact",
-            "Verdana", "Century", "Tahoma", "Copperplate"};
+    private final static Color[] COLORS = new Color[]{ActionButton.DEFAULT_BACKGROUND_COLOR,
+            Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK,
+            Color.WHITE};
+    private final static String[] FONTS = new String[]{"Modern No. 20", "Times New Roman",
+            "Helvetica", "Arial", "Impact", "Verdana", "Century", "Tahoma", "Copperplate"};
     private static int colorIndex;
     private static int fontIndex;
+    private final JButton confirmButton = new JButton("Confirm");
+    private final JButton cancelButton = new JButton("Cancel");
     private boolean confirmed = false;
-    private final MainFrame mainFrame;
 
     // Set up setting dialog to change background color and font style
     public SettingDialog(MainFrame owner) {
         super(owner);
-        this.mainFrame = owner;
 
         // Set the font
-        this.setFont(new Font("Modern No. 20", Font.BOLD, 14));
+        this.setFont(new FontSettings(14));
 
         // Set the Main root panel and its layout
         JPanel root = new JPanel();
@@ -79,9 +77,7 @@ public class SettingDialog extends JDialog {
         this.add(subAction, BorderLayout.SOUTH);
 
         // Case 1: Click cancelButton
-        this.cancelButton.addActionListener(e -> {
-            setVisible(false);
-        });
+        this.cancelButton.addActionListener(e -> setVisible(false));
 
         // Case 2: Choose different color and font
         this.confirmButton.addActionListener((e ->
@@ -92,27 +88,28 @@ public class SettingDialog extends JDialog {
             fontIndex = fontField.getSelectedIndex();
             fontField.setSelectedIndex(fontIndex);
 
-            confirmed = true;
+            this.confirmed = true;
 
-            JOptionPane.showMessageDialog(this, "Page has been set!", "All Set", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Page has been set!", "All Set",
+                    JOptionPane.PLAIN_MESSAGE);
             this.setVisible(false);
         }));
     }
 
-    public int getMyColor(){
-        return colorIndex;
-    }
-
-    public int getMyFont(){
-        return fontIndex;
-    }
-
-    public static void setColorField(int index){
+    public static void setColorField(int index) {
         colorField.setSelectedIndex(index);
     }
 
-    public static void setFontField(int index){
+    public static void setFontField(int index) {
         fontField.setSelectedIndex(index);
+    }
+
+    public int getMyColor() {
+        return colorIndex;
+    }
+
+    public int getMyFont() {
+        return fontIndex;
     }
 
     public boolean exec() {

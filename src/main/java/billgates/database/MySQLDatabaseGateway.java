@@ -1,9 +1,11 @@
 package billgates.database;
 
-import billgates.entities.*;
-import billgates.interface_adapters.DatabaseGateway;
-
+import billgates.Main;
+import billgates.entities.Entry;
 import billgates.entities.EntryBuilder;
+import billgates.entities.QueryUserData;
+import billgates.entities.SplitterEntry;
+import billgates.interface_adapters.DatabaseGateway;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,9 +23,9 @@ import java.util.*;
  * @author Ray, Scott
  */
 public class MySQLDatabaseGateway implements DatabaseGateway {
+    public final Map<String, String> columnToDatabaseColumn = new HashMap<>();
     private int userId = -1;
     private Connection connection = null;
-    public final Map<String, String> columnToDatabaseColumn = new HashMap<>();
 
     public MySQLDatabaseGateway() {
         this.initializeConnection();
@@ -146,10 +148,10 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             query = String.format("""
-                SELECT * FROM bill_%d_%d
-                ORDER BY
-                entry_id ASC
-                """, this.userId, splitBillId);
+                    SELECT * FROM bill_%d_%d
+                    ORDER BY
+                    entry_id ASC
+                    """, this.userId, splitBillId);
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -167,7 +169,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public List<Entry> getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate) {
         List<Entry> entries = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
         try {
             Statement statement = connection.createStatement();
@@ -175,11 +177,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             query = String.format("""
-                SELECT * FROM bill_%d
-                WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
-                ORDER BY date DESC,
-                entry_id ASC
-                """, billId, startDate.format(formatter), endDate.format(formatter));
+                    SELECT * FROM bill_%d
+                    WHERE date BETWEEN CAST('%s' AS DATETIME) AND CAST('%s' AS DATETIME)
+                    ORDER BY date DESC,
+                    entry_id ASC
+                    """, billId, startDate.format(formatter), endDate.format(formatter));
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -211,8 +213,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             // If equal, we are getting the bill corresponding to this user
             query = String.format("""
-                SELECT * FROM bill_%d WHERE entry_id = %d
-                """, billId, entryId);
+                    SELECT * FROM bill_%d WHERE entry_id = %d
+                    """, billId, entryId);
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -230,7 +232,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
                 Instant i = Instant.ofEpochMilli(date.getTime());
 
-                // We can pass in the different zones we want to convert in, and we can obtain the value we want
+                // We can pass in the different zones we want to convert in,
+                // and we can obtain the value we want
                 zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
             } else {
                 // Return null to denote that we didn't find any entry with this ID in the bill
@@ -272,8 +275,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             // If equal, we are getting the bill corresponding to this user
             query = String.format("""
-                SELECT * FROM bill_%d_%d WHERE entry_id = %d
-                """, this.userId, billId, entryId);
+                    SELECT * FROM bill_%d_%d WHERE entry_id = %d
+                    """, this.userId, billId, entryId);
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -292,7 +295,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
                 Instant i = Instant.ofEpochMilli(date.getTime());
 
-                // We can pass in the different zones we want to convert in, and we can obtain the value we want
+                // We can pass in the different zones we want to convert in,
+                // and we can obtain the value we want
                 zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
             } else {
                 // Return null to denote that we didn't find any entry with this ID in the bill
@@ -320,7 +324,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void insertEntry(int billId, Entry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
@@ -329,10 +333,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             // This is the case where we don't want autoincrement
             if (!(entry.getId().getAttribute() == -1)) {
                 query = String.format("""
-                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
-                        %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
-                        )
-                        """,
+                                INSERT INTO bill_%d (entry_id, value, date, currency, description,
+                                `from`, `to`, location, split_bill_id) VALUE (
+                                %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
+                                )
+                                """,
                         billId,
                         entry.getId().getAttribute(),
                         entry.getValue().getAttribute(),
@@ -346,10 +351,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             } else {
                 // This is the case where we want auto increment
                 query = String.format("""
-                        INSERT INTO bill_%d (value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE (
-                        %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
-                        )
-                        """,
+                                INSERT INTO bill_%d (value, date, currency, description, `from`,
+                                `to`, location, split_bill_id) VALUE (
+                                %f, "%s", "%s", "%s", "%s", "%s", "%s", %d
+                                )
+                                """,
                         billId,
                         entry.getValue().getAttribute(),
                         entry.getDate().getAttribute().format(formatter),
@@ -371,7 +377,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void insertSplitEntry(int billId, SplitterEntry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
@@ -380,10 +386,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             // This is the case where we don't want autoincrement
             if (!(entry.getId().getAttribute() == -1)) {
                 query = String.format("""
-                        INSERT INTO bill_%d_%d (entry_id, value, date, currency, description, `from`, `to`, location, payee, paid_back) VALUE (
-                        %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s"
-                        )
-                        """,
+                                INSERT INTO bill_%d_%d (entry_id, value, date, currency,
+                                description, `from`, `to`, location, payee, paid_back) VALUE (
+                                %d, %f, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s"
+                                )
+                                """,
                         this.userId,
                         billId,
                         entry.getId().getAttribute(),
@@ -399,10 +406,11 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             } else {
                 // This is the case where we want auto increment
                 query = String.format("""
-                        INSERT INTO bill_%d_%d (value, date, currency, description, `from`, `to`, location, payee, paid_back) VALUE (
-                        %f, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s"
-                        )
-                        """,
+                                INSERT INTO bill_%d_%d (value, date, currency, description, `from`,
+                                `to`, location, payee, paid_back) VALUE (
+                                %f, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s"
+                                )
+                                """,
                         this.userId,
                         billId,
                         entry.getValue().getAttribute(),
@@ -433,10 +441,10 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             // This is the case that we want to specify a userId
             if (!(user.getUserID() == -1)) {
                 insert = String.format("""
-                            INSERT INTO users (user_id, username, password, bill_id) VALUE (
-                            %d, "%s", "%s", %d
-                            )
-                            """,
+                                INSERT INTO users (user_id, username, password, bill_id) VALUE (
+                                %d, "%s", "%s", %d
+                                )
+                                """,
                         user.getUserID(),
                         user.getUsername(),
                         user.getPassword(),
@@ -445,10 +453,10 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             } else {
                 // This is the case that we want to Auto-Increment User
                 insert = String.format("""
-                            INSERT INTO users (username, password, bill_id) VALUE (
-                            "%s", "%s", -1
-                            )
-                            """,
+                                INSERT INTO users (username, password, bill_id) VALUE (
+                                "%s", "%s", -1
+                                )
+                                """,
                         user.getUsername(),
                         user.getPassword());
                 statement.execute(insert);
@@ -471,8 +479,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             query = String.format("""
-                DELETE FROM bill_%d WHERE entry_id = %d
-                """, billId, entryId);
+                    DELETE FROM bill_%d WHERE entry_id = %d
+                    """, billId, entryId);
 
             statement.execute(query);
 
@@ -489,8 +497,8 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             String query;
 
             query = String.format("""
-                DELETE FROM bill_%d_%d WHERE entry_id = %d
-                """, this.userId, billId, entryId);
+                    DELETE FROM bill_%d_%d WHERE entry_id = %d
+                    """, this.userId, billId, entryId);
 
             statement.execute(query);
 
@@ -512,10 +520,10 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             // If equal, we are modifying the entry from the user's bill
             query = String.format("""
-                        UPDATE bill_%d
-                        SET %s = "%s"
-                        WHERE entry_id = %d
-                        """, billId,
+                            UPDATE bill_%d
+                            SET `%s` = '%s'
+                            WHERE entry_id = %d
+                            """, billId,
                     this.columnToDatabaseColumn.get(column),
                     newValue,
                     entryId);
@@ -536,10 +544,10 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             // If equal, we are modifying the entry from the user's bill
             query = String.format("""
-                        UPDATE bill_%d_%d
-                        SET %s = "%s"
-                        WHERE entry_id = %d
-                        """, this.userId,
+                            UPDATE bill_%d_%d
+                            SET `%s` = '%s'
+                            WHERE entry_id = %d
+                            """, this.userId,
                     billId,
                     this.columnToDatabaseColumn.get(column),
                     newValue,
@@ -555,24 +563,24 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void modifyEntry(int billId, Entry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
             String query;
 
             query = String.format("""
-                        UPDATE bill_%d
-                        SET value = %f,
-                            date = "%s",
-                            currency = "%s",
-                            description = "%s",
-                            `from` = "%s",
-                            `to` = "%s",
-                            location = "%s",
-                            split_bill_id = %d
-                        WHERE entry_id = %d
-                        """, billId,
+                            UPDATE bill_%d
+                            SET value = %f,
+                                date = "%s",
+                                currency = "%s",
+                                description = "%s",
+                                `from` = "%s",
+                                `to` = "%s",
+                                location = "%s",
+                                split_bill_id = %d
+                            WHERE entry_id = %d
+                            """, billId,
                     entry.getValue().getAttribute(),
                     entry.getDate().getAttribute().format(formatter),
                     entry.getCurrency().getAttribute(),
@@ -593,25 +601,25 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void modifySplitEntry(int billId, SplitterEntry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
             String query;
 
             query = String.format("""
-                        UPDATE bill_%d_%d
-                        SET value = %f,
-                            date = "%s",
-                            currency = "%s",
-                            description = "%s",
-                            `from` = "%s",
-                            `to` = "%s",
-                            location = "%s",
-                            payee = "%s",
-                            paid_back = "%s"
-                        WHERE entry_id = %d
-                        """, this.userId,
+                            UPDATE bill_%d_%d
+                            SET value = %f,
+                                date = "%s",
+                                currency = "%s",
+                                description = "%s",
+                                `from` = "%s",
+                                `to` = "%s",
+                                location = "%s",
+                                payee = "%s",
+                                paid_back = "%s"
+                            WHERE entry_id = %d
+                            """, this.userId,
                     billId,
                     entry.getValue().getAttribute(),
                     entry.getDate().getAttribute().format(formatter),
@@ -716,16 +724,6 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public static void main(String[] args) {
-        MySQLDatabaseGateway testGateway = new MySQLDatabaseGateway();
-
-        testGateway.setUserId(9999);
-
-        Entry obtainedEntry = testGateway.getEntryData(9999, 1);
-
-        System.out.println(obtainedEntry.getDescription().getAttribute());
     }
 
 }

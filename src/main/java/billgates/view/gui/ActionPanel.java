@@ -1,20 +1,17 @@
 package billgates.view.gui;
 
+import billgates.Main;
 import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.insert_entry.InsertEntryRequestModel;
 import billgates.use_cases.user_join.UserJoinViewModel;
 
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.sql.SQLOutput;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -62,7 +59,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     private void initSignInPanel() {
         this.add(this.signInPanel);
         // Set the size of signInPanel
-        this.signInPanel.setMaximumSize(new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_SIGN_IN_PANEL_HEIGHT));
+        this.signInPanel.setMaximumSize(
+                new Dimension(DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_SIGN_IN_PANEL_HEIGHT));
 
         // Restrict the input of usernameField (user cannot input whitespace for their username)
         this.usernameField.setDocument(new RegexDocument("\\S*"));
@@ -157,10 +155,11 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         String userName = this.usernameField.getText();
         String userPassword = String.valueOf(this.passwordField.getPassword());
 
-        // If the username and password are legal, we should then call the controller of UserJoinUseCase
+        // If the username and password are legal, we then call the controller of UserJoinUseCase
         if (this.checkUsername() && this.checkPassword()) {
             // Call the UserJoinController
-            SwingUtilities.invokeLater(() -> this.mainFrame.getUserJoinController().userJoin(userName, userPassword));
+            SwingUtilities.invokeLater(() ->
+                    this.mainFrame.getUserJoinController().userJoin(userName, userPassword));
         }
     }
 
@@ -169,8 +168,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         if (usernameLength == 0) {
             JOptionPane.showMessageDialog(this.mainFrame, "Username cannot be empty!");
             return false;
-        }
-        else if (usernameLength > 10) {
+        } else if (usernameLength > 10) {
             JOptionPane.showMessageDialog(this.mainFrame, "Username exceeds the maximum length!");
             return false;
         }
@@ -182,8 +180,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         if (passwordLength == 0) {
             JOptionPane.showMessageDialog(this.mainFrame, "Password cannot be empty!");
             return false;
-        }
-        else if (passwordLength > 16) {
+        } else if (passwordLength > 16) {
             JOptionPane.showMessageDialog(this.mainFrame, "Password exceeds the maximum length!");
             return false;
         }
@@ -191,7 +188,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void signOut() {
-        // Enable the signInButton, and disable the signOutButton and , addEntryButton, and deleteEntryButton
+        // init button status
         this.signInButton.setEnabled(true);
         this.signOutButton.setEnabled(false);
         this.addEntryButton.setEnabled(false);
@@ -251,7 +248,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
                 "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             String date1 = dateField.getText();
-            LocalDateTime localDateTime = LocalDateTime.parse(date1, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime localDateTime = LocalDateTime.parse(date1,
+                    DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
             ZonedDateTime date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
             String value1 = valueField.getText();
             double value = Double.parseDouble(value1);
@@ -261,8 +259,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             String to = toField.getText();
             String location = locationField.getText();
 
-            InsertEntryRequestModel model = new InsertEntryRequestModel(date, value, currency, description,
-                    from, to, location);
+            InsertEntryRequestModel model = new InsertEntryRequestModel(date, value, currency,
+                    description, from, to, location);
             this.mainFrame.getInsertEntryController().insert(model);
         }
 
@@ -275,7 +273,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         int[] selectedRows = table.getSelectedRows();
         for (int i : selectedRows) {
             int entryId = (int) table.getModel().getValueAt(i, 0);
-            System.out.println(entryId);
             this.mainFrame.getDeleteEntryController().delete(entryId);
         }
         SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
@@ -283,6 +280,10 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     public JButton getDeleteEntryButton() {
         return this.deleteEntryButton;
+    }
+
+    public JButton getBackButton() {
+        return backButton;
     }
 
     @Override
@@ -293,7 +294,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             this.signInButton.setEnabled(false);
             this.signOutButton.setEnabled(true);
             this.addEntryButton.setEnabled(true);
-            this.backButton.setEnabled(true);
 
             // the usernameField and passwordField shouldn't be editable
             this.usernameField.setEditable(false);
@@ -324,13 +324,13 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     // Change font in ActionPanel and statistic text area
-    public void changeFont(String f){
+    public void changeFont(String f) {
         Font newButtonFont = new FontSettings(f, ActionButton.DEFAULT_FONT_SIZE);
-        for(ActionButton ab: ActionButton.allButton){
+        for (ActionButton ab : ActionButton.allButton) {
             ab.setFont(newButtonFont);
         }
         Font newLabelFont = new FontSettings(f, ActionLabel.DEFAULT_FONT_SIZE);
-        for(ActionLabel al: ActionLabel.allLabel){
+        for (ActionLabel al : ActionLabel.allLabel) {
             al.setFont(newLabelFont);
         }
         Font newTextFont = new FontSettings(f, ActionTextArea.DEFAULT_FONT_SIZE);

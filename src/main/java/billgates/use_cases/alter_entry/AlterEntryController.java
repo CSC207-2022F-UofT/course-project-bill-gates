@@ -5,9 +5,10 @@ import java.util.Map;
 /**
  * Clean Architecture Layer: Interface Adapters
  * This class serves as the controller of the Alter Entry Use Case.
- * It is only responsible for accepting the input (<code>entryId<code>, <code>newValue<code>, <code>alterColumn<code>)
- * or input (<code>entryId<code>, <code>changeMap<code>)
- * from the user and invoke the corresponding use case to change the entry's wanted column to the desired value.
+ * It is only responsible for accepting the inputs
+ * (<code>entryId<code>, <code>newValue<code>, and <code>alterColumn<code>).
+ * or input (<code>entryId<code>, <code>changeMap<code>) from the user and invoke the corresponding
+ * use case to change the entry's wanted column to the desired value.
  *
  * @author Brandon Fu
  * @see AlterEntryInputPort

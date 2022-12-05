@@ -1,11 +1,13 @@
 package database;
 
+import billgates.Main;
+import billgates.database.MySQLDatabaseGateway;
 import billgates.entities.Entry;
 import billgates.entities.EntryBuilder;
 import billgates.entities.QueryUserData;
-import org.junit.*;
-import static org.junit.Assert.*;
-import billgates.database.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,17 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 public class MySQLDatabaseGatewayTests {
+    public static final int TEST_TIMEOUT = 100000;
     public MySQLDatabaseGateway testGateway;
     public int testBillID = 9999;
-
     public int testSplitBillID = 1234;
-
     public int testUserID = 9999;
-
     public Connection testConnection;
-
-    public static final int TEST_TIMEOUT = 100000;
 
     @Before
     public void setUp() {
@@ -73,34 +74,34 @@ public class MySQLDatabaseGatewayTests {
 
                 // For each test, I want a table called bill_9999
                 String createTableQuery = String.format("""
-                    CREATE TABLE bill_%d
-                    (
-                        entry_id         INT             AUTO_INCREMENT
-                                                         PRIMARY KEY,
-                        value            DECIMAL(16, 2)  NOT NULL,
-                        date             TIMESTAMP       NOT NULL,
-                        currency         CHAR(3)         NOT NULL,
-                        description      TEXT            NOT NULL,
-                        `from`           TEXT            NOT NULL,
-                        `to`             TEXT            NOT NULL,
-                        location         TEXT            NOT NULL,
-                        split_bill_id    INT             NOT NULL
-                    )
-                    """, this.testBillID);
+                        CREATE TABLE bill_%d
+                        (
+                            entry_id         INT             AUTO_INCREMENT
+                                                             PRIMARY KEY,
+                            value            DECIMAL(16, 2)  NOT NULL,
+                            date             TIMESTAMP       NOT NULL,
+                            currency         CHAR(3)         NOT NULL,
+                            description      TEXT            NOT NULL,
+                            `from`           TEXT            NOT NULL,
+                            `to`             TEXT            NOT NULL,
+                            location         TEXT            NOT NULL,
+                            split_bill_id    INT             NOT NULL
+                        )
+                        """, this.testBillID);
 
                 testStatement.execute(createTableQuery);
 
                 String createEntryOneQuery = String.format("""
-                            INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
-                            (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
-                            """, this.testBillID);
+                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
+                        (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
+                        """, this.testBillID);
 
                 testStatement.execute(createEntryOneQuery);
 
                 String createEntryTwoQuery = String.format("""
-                            INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
-                            (2, 678.90, "1970-01-10 00:00:00", "CNY", "This is another test entry", "Cash", "Burger King", "College Street", -1)
-                            """, this.testBillID);
+                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
+                        (2, 678.90, "1970-01-10 00:00:00", "CNY", "This is another test entry", "Cash", "Burger King", "College Street", -1)
+                        """, this.testBillID);
 
                 testStatement.execute(createEntryTwoQuery);
 
@@ -670,7 +671,7 @@ public class MySQLDatabaseGatewayTests {
                     0,
                     ZoneId.systemDefault());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             this.testGateway.modifyEntry(this.testBillID, testEntryID, "Date", testDate.format(formatter));
 

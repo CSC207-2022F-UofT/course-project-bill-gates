@@ -12,7 +12,8 @@ package billgates.use_cases.bill_update;
 public interface BillUpdateOutputPort {
 
     /**
-     * Converts the data in <code>model</code> to a GUI-friendly format and updates the GUI correspondingly.
+     * Converts the data in <code>model</code> to a GUI-friendly format and updates the GUI
+     * correspondingly.
      *
      * @param model the model to convert.
      */

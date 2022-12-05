@@ -4,7 +4,8 @@ import billgates.use_cases.user_join.UserJoinViewModel;
 
 /**
  * Clean Architecture Layer: Interface Adapters
- * An interface represents that a view is updatable with respect to the <code>UserJoinViewModel</code>.
+ * An interface represents that a view is updatable with respect to the
+ * <code>UserJoinViewModel</code>.
  * The purpose of this interface is dependency inversion.
  *
  * @author Xinxiang
