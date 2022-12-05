@@ -4,7 +4,6 @@ import billgates.Main;
 import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.insert_entry.InsertEntryRequestModel;
 import billgates.use_cases.user_join.UserJoinViewModel;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -17,7 +16,7 @@ import java.util.Objects;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Scott
+ * @author Charlotte, Scott, Ellen, Eva, Yunshan
  */
 public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
@@ -219,53 +218,17 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void addEntry() {
-        JTextField dateField = new JTextField(20);
-        JTextField valueField = new JTextField(20);
-        JTextField currencyField = new JTextField(20);
-        JTextField descriptionField = new JTextField(20);
-        JTextField fromField = new JTextField(20);
-        JTextField toField = new JTextField(20);
-        JTextField locationField = new JTextField(20);
+        AddEntryDialog addEntryDialog = new AddEntryDialog(this.mainFrame);
 
-        JPanel myPanel = new JPanel();
-        myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.PAGE_AXIS));
-        myPanel.add(new JLabel("date:"));
-        myPanel.add(dateField);
-        myPanel.add(new JLabel("value:"));
-        myPanel.add(valueField);
-        myPanel.add(new JLabel("currency:"));
-        myPanel.add(currencyField);
-        myPanel.add(new JLabel("description:"));
-        myPanel.add(descriptionField);
-        myPanel.add(new JLabel("from:"));
-        myPanel.add(fromField);
-        myPanel.add(new JLabel("to:"));
-        myPanel.add(toField);
-        myPanel.add(new JLabel("location:"));
-        myPanel.add(locationField);
-
-        int result = JOptionPane.showConfirmDialog(null, myPanel,
-                "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            String date1 = dateField.getText();
-            LocalDateTime localDateTime = LocalDateTime.parse(date1,
-                    DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
-            ZonedDateTime date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
-            String value1 = valueField.getText();
-            double value = Double.parseDouble(value1);
-            String currency = currencyField.getText();
-            String description = descriptionField.getText();
-            String from = fromField.getText();
-            String to = toField.getText();
-            String location = locationField.getText();
-
-            InsertEntryRequestModel model = new InsertEntryRequestModel(date, value, currency,
-                    description, from, to, location);
+        if (addEntryDialog.getResult() == 0) {
+            InsertEntryRequestModel model = new InsertEntryRequestModel(addEntryDialog.getDate(),
+                    addEntryDialog.getValue(), addEntryDialog.getCurrency(), addEntryDialog.getDescription(),
+                    addEntryDialog.getFrom(), addEntryDialog.getTo(), addEntryDialog.getLocationText());
             this.mainFrame.getInsertEntryController().insert(model);
-        }
 
-        // after adding the entry, update the current bill
-        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
+            // after adding the entry, update the current bill
+            SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
+        }
     }
 
     private void deleteEntry() {
