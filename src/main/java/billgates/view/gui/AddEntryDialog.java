@@ -33,7 +33,7 @@ public class AddEntryDialog extends JDialog {
 
         JTextField currencyField = new JTextField(20);
         currencyField.setDocument(new RegexDocument("\\S*"));
-        currencyField.setDocument(new RegexDocument("\\w*"));
+        currencyField.setDocument(new RegexDocument("[a-zA-z]^*"));
 
         JTextField descriptionField = new JTextField(20);
         descriptionField.setDocument(new RegexDocument("\\w*"));
