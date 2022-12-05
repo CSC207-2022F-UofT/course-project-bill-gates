@@ -3,6 +3,7 @@ package billgates.view.gui;
 import com.github.lgooddatepicker.components.DateTimePicker;
 
 import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -27,31 +28,44 @@ public class AddEntryDialog extends JDialog {
         add(dateTimePicker1);
 
         JTextField valueField = new JTextField(20);
+        valueField.setDocument(new RegexDocument("\\S*"));
+        valueField.setDocument(new RegexDocument("\\w*"));
+
         JTextField currencyField = new JTextField(20);
+        currencyField.setDocument(new RegexDocument("\\S*"));
+        currencyField.setDocument(new RegexDocument("\\w*"));
+
         JTextField descriptionField = new JTextField(20);
+        descriptionField.setDocument(new RegexDocument("\\w*"));
+
         JTextField fromField = new JTextField(20);
+        fromField.setDocument(new RegexDocument("\\w*"));
+
         JTextField toField = new JTextField(20);
+        toField.setDocument(new RegexDocument("\\w*"));
+
         JTextField locationField = new JTextField(20);
+        locationField.setDocument(new RegexDocument("\\w*"));
 
-        JPanel myPanel = new JPanel();
-        myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.PAGE_AXIS));
-        myPanel.add(new JLabel("date and time:"));
-        myPanel.add(dateTimePicker1);
-        myPanel.add(new JLabel("value:"));
-        myPanel.add(valueField);
-        myPanel.add(new JLabel("currency:"));
-        myPanel.add(currencyField);
-        myPanel.add(new JLabel("description:"));
-        myPanel.add(descriptionField);
-        myPanel.add(new JLabel("from:"));
-        myPanel.add(fromField);
-        myPanel.add(new JLabel("to:"));
-        myPanel.add(toField);
-        myPanel.add(new JLabel("location:"));
-        myPanel.add(locationField);
+        JPanel insertEntryDialog = new JPanel();
+        insertEntryDialog.setLayout(new BoxLayout(insertEntryDialog, BoxLayout.PAGE_AXIS));
+        insertEntryDialog.add(new JLabel("Date and Time:"));
+        insertEntryDialog.add(dateTimePicker1);
+        insertEntryDialog.add(new JLabel("Value:"));
+        insertEntryDialog.add(valueField);
+        insertEntryDialog.add(new JLabel("Currency:"));
+        insertEntryDialog.add(currencyField);
+        insertEntryDialog.add(new JLabel("Description:"));
+        insertEntryDialog.add(descriptionField);
+        insertEntryDialog.add(new JLabel("From:"));
+        insertEntryDialog.add(fromField);
+        insertEntryDialog.add(new JLabel("To:"));
+        insertEntryDialog.add(toField);
+        insertEntryDialog.add(new JLabel("Location:"));
+        insertEntryDialog.add(locationField);
 
-        result = JOptionPane.showConfirmDialog(null, myPanel,
-                "Information about the new entry", JOptionPane.OK_CANCEL_OPTION);
+        result = JOptionPane.showConfirmDialog(null, insertEntryDialog,
+                "Information about the new entry", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
             LocalDateTime localDateTime = dateTimePicker1.getDateTimePermissive();
