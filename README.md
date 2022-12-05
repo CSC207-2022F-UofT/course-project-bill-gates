@@ -4,37 +4,26 @@
 
 - **Distribution without permission is strongly prohibited**
 
-# Specifications
+# Functionalities and Specifications
 
 - Our application will utilize a fully implemented Swing GUI, 
 where users can log in to the application and start recording bill entries into the database.
 - Users will be able to obtain simple statistics on the current entries recorded in the bill.
 - Within each recorded bill entry, users can provide additional details on the payment. 
 - Users can also utilize this application to record a split bill with other people.
+- TODO
 
-## Design Patterns
+# Code Organization
 
-### User: Singleton
+- We mainly organized our code by layers. However, we also split some "big" layers into fractions by responsibility.
+- Package `database` contains the classes we implemented to interact with the database. This is an example where we split the Framework & Drivers layer.
+- Package `entities` contains all the entities we designed.
+- Package `use_cases` contains different use cases. We decided to include all parts of a use case (regardless of layers) in the same package to make the organization cleaner.
+- Package `interface_adapters` are some universal classes in the interface adapters layer.
+- Package `view` contains classes for a presenting our program. We implemented a GUI using Swing.
+- The `Main` class is the entry point of our program. It initializes every detail (like use case initializations) of our program and connect them together..
 
-- The `User` class represents a user entity in our program. 
-- Only **ONE** user (Singleton) is allowed in the running time of our program.
-- The `UserJoinUseCase` will initialize the user by calling `getInstance` with parameters.
-- Then, all the use cases can use `getInstance` without parameters to obtain the current user via Singleton design pattern.
-
-### DatabaseGateway: Strategy
-
-- We have laid out this class as a collection of methods that can be implemented by different classes.
-- For each specific database type (MariaDB, MongoDB, MySQL, etc.), we can implement the `DatabaseGateway` using different syntax to adapt.
-- Currently, our project uses `MySQL`, therefore, `MySQLDatabaseGateway` is a specific "strategy" to connect the application to our database.
-
-### EntryBuilder: Builder
-
-- The instance variables define the default values for each attribute.
-- We can build our desired `Entry` by calling the `set___` methods to give values for the entry.
-- After we are done, we can call `buildEntry` or `buildSplitterEntry` to obtain the desired Entry.
-- In a sense, we are "building" the entry by giving it attributes one by one. 
-
-## Test Coverage
+# Test Coverage
 
 Currently, we have implemented the following test suit:
 
@@ -58,7 +47,43 @@ MySQLDatabaseGatewayTests
 - testDeleteEntry
 ```
 
-## Database Specifications
+# Use of GitHub Features
+
+- TODO
+
+# Design Patterns
+
+## `User`: Singleton
+
+- The `User` class represents a user entity in our program. 
+- Only **ONE** user (Singleton) is allowed in the running time of our program.
+- The `UserJoinUseCase` will initialize the user by calling `getInstance` with parameters.
+- Then, all the use cases can use `getInstance` without parameters to obtain the current user via Singleton design pattern.
+
+## `DatabaseGateway`: Strategy
+
+- We have laid out this class as a collection of methods that can be implemented by different classes.
+- For each specific database type (MariaDB, MongoDB, MySQL, etc.), we can implement the `DatabaseGateway` using different syntax to adapt.
+- Currently, our project uses `MySQL`, therefore, `MySQLDatabaseGateway` is a specific "strategy" to connect the application to our database.
+
+## `EntryBuilder`: Builder
+
+- The instance variables define the default values for each attribute.
+- We can build our desired `Entry` by calling the `set___` methods to give values for the entry.
+- After we are done, we can call `buildEntry` or `buildSplitterEntry` to obtain the desired Entry.
+- In a sense, we are "building" the entry by giving it attributes one by one. 
+
+# Clean Architecture
+
+- TODO
+
+# SOLID
+
+- TODO
+
+# Standards
+
+## Database Standards
 
 ### Related issues 
 - [#11 [Feature 7] Design and Implement Bill Splitter](https://github.com/CSC207-2022F-UofT/course-project-bill-gates/issues/11) 
@@ -128,7 +153,7 @@ Table Specifications:
 
     - Every time we clicked the "Back" button, we just change the `currentBill` to the bill id of the main bill of this user, and then call `BillUpdateUseCase`.
 
-## Cloud Specifications
+## Cloud Standards
 
 ### Related issue
 
@@ -144,7 +169,7 @@ ssl-mode=require
 
 - Database Name: `bill`.
 
-## Use Case Specifications
+## Use Case Standards
 
 #### User Join Use Case
 
