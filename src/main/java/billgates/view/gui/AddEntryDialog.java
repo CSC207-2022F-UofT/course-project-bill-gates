@@ -12,7 +12,7 @@ public class AddEntryDialog extends JDialog {
 
     private int result;
     private ZonedDateTime date;
-    private static double value;
+    private double value;
     private String currency;
     private String description;
     private String from;
@@ -26,6 +26,7 @@ public class AddEntryDialog extends JDialog {
         // Create a datetime picker.
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         add(dateTimePicker1);
+        dateTimePicker1.setAlignmentX(LEFT_ALIGNMENT);
 
         JTextField valueField = new JTextField(20);
         valueField.setDocument(new RegexDocument("\\S*"));
@@ -60,19 +61,19 @@ public class AddEntryDialog extends JDialog {
         insertEntryDialog.add(new JLabel("Location:"));
         insertEntryDialog.add(locationField);
 
-        result = JOptionPane.showConfirmDialog(null, insertEntryDialog,
+        this.result = JOptionPane.showConfirmDialog(this, insertEntryDialog,
                 "Information about the new entry", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
             LocalDateTime localDateTime = dateTimePicker1.getDateTimePermissive();
-            date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
+            this.date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
             String value1 = valueField.getText();
-            value = Double.parseDouble(value1);
-            currency = currencyField.getText();
-            description = descriptionField.getText();
-            from = fromField.getText();
-            to = toField.getText();
-            location = locationField.getText();
+            this.value = Double.parseDouble(value1);
+            this.currency = currencyField.getText();
+            this.description = descriptionField.getText();
+            this.from = fromField.getText();
+            this.to = toField.getText();
+            this.location = locationField.getText();
         }
     }
 
@@ -100,8 +101,12 @@ public class AddEntryDialog extends JDialog {
         return to;
     }
 
-    public String getLocation_text() {
+    public String getLocationText() {
         return location;
+    }
+
+    public int getResult() {
+        return result;
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Scott
+ * @author Charlotte, Scott, Ellen, Eva, Yunshan
  */
 public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
@@ -212,15 +212,17 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void addEntry() {
-        AddEntryDialog addEntryDialog = new AddEntryDialog(mainFrame);
+        AddEntryDialog addEntryDialog = new AddEntryDialog(this.mainFrame);
 
-        InsertEntryRequestModel model = new InsertEntryRequestModel(addEntryDialog.getDate(), addEntryDialog.getValue(),
-                addEntryDialog.getCurrency(), addEntryDialog.getDescription(),
-                addEntryDialog.getFrom(), addEntryDialog.getTo(), addEntryDialog.getLocation_text());
-        this.mainFrame.getInsertEntryController().insert(model);
+        if (addEntryDialog.getResult() == 0) {
+            InsertEntryRequestModel model = new InsertEntryRequestModel(addEntryDialog.getDate(),
+                    addEntryDialog.getValue(), addEntryDialog.getCurrency(), addEntryDialog.getDescription(),
+                    addEntryDialog.getFrom(), addEntryDialog.getTo(), addEntryDialog.getLocationText());
+            this.mainFrame.getInsertEntryController().insert(model);
 
-        // after adding the entry, update the current bill
-        SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
+            // after adding the entry, update the current bill
+            SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
+        }
     }
 
     private void deleteEntry() {
