@@ -1,7 +1,6 @@
 package billgates.view.gui;
 
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -10,7 +9,7 @@ import java.io.File;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte
+ * @author Charlotte, Eva, Ruby
  */
 public class TopMenuBar extends JMenuBar {
 
@@ -141,47 +140,55 @@ public class TopMenuBar extends JMenuBar {
         }
     }
 
-    //Function to load file after loading file
+    // Function to load file after loading file
     public void loadFile(File file) {
         // CONTINUE!!!
         System.out.println("loaded");
     }
 
-    //Function to show a description of the function of this app
-    private void showFunctions(){
-        JOptionPane.showMessageDialog(null, "<html>Username, Password, and Sign In:" +
-                        "<br>You will need to enter a username and password to sign in. " +
-                        "If you have not signed in with this username <br>before, " +
-                        "you will be automatically registered and signed in when you click the \"Sign in\" button. " +
-                        "If you have <br>signed in with this username before and entered the correct password, " +
-                        "you will be successfully signed in <br>when you click the \"Sign in\" button." +
-                        "<br>Sign Out:" +
-                        "<br>When you click the \"Sign Out\" button, " +
-                        "you will be signed out from the account you just signed in to." +
-                        "<br>Back:" +
-                        "<br>Return from the splitter's bill to the main bill." +
-                        "<br>Add entry:" +
-                        "<br>Add a new entry to the bill. " +
-                        "You need to enter the information for this new entry from the pop-up window." +
-                        "<br>Delete entry:" +
-                        "<br>Delete the selected entry from the bill." +
-                        "<br>MenuBar -> File -> Import File:" +
-                        "<br>Select a csv file and add the information in it to the bill as new entries." +
-                        "<br>MenuBar -> Settings -> Appearance:" +
-                        "<br>Change the background color or font." +
-                        "<br>MenuBar -> Help -> How to use:" +
-                        "<br>Some description of how to use Bill Gates." +
-                        "<br>MenuBar -> Help -> Shortcut key:" +
-                        "<br>Some descriptions of how to use the shortcut keys.",
+    // Function to show a description of the function of this app
+    private void showFunctions() {
+        String description = """
+                <html><h3>Username, Password, and Sign In:</h3>
+                You will need to enter a username and password to sign in. If you have not signed in with this username
+                before, you will be automatically registered and signed in when you click the "Sign in" button. If you have
+                signed in with this username before and entered the correct password, you will be successfully signed in
+                when you click the "Sign in" button.
+                <html><h3>Sign Out:</h3>
+                When you click the "Sign Out" button, you will be signed out from the account you just signed in to.
+                <html><h3>Back:</h3>
+                Return from the splitter's bill to the main bill.
+                <html><h3>Add entry:</h3>
+                Add a new entry to the bill. You need to enter the information for this new entry from the pop-up window.
+                <html><h3>Delete entry:</h3>
+                Delete the selected entry from the bill.
+                <html><h3>MenuBar -> File -> Import File:</h3>
+                Select a csv file and add the information in it to the bill as new entries.
+                <html><h3>MenuBar -> Settings -> Appearance:</h3>
+                Change the background color or font.
+                <html><h3>MenuBar -> Help -> How to use:</h3>
+                Some description of how to use Bill Gates.
+                <html><h3>MenuBar -> Help -> Shortcut key:</h3>
+                Some descriptions of how to use the shortcut keys.
+                """;
+        // Change description to scrollable text?
+//        JTextArea textArea = new JTextArea(description, 25,  57);
+//        textArea.setEditable(false);
+//        JScrollPane sp = new JScrollPane(textArea);
+//        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        JOptionPane.showMessageDialog(null, description,
                 "How to use the Bill Gates", JOptionPane.PLAIN_MESSAGE);
     }
 
-    //Function to show that how to use shortcut key
-    private void shortcut(){
-        JOptionPane.showMessageDialog(null, "<html>Shift + I: MenuBar -> File -> Import File"
-                        +"<br>Shift + A: MenuBar -> Settings -> Appearance"
-                        +"<br>Shift + H: MenuBar -> Help -> How to use"
-                        +"<br>Shift + S: MenuBar -> Help -> Shortcut key",
-                "Shortcut key", JOptionPane.PLAIN_MESSAGE);
+    // Function to show that how to use shortcut key
+    private void shortcut() {
+        String shortcut = """
+                Shift + I: MenuBar -> File -> Import File
+                Shift + A: MenuBar -> Settings -> Appearance
+                Shift + H: MenuBar -> Help -> How to use
+                Shift + S: MenuBar -> Help -> Shortcut key
+                """;
+        JOptionPane.showMessageDialog(null, shortcut,
+                "Shortcut keys", JOptionPane.PLAIN_MESSAGE);
     }
 }

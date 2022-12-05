@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Scott, Eva
+ * @author Charlotte, Scott, Eva, Ruby
  */
 public class MainFrame extends JFrame {
 

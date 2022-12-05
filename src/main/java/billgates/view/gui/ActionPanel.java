@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Scott
+ * @author Charlotte, Scott, Ruby
  */
 public class ActionPanel extends JPanel implements UserJoinUpdatable {
 

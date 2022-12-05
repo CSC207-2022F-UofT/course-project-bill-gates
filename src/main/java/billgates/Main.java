@@ -23,7 +23,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Scott
+ * @author Scott, Ruby
  */
 public class Main {
 
