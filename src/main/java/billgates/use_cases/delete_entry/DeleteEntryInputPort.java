@@ -5,7 +5,6 @@ package billgates.use_cases.delete_entry;
  * An input port for the Delete Entry use case.
  *
  * @author Ellen, Scott
- *
  * @see DeleteEntryUseCase
  */
 public interface DeleteEntryInputPort {

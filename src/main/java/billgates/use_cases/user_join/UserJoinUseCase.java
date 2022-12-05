@@ -1,10 +1,8 @@
 package billgates.use_cases.user_join;
 
-import billgates.database.QueryUserData;
+import billgates.entities.QueryUserData;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
-
-import java.util.List;
 
 /**
  * Clean Architecture Layer: Application Business Rules
@@ -35,8 +33,7 @@ public class UserJoinUseCase implements UserJoinInputPort {
 
     @Override
     public void join(UserJoinRequestModel model) {
-        List<QueryUserData> usersData = this.gateway.getUserData();
-        boolean exist = usersData.stream().anyMatch(d -> d.getUsername().equals(model.getUsername()));
+        boolean exist = this.gateway.getUserData(model.getUsername()) != null;
         // if the user does not exist
         if (!exist) {
             // register

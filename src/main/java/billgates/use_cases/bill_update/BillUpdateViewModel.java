@@ -23,9 +23,15 @@ public class BillUpdateViewModel {
      */
     private List<List<Object>> entries;
 
-    public BillUpdateViewModel(String[] columns, List<List<Object>> entries) {
+    /**
+     * A flag signifying if the current bill is a splitter bill.
+     */
+    private boolean isSplitterBill;
+
+    public BillUpdateViewModel(String[] columns, List<List<Object>> entries, boolean isSplitterBill) {
         this.columns = columns;
         this.entries = entries;
+        this.isSplitterBill = isSplitterBill;
     }
 
     public String[] getColumns() {
@@ -44,4 +50,11 @@ public class BillUpdateViewModel {
         this.entries = entries;
     }
 
+    public boolean isSplitterBill() {
+        return isSplitterBill;
+    }
+
+    public void setSplitterBill(boolean splitterBill) {
+        isSplitterBill = splitterBill;
+    }
 }

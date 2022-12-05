@@ -1,8 +1,13 @@
 package database;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import billgates.database.*;
+import billgates.Main;
+import billgates.database.MySQLDatabaseGateway;
+import billgates.entities.Entry;
+import billgates.entities.EntryBuilder;
+import billgates.entities.QueryUserData;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,17 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 public class MySQLDatabaseGatewayTests {
+    public static final int TEST_TIMEOUT = 100000;
     public MySQLDatabaseGateway testGateway;
     public int testBillID = 9999;
-
     public int testSplitBillID = 1234;
-
     public int testUserID = 9999;
-
     public Connection testConnection;
-
-    public static final int TEST_TIMEOUT = 100000;
 
     @Before
     public void setUp() {
@@ -68,36 +72,36 @@ public class MySQLDatabaseGatewayTests {
                     testStatement.execute(deleteUserQuery);
                 }
 
-                // For each test, I want a table called bill9999
+                // For each test, I want a table called bill_9999
                 String createTableQuery = String.format("""
-                    CREATE TABLE bill_%d
-                    (
-                        entry_id         INT             AUTO_INCREMENT
-                                                         PRIMARY KEY,
-                        value            DECIMAL(16, 2)  NOT NULL,
-                        date             TIMESTAMP       NOT NULL,
-                        currency         CHAR(3)         NOT NULL,
-                        description      TEXT            NOT NULL,
-                        `from`           TEXT            NOT NULL,
-                        `to`             TEXT            NOT NULL,
-                        location         TEXT            NOT NULL,
-                        split_bill_id    INT             NOT NULL
-                    )
-                    """, this.testBillID);
+                        CREATE TABLE bill_%d
+                        (
+                            entry_id         INT             AUTO_INCREMENT
+                                                             PRIMARY KEY,
+                            value            DECIMAL(16, 2)  NOT NULL,
+                            date             TIMESTAMP       NOT NULL,
+                            currency         CHAR(3)         NOT NULL,
+                            description      TEXT            NOT NULL,
+                            `from`           TEXT            NOT NULL,
+                            `to`             TEXT            NOT NULL,
+                            location         TEXT            NOT NULL,
+                            split_bill_id    INT             NOT NULL
+                        )
+                        """, this.testBillID);
 
                 testStatement.execute(createTableQuery);
 
                 String createEntryOneQuery = String.format("""
-                            INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
-                            (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
-                            """, this.testBillID);
+                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
+                        (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
+                        """, this.testBillID);
 
                 testStatement.execute(createEntryOneQuery);
 
                 String createEntryTwoQuery = String.format("""
-                            INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
-                            (2, 678.90, "1970-01-10 00:00:00", "CNY", "This is another test entry", "Cash", "Burger King", "College Street", -1)
-                            """, this.testBillID);
+                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
+                        (2, 678.90, "1970-01-10 00:00:00", "CNY", "This is another test entry", "Cash", "Burger King", "College Street", -1)
+                        """, this.testBillID);
 
                 testStatement.execute(createEntryTwoQuery);
 
@@ -337,22 +341,24 @@ public class MySQLDatabaseGatewayTests {
             String testLocation = "Online";
             int testSplitBillID = -1;
 
-            QueryEntryData testEntry3 = new QueryEntryData(testID,
-                    testDate,
-                    testValue,
-                    testCurrency,
-                    testDescription,
-                    testFrom,
-                    testTo,
-                    testLocation,
-                    testSplitBillID);
+            Entry testEntry3 = new EntryBuilder()
+                    .setId(testID)
+                    .setDate(testDate)
+                    .setValue(testValue)
+                    .setCurrency(testCurrency)
+                    .setDescription(testDescription)
+                    .setFrom(testFrom)
+                    .setTo(testTo)
+                    .setLocation(testLocation)
+                    .setSplitterBillId(testSplitBillID)
+                    .buildEntry();
 
             this.testGateway.insertEntry(this.testBillID, testEntry3);
 
             Statement testStatement = this.testConnection.createStatement();
 
             String getNewlyCreatedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
-                    this.testBillID, testEntry3.getId());
+                    this.testBillID, testEntry3.getId().getAttribute());
 
             ResultSet result = testStatement.executeQuery(getNewlyCreatedEntry);
 
@@ -415,16 +421,18 @@ public class MySQLDatabaseGatewayTests {
                     ZoneId.systemDefault());
             double testValue = 999.1;
 
-            QueryEntryData testEntry4 = new QueryEntryData(testID,
-                    testDate,
-                    testValue);
+            Entry testEntry4 = new EntryBuilder()
+                    .setId(testID)
+                    .setDate(testDate)
+                    .setValue(testValue)
+                    .buildEntry();
 
             this.testGateway.insertEntry(this.testBillID, testEntry4);
 
             Statement testStatement = this.testConnection.createStatement();
 
             String getNewlyCreatedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
-                    this.testBillID, testEntry4.getId());
+                    this.testBillID, testEntry4.getId().getAttribute());
 
             ResultSet result = testStatement.executeQuery(getNewlyCreatedEntry);
 
@@ -486,8 +494,10 @@ public class MySQLDatabaseGatewayTests {
                     ZoneId.systemDefault());
             double testValue = 1011.02;
 
-            QueryEntryData testEntry5 = new QueryEntryData(testDate,
-                    testValue);
+            Entry testEntry5 = new EntryBuilder()
+                    .setDate(testDate)
+                    .setValue(testValue)
+                    .buildEntry();
 
             this.testGateway.insertEntry(this.testBillID, testEntry5);
 
@@ -518,7 +528,7 @@ public class MySQLDatabaseGatewayTests {
     public void testGetEntry() {
         try {
             // In the @Before chunk, we inserted an entry that has the ID 1
-            QueryEntryData obtainedEntry = this.testGateway.getEntryData(this.testBillID, 1);
+            Entry obtainedEntry = this.testGateway.getEntryData(this.testBillID, 1);
 
             ZonedDateTime expectedDate = ZonedDateTime.of(1970,
                     1,
@@ -530,15 +540,15 @@ public class MySQLDatabaseGatewayTests {
 
             // This information was identical to the ones in the setUp chunk.
             // (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
-            assertEquals(1, obtainedEntry.getId());
-            assertEquals(expectedDate, obtainedEntry.getDate());
-            assertEquals(123.45, obtainedEntry.getValue(), 1e-8);
-            assertEquals("CAD", obtainedEntry.getCurrency());
-            assertEquals("This is a test entry", obtainedEntry.getDescription());
-            assertEquals("Credit Card", obtainedEntry.getFrom());
-            assertEquals("T&T Supermarket", obtainedEntry.getTo());
-            assertEquals("T&T Supermarket", obtainedEntry.getLocation());
-            assertEquals(-1, obtainedEntry.getSplitBillId());
+            assertEquals(1, (int) obtainedEntry.getId().getAttribute());
+            assertEquals(expectedDate, obtainedEntry.getDate().getAttribute());
+            assertEquals(123.45, obtainedEntry.getValue().getAttribute(), 1e-8);
+            assertEquals("CAD", obtainedEntry.getCurrency().getAttribute());
+            assertEquals("This is a test entry", obtainedEntry.getDescription().getAttribute());
+            assertEquals("Credit Card", obtainedEntry.getFrom().getAttribute());
+            assertEquals("T&T Supermarket", obtainedEntry.getTo().getAttribute());
+            assertEquals("T&T Supermarket", obtainedEntry.getLocation().getAttribute());
+            assertEquals(-1, (int) obtainedEntry.getSplitterBillId().getAttribute());
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
             fail();
@@ -548,11 +558,11 @@ public class MySQLDatabaseGatewayTests {
     @Test(timeout = TEST_TIMEOUT)
     public void testGetBillDataAll() {
         try {
-            QueryBillData obtainedBillData = this.testGateway.getBillData(this.testBillID);
+            List<Entry> obtainedBillData = this.testGateway.getBillData(this.testBillID);
 
             // Testing if the size is 2, since if there is 2, then it means we have obtained all entries
             // In the setUp chunk, we initialized the bill with 2 entries
-            assertEquals(obtainedBillData.getEntries().size(), 2);
+            assertEquals(obtainedBillData.size(), 2);
 
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
@@ -579,10 +589,10 @@ public class MySQLDatabaseGatewayTests {
                     0,
                     0, ZoneId.systemDefault());
 
-            QueryBillData obtainedBillData = this.testGateway.getBillData(this.testBillID, startTime, endTime);
+            List<Entry> obtainedBillData = this.testGateway.getBillData(this.testBillID, startTime, endTime);
 
             // If we only have 1 entry obtained, then it is a success
-            assertEquals(obtainedBillData.getEntries().size(), 1);
+            assertEquals(obtainedBillData.size(), 1);
 
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
@@ -661,7 +671,7 @@ public class MySQLDatabaseGatewayTests {
                     0,
                     ZoneId.systemDefault());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
 
             this.testGateway.modifyEntry(this.testBillID, testEntryID, "Date", testDate.format(formatter));
 
@@ -709,22 +719,24 @@ public class MySQLDatabaseGatewayTests {
             String testLocation = "Online";
             int testSplitBillID = -1;
 
-            QueryEntryData testModifiedEntry1 = new QueryEntryData(testEntryID,
-                    testTime,
-                    testValue,
-                    testCurrency,
-                    testDescription,
-                    testFrom,
-                    testTo,
-                    testLocation,
-                    testSplitBillID);
+            Entry testModifiedEntry1 = new EntryBuilder()
+                    .setId(testEntryID)
+                    .setDate(testTime)
+                    .setValue(testValue)
+                    .setCurrency(testCurrency)
+                    .setDescription(testDescription)
+                    .setFrom(testFrom)
+                    .setTo(testTo)
+                    .setLocation(testLocation)
+                    .setSplitterBillId(testSplitBillID)
+                    .buildEntry();
 
             this.testGateway.modifyEntry(this.testBillID, testModifiedEntry1);
 
             Statement testStatement = this.testConnection.createStatement();
 
             String getModifiedEntry = String.format("SELECT * FROM bill_%d WHERE entry_id = %d",
-                    this.testBillID, testModifiedEntry1.getId());
+                    this.testBillID, testModifiedEntry1.getId().getAttribute());
 
             ResultSet result = testStatement.executeQuery(getModifiedEntry);
 
@@ -756,15 +768,15 @@ public class MySQLDatabaseGatewayTests {
             // We can pass in the different zones we want to convert in, and we can obtain the value we want
             zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
 
-            assertEquals(obtainedID, testModifiedEntry1.getId());
-            assertEquals(value, testModifiedEntry1.getValue(), 1e-8);
-            assertEquals(zDate, testModifiedEntry1.getDate());
-            assertEquals(currency, testModifiedEntry1.getCurrency());
-            assertEquals(description, testModifiedEntry1.getDescription());
-            assertEquals(from, testModifiedEntry1.getFrom());
-            assertEquals(to, testModifiedEntry1.getTo());
-            assertEquals(location, testModifiedEntry1.getLocation());
-            assertEquals(splitBillID, testModifiedEntry1.getSplitBillId());
+            assertEquals(obtainedID, (int) testModifiedEntry1.getId().getAttribute());
+            assertEquals(value, testModifiedEntry1.getValue().getAttribute(), 1e-8);
+            assertEquals(zDate, testModifiedEntry1.getDate().getAttribute());
+            assertEquals(currency, testModifiedEntry1.getCurrency().getAttribute());
+            assertEquals(description, testModifiedEntry1.getDescription().getAttribute());
+            assertEquals(from, testModifiedEntry1.getFrom().getAttribute());
+            assertEquals(to, testModifiedEntry1.getTo().getAttribute());
+            assertEquals(location, testModifiedEntry1.getLocation().getAttribute());
+            assertEquals(splitBillID, (int) testModifiedEntry1.getSplitterBillId().getAttribute());
 
         } catch (RuntimeException | SQLException e) {
             // Fails the test whenever we encounter an Error

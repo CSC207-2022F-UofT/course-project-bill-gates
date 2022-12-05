@@ -2,8 +2,8 @@ package billgates.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
@@ -17,7 +17,7 @@ public class ActionLabel extends JLabel {
 
     public static final Color DEFAULT_TEXT_COLOR = Color.GRAY;
 
-    public ActionLabel(String text){
+    public ActionLabel(String text) {
         super(text);
         this.setFont(DEFAULT_FONT);
         this.setForeground(DEFAULT_TEXT_COLOR);

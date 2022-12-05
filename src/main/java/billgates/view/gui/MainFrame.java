@@ -1,5 +1,6 @@
 package billgates.view.gui;
 
+import billgates.use_cases.alter_entry.AlterEntryController;
 import billgates.use_cases.bill_update.BillUpdateController;
 import billgates.use_cases.delete_entry.DeleteEntryController;
 import billgates.use_cases.insert_entry.InsertEntryController;
@@ -21,16 +22,18 @@ public class MainFrame extends JFrame {
     public static final int DEFAULT_HEIGHT = 618;
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);
 
-    private final JPanel contentPane = new JPanel(new BorderLayout());
     private final ActionPanel actionPanel = new ActionPanel(this);
     private final BillPanel billPanel = new BillPanel(this);
     private final JMenuBar menu = new TopMenuBar(this);
+
+    private boolean isSplitterBill = false;
     private UserJoinController userJoinController;
 
     // controllers will be set after constructing the view objects
     private BillUpdateController billUpdateController;
     private DeleteEntryController deleteEntryController;
     private InsertEntryController insertEntryController;
+    private AlterEntryController alterEntryController;
 
     public MainFrame() {
         // Set the title
@@ -45,7 +48,8 @@ public class MainFrame extends JFrame {
         // Display the window in the center of the screen
         SwingUtil.centerInScreen(this);
 
-        this.setContentPane(this.contentPane);
+        JPanel contentPane = new JPanel(new BorderLayout());
+        this.setContentPane(contentPane);
 
         // Set the menu bar
         this.setJMenuBar(menu);
@@ -61,6 +65,18 @@ public class MainFrame extends JFrame {
 
     public ActionPanel getActionPanel() {
         return this.actionPanel;
+    }
+
+    public JMenuBar getMenu() {
+        return menu;
+    }
+
+    public boolean isSplitterBill() {
+        return isSplitterBill;
+    }
+
+    public void setSplitterBill(boolean splitterBill) {
+        isSplitterBill = splitterBill;
     }
 
     public BillUpdateController getBillUpdateController() {
@@ -93,5 +109,13 @@ public class MainFrame extends JFrame {
 
     public void setInsertEntryController(InsertEntryController insertEntryController) {
         this.insertEntryController = insertEntryController;
+    }
+
+    public AlterEntryController getAlterEntryController() {
+        return alterEntryController;
+    }
+
+    public void setAlterEntryController(AlterEntryController alterEntryController) {
+        this.alterEntryController = alterEntryController;
     }
 }

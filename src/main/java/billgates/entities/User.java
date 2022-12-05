@@ -4,9 +4,10 @@ import java.util.Objects;
 
 /**
  * Clean Architecture Layer: Enterprise Business Rules
+ * Design Pattern: Singleton
  * This class represents a user entity in our program.
  * Only one user is allowed in the running time of our program.
- * We implement the User using singleton design pattern.
+ * <p>
  * The UserJoinUseCase will initialize the user by calling getInstance(parameters).
  * Other use cases can use getInstance() (the one without parameters) to obtain the current user.
  *
@@ -63,10 +64,10 @@ public class User {
     /**
      * Create the instance of User.
      *
-     * @param id the id of this user
-     * @param name the name of this user
+     * @param id       the id of this user
+     * @param name     the name of this user
      * @param password the password of this user
-     * @param billID the main bill id of this user
+     * @param billID   the main bill id of this user
      * @return a new user instance
      */
     public static User createInstance(int id, String name, String password, int billID) {
@@ -76,13 +77,14 @@ public class User {
 
     /**
      * Precondition: instance != null
-     * This function returns the current User instance or throw a runtime exception if the current user does not exist.
+     * This function returns the current User instance or throw a runtime exception if the current
+     * user does not exist.
      *
      * @return The current User instance.
      */
     public static User getInstance() {
-        if (instance == null) throw new
-                NullPointerException("Failed to obtain the current user. User have not logged in yet.");
+        if (instance == null) throw new NullPointerException(
+                "Failed to obtain the current user. User have not logged in yet.");
         return instance;
     }
 

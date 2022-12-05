@@ -1,6 +1,6 @@
 package billgates.use_cases.alter_entry;
 
-import billgates.database.QueryEntryData;
+import billgates.entities.Entry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
@@ -24,7 +24,8 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
     }
 
     /**
-     * This method aim to change numbers of column in one entry by once
+     * This method aims to change multiple columns of an entry once.
+     *
      * @param entryId   the ID of the entry which have a value we want to change.
      * @param changeMap the map which has the alter column as key and new value as key
      */
@@ -32,7 +33,7 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
     public void alterEntry(int entryId, Map<String, Object> changeMap) {
         int billId = User.getInstance().getCurrentBillID();
 
-        QueryEntryData oldEntry = this.gateway.getEntryData(billId, entryId);
+        Entry oldEntry = this.gateway.getEntryData(billId, entryId);
         AlterEntryRequestModel model = new AlterEntryRequestModel(oldEntry);
         for (Map.Entry<String, Object> changeSet : changeMap.entrySet()) {
             String alterColumn = changeSet.getKey();
@@ -62,21 +63,29 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
             }
         }
 
-        gateway.modifyEntry(billId, model.getQueryEntryData(entryId));
+        gateway.modifyEntry(billId, model.getEntryData(entryId));
 
     }
 
     /**
-     *  this is the basic alterEntry method that change on column in one entry
+     * Alters one column in one entry.
+     *
      * @param entryId     the ID of the entry which have a value we want to change.
      * @param newValue    the value we want the date to change to, object type
      * @param alterColumn the String representation of the column we want to change
      */
-
     public void alterEntry(int entryId, Object newValue, String alterColumn) {
-        int billId = User.getInstance().getCurrentBillID();
+        User user = User.getInstance();
+        int billId = user.getCurrentBillID();
         String newValueString = newValue.toString();
-        this.gateway.modifyEntry(billId, entryId, alterColumn, newValueString);
+        if (billId == user.getBillId()) {
+            this.gateway.modifyEntry(billId, entryId, alterColumn, newValueString);
+        } else {
+            if ("Paid Back".equals(alterColumn)) {
+                newValueString = ((boolean) newValue) ? "1" : "0";
+            }
+            this.gateway.modifySplitEntry(billId, entryId, alterColumn, newValueString);
+        }
     }
 
 }

@@ -4,7 +4,8 @@ import billgates.use_cases.bill_update.BillUpdateViewModel;
 
 /**
  * Clean Architecture Layer: Interface Adapters
- * A interface represents that a view is updatable with respect to the <code>BillUpdateViewModel</code>.
+ * A interface represents that a view is updatable with respect to the
+ * <code>BillUpdateViewModel</code>.
  * The purpose of this interface is dependency inversion.
  *
  * @author Scott

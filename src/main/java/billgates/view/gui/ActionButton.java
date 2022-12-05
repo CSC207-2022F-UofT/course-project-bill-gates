@@ -2,8 +2,8 @@ package billgates.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
@@ -48,8 +48,8 @@ public class ActionButton extends JButton {
         double ratio = originIconWidth / originIconHeight;
 
         // Resize the icon according to the ratio
-        Image resizedBackImage = icon.getImage().getScaledInstance((int) (DEFAULT_IMAGE_HEIGHT * ratio),
-                DEFAULT_IMAGE_HEIGHT, java.awt.Image.SCALE_SMOOTH);
+        Image resizedBackImage = icon.getImage().getScaledInstance(
+                (int) (DEFAULT_IMAGE_HEIGHT * ratio), DEFAULT_IMAGE_HEIGHT, Image.SCALE_SMOOTH);
         ImageIcon resizedBackIcon = new ImageIcon(resizedBackImage);
 
         // Set the icon

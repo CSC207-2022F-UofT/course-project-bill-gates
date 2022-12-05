@@ -4,6 +4,9 @@ import billgates.database.MySQLDatabaseGateway;
 import billgates.interface_adapters.BillPanelUpdatable;
 import billgates.interface_adapters.DatabaseGateway;
 import billgates.interface_adapters.UserJoinUpdatable;
+import billgates.use_cases.alter_entry.AlterEntryController;
+import billgates.use_cases.alter_entry.AlterEntryInputPort;
+import billgates.use_cases.alter_entry.AlterEntryUseCase;
 import billgates.use_cases.bill_update.BillUpdateController;
 import billgates.use_cases.bill_update.BillUpdateOutputPort;
 import billgates.use_cases.bill_update.BillUpdatePresenter;
@@ -27,7 +30,9 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
  */
 public class Main {
 
-    public static void main(String[] args){
+    public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+    public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new MetalLookAndFeel());
         } catch (UnsupportedLookAndFeelException ignored) {
@@ -42,6 +47,7 @@ public class Main {
         mainFrame.setDeleteEntryController(initDeleteEntryUseCase(databaseGateway));
         mainFrame.setUserJoinController(initUserJoinUseCase(databaseGateway, mainFrame.getActionPanel()));
         mainFrame.setInsertEntryController(initInsertEntryUseCase(databaseGateway));
+        mainFrame.setAlterEntryController(initAlterEntryUseCase(databaseGateway));
 
         mainFrame.setVisible(true);
         // init column widths
@@ -52,7 +58,8 @@ public class Main {
                                                               BillPanelUpdatable updatable) {
         // init bill update use case
         BillUpdateOutputPort billUpdatePresenter = new BillUpdatePresenter(updatable);
-        BillUpdateUseCase billUpdateUseCase = new BillUpdateUseCase(billUpdatePresenter, databaseGateway);
+        BillUpdateUseCase billUpdateUseCase = new BillUpdateUseCase(billUpdatePresenter,
+                databaseGateway);
         return new BillUpdateController(billUpdateUseCase);
     }
 
@@ -71,6 +78,11 @@ public class Main {
     private static InsertEntryController initInsertEntryUseCase(DatabaseGateway databaseGateway) {
         InsertEntryInputPort useCase = new InsertEntryUseCase(databaseGateway);
         return new InsertEntryController(useCase);
+    }
+
+    private static AlterEntryController initAlterEntryUseCase(DatabaseGateway databaseGateway) {
+        AlterEntryInputPort useCase = new AlterEntryUseCase(databaseGateway);
+        return new AlterEntryController(useCase);
     }
 
     // add new functions to init all other use cases

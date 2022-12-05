@@ -11,7 +11,7 @@ package billgates.use_cases.insert_entry;
 public interface InsertEntryInputPort {
 
     /**
-     * This method will insert an entry in the database corresponding to the information in the model.
+     * Inserts an entry in the database corresponding to the information in the model.
      * It will detect 2 different scenarios from the model and take following actions:
      * Case 1: If this is adding a new entry to the main bill,
      * a new QueryEntryData is created and passed to Gateway#insertEntry.

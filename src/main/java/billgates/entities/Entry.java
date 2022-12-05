@@ -30,13 +30,15 @@ public class Entry extends AbstractEntry {
     @Override
     public List<Attribute<?>> toList() {
         return Arrays.asList(this.getId(), this.getDate(), this.getValue(), this.getCurrency(),
-                this.getDescription(), this.getFrom(), this.getTo(), this.getLocation(), this.getSplitterBillId());
+                this.getDescription(), this.getFrom(), this.getTo(), this.getLocation(),
+                this.getSplitterBillId());
     }
 
     @Override
     public List<Object> toObjects() {
-        return Arrays.asList(this.getId().getAttribute(), this.getDate().getAttribute(), this.getValue().getAttribute(),
-                this.getCurrency().getAttribute(), this.getDescription().getAttribute(), this.getFrom().getAttribute(),
+        return Arrays.asList(this.getId().getAttribute(), this.getDate().getAttribute(),
+                this.getValue().getAttribute(), this.getCurrency().getAttribute(),
+                this.getDescription().getAttribute(), this.getFrom().getAttribute(),
                 this.getTo().getAttribute(), this.getLocation().getAttribute(),
                 this.getSplitterBillId().getAttribute());
     }
