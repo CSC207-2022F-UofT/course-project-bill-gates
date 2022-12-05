@@ -13,6 +13,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Ellen
+ */
 public class AddEntryDialog extends JPanel {
     private final MainFrame mainFrame;
     private DateTimePicker dateTimePicker;

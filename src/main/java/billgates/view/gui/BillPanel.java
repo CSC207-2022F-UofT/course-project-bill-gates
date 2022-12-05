@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Scott
+ * @author Charlotte, Scott, Eva
  */
 public class BillPanel extends JPanel implements BillPanelUpdatable {
 

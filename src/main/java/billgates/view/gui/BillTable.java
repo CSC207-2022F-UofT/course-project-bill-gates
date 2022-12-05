@@ -16,7 +16,7 @@ public class BillTable extends JTable {
 
     public static final int DEFAULT_HEADER_HEIGHT = 50;
     public static final int DEFAULT_ROW_HEIGHT = 40;
-    public static final int DEFAULT_FONT_SIZE = 14;
+    public static final int DEFAULT_FONT_SIZE = 12;
     public static final Font DEFAULT_FONT = new FontSettings(DEFAULT_FONT_SIZE);
 
     private final BillTableModel model = new BillTableModel();

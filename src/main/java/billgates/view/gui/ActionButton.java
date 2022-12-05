@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte
+ * @author Charlotte, Eva, Scott
  */
 public class ActionButton extends JButton {
 

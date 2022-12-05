@@ -5,12 +5,12 @@ import java.awt.*;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte
+ * @author Charlotte, Eva
  */
 public class FontSettings extends Font{
 
     public FontSettings(int fontSize) {
-        super("Modern No. 20", Font.BOLD, fontSize);
+        super("Tahoma", Font.BOLD, fontSize);
     }
 
     // Add a new constructor to change font later, with parameter of font and font size

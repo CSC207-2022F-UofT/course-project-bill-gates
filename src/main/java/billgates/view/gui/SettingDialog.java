@@ -3,19 +3,20 @@ package billgates.view.gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Eva, Charlotte, Scott
+ */
 public class SettingDialog extends JDialog {
     private static final JComboBox<String> colorField = new JComboBox<>();
     private static final JComboBox<String> fontField = new JComboBox<>();
-    private final static Color[] COLORS = new Color[]{ActionButton.DEFAULT_BACKGROUND_COLOR,
-            Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK,
-            Color.WHITE};
-    private final static String[] FONTS = new String[]{"Modern No. 20", "Times New Roman",
-            "Helvetica", "Arial", "Impact", "Verdana", "Century", "Tahoma", "Copperplate"};
     private static int colorIndex;
     private static int fontIndex;
     private final JButton confirmButton = new JButton("Confirm");
     private final JButton cancelButton = new JButton("Cancel");
     private boolean confirmed = false;
+    private static boolean isInitialized = false;
 
     // Set up setting dialog to change background color and font style
     public SettingDialog(MainFrame owner) {
@@ -30,7 +31,7 @@ public class SettingDialog extends JDialog {
         this.setModal(true);
         this.setSize(400, 200);
         this.setResizable(false);
-        SwingUtil.centerInOwner(this, this.getOwner());
+        SwingUtil.centerInOwner(this, owner);
         this.setContentPane(root);
 
         //Set the sub-action root panel
@@ -40,26 +41,30 @@ public class SettingDialog extends JDialog {
 
         // Set the color-field and font-field
         JLabel backgroundButton = new JLabel("Background Color");
-        colorField.addItem("Default");
-        colorField.addItem("Red");
-        colorField.addItem("Orange");
-        colorField.addItem("Yellow");
-        colorField.addItem("Green");
-        colorField.addItem("Cyan");
-        colorField.addItem("Blue");
-        colorField.addItem("Pink");
-        colorField.addItem("White");
-
         JLabel fontStyle = new JLabel("Font");
-        fontField.addItem("Default");
-        fontField.addItem("Times New Roman");
-        fontField.addItem("Helvetica");
-        fontField.addItem("Arial");
-        fontField.addItem("Impact");
-        fontField.addItem("Verdana");
-        fontField.addItem("Century");
-        fontField.addItem("Tahoma");
-        fontField.addItem("Copperplate");
+
+        if (!isInitialized) {
+            colorField.addItem("Default");
+            colorField.addItem("Red");
+            colorField.addItem("Orange");
+            colorField.addItem("Yellow");
+            colorField.addItem("Green");
+            colorField.addItem("Cyan");
+            colorField.addItem("Blue");
+            colorField.addItem("Pink");
+            colorField.addItem("White");
+
+            fontField.addItem("Default");
+            fontField.addItem("Times New Roman");
+            fontField.addItem("Helvetica");
+            fontField.addItem("Arial");
+            fontField.addItem("Impact");
+            fontField.addItem("Verdana");
+            fontField.addItem("Century");
+            fontField.addItem("Copperplate");
+
+            isInitialized = true;
+        }
 
         //Set the color choose box panel
         JPanel colorChooseBox = new JPanel();
@@ -77,7 +82,7 @@ public class SettingDialog extends JDialog {
         this.add(subAction, BorderLayout.SOUTH);
 
         // Case 1: Click cancelButton
-        this.cancelButton.addActionListener(e -> setVisible(false));
+        this.cancelButton.addActionListener(e -> this.setVisible(false));
 
         // Case 2: Choose different color and font
         this.confirmButton.addActionListener((e ->

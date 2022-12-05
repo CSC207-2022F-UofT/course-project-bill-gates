@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Ellen
+ */
 public class ActionComboBox<E> extends JComboBox<E> {
 
     public static final int DEFAULT_FONT_SIZE = 14;

@@ -3,6 +3,11 @@ package billgates.view.gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Ellen
+ */
 public class ActionTextField extends JTextField {
 
     public static final int DEFAULT_FONT_SIZE = 14;
