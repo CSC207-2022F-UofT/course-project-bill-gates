@@ -49,7 +49,7 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem import in File
         JMenuItem importMenuItem = new JMenuItem("Import File");
         KeyStroke keyStrokeToImport
-                = KeyStroke.getKeyStroke(KeyEvent.VK_I + KeyEvent.VK_CONTROL, KeyEvent.SHIFT_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         importMenuItem.setAccelerator(keyStrokeToImport);
         fileMenu.add(importMenuItem);
 
@@ -60,7 +60,7 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem change color and font in setting
         JMenuItem appearanceMenuItem = new JMenuItem("Appearance");
         KeyStroke keyStrokeToSet
-                = KeyStroke.getKeyStroke(KeyEvent.VK_A + KeyEvent.VK_CONTROL, KeyEvent.SHIFT_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         appearanceMenuItem.setAccelerator(keyStrokeToSet);
         settingsMenu.add(appearanceMenuItem);
 
@@ -79,7 +79,7 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem functions in help
         JMenuItem functionMenuItem = new JMenuItem("How to use");
         KeyStroke keyStrokeToUse
-                = KeyStroke.getKeyStroke(KeyEvent.VK_H + KeyEvent.VK_CONTROL, KeyEvent.SHIFT_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         functionMenuItem.setAccelerator(keyStrokeToUse);
         helpMenu.add(functionMenuItem);
 
@@ -91,7 +91,7 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem shortcut key in help
         JMenuItem shortcutMenuItem = new JMenuItem("Shortcut key");
         KeyStroke keyStrokeShortcut
-                = KeyStroke.getKeyStroke(KeyEvent.VK_S + KeyEvent.VK_CONTROL, KeyEvent.SHIFT_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         shortcutMenuItem.setAccelerator(keyStrokeShortcut);
         helpMenu.add(shortcutMenuItem);
 
