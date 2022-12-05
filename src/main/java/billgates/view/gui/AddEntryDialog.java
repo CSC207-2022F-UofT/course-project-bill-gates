@@ -72,6 +72,7 @@ public class AddEntryDialog extends JPanel {
         this.valueField = new ActionTextField(20);
         this.valueField.setDocument(new RegexDocument("\\d*\\.?\\d{0,2}"));
         this.valueField.setText(NumberFormat.getInstance().format(0D));
+        this.valueField.setAlignmentX(LEFT_ALIGNMENT);
         this.add(this.valueField);
 
         this.add(new ActionLabel("Currency:"));
@@ -82,26 +83,32 @@ public class AddEntryDialog extends JPanel {
 
         this.add(new ActionLabel("Description:"));
         this.descriptionField = new ActionTextField(20);
+        this.descriptionField.setAlignmentX(LEFT_ALIGNMENT);
         this.add(this.descriptionField);
 
         this.add(new ActionLabel("From:"));
         this.fromField = new ActionTextField(20);
+        this.fromField.setAlignmentX(LEFT_ALIGNMENT);
         this.add(this.fromField);
 
         this.add(new ActionLabel("To:"));
         this.toField = new ActionTextField(20);
+        this.toField.setAlignmentX(LEFT_ALIGNMENT);
         this.add(this.toField);
 
         this.add(new ActionLabel("Location:"));
         this.locationField = new ActionTextField(20);
+        this.locationField.setAlignmentX(LEFT_ALIGNMENT);
         this.add(this.locationField);
 
         if (this.mainFrame.isSplitterBill()) {
             this.add(new ActionLabel("Payee:"));
             this.payeeField = new ActionTextField(20);
+            this.payeeField.setAlignmentX(LEFT_ALIGNMENT);
             this.add(this.payeeField);
 
             this.paidBackCheckBox = new JCheckBox("Paid Back", false);
+            this.paidBackCheckBox.setAlignmentX(LEFT_ALIGNMENT);
             this.add(this.paidBackCheckBox);
         }
     }
