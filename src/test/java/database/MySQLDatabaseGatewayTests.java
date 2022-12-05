@@ -1,10 +1,10 @@
 package database;
 
-import billgates.Main;
 import billgates.database.MySQLDatabaseGateway;
 import billgates.entities.Entry;
 import billgates.entities.EntryBuilder;
 import billgates.entities.QueryUserData;
+import billgates.view.BillGatesUtilities;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -671,7 +671,7 @@ public class MySQLDatabaseGatewayTests {
                     0,
                     ZoneId.systemDefault());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN);
 
             this.testGateway.modifyEntry(this.testBillID, testEntryID, "Date", testDate.format(formatter));
 

@@ -1,112 +1,108 @@
 package billgates.view.gui;
 
+import billgates.use_cases.insert_entry.InsertEntryRequestModel;
+import billgates.view.BillGatesUtilities;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import javax.swing.*;
-import java.awt.*;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
-public class AddEntryDialog extends JDialog {
-
-    private int result;
-    private ZonedDateTime date;
-    private double value;
-    private String currency;
-    private String description;
-    private String from;
-    private String to;
-    private String location;
+public class AddEntryDialog extends JPanel {
     private final MainFrame mainFrame;
+    private DateTimePicker dateTimePicker;
+    private ActionTextField valueField;
+    private ActionComboBox<String> currencyComboBox;
+    private ActionTextField descriptionField;
+    private ActionTextField fromField;
+    private ActionTextField toField;
+    private ActionTextField locationField;
+    private ActionTextField payeeField;
+    private JCheckBox paidBackCheckBox;
+    private int result;
 
-    public AddEntryDialog(MainFrame owner) {
-        super(owner);
-        this.mainFrame = owner;
-        // Create a datetime picker.
-        DateTimePicker dateTimePicker1 = new DateTimePicker();
-        add(dateTimePicker1);
-        dateTimePicker1.setAlignmentX(LEFT_ALIGNMENT);
+    public AddEntryDialog(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        JTextField valueField = new JTextField(20);
-        valueField.setDocument(new RegexDocument("\\S*"));
-        valueField.setDocument(new RegexDocument("\\d*\\.?\\d{0,2}"));
+        initDialog();
+    }
 
-        JTextField currencyField = new JTextField(20);
-        currencyField.setDocument(new RegexDocument("\\S*"));
-        currencyField.setDocument(new RegexDocument("[A-Z]*"));
-
-        JTextField descriptionField = new JTextField(20);
-
-        JTextField fromField = new JTextField(20);
-
-        JTextField toField = new JTextField(20);
-
-        JTextField locationField = new JTextField(20);
-
-        JPanel insertEntryDialog = new JPanel();
-        insertEntryDialog.setLayout(new BoxLayout(insertEntryDialog, BoxLayout.PAGE_AXIS));
-        insertEntryDialog.add(new JLabel("Date and Time:"));
-        insertEntryDialog.add(dateTimePicker1);
-        insertEntryDialog.add(new JLabel("Value:"));
-        insertEntryDialog.add(valueField);
-        insertEntryDialog.add(new JLabel("Currency:"));
-        insertEntryDialog.add(currencyField);
-        insertEntryDialog.add(new JLabel("Description:"));
-        insertEntryDialog.add(descriptionField);
-        insertEntryDialog.add(new JLabel("From:"));
-        insertEntryDialog.add(fromField);
-        insertEntryDialog.add(new JLabel("To:"));
-        insertEntryDialog.add(toField);
-        insertEntryDialog.add(new JLabel("Location:"));
-        insertEntryDialog.add(locationField);
-
-        this.result = JOptionPane.showConfirmDialog(this, insertEntryDialog,
-                "Information about the new entry", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
+    public InsertEntryRequestModel exec() {
+        result = JOptionPane.showConfirmDialog(this.mainFrame, this,
+                "Adding an entry...", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            LocalDateTime localDateTime = dateTimePicker1.getDateTimePermissive();
-            this.date = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
-            String value1 = valueField.getText();
-            this.value = Double.parseDouble(value1);
-            this.currency = currencyField.getText();
-            this.description = descriptionField.getText();
-            this.from = fromField.getText();
-            this.to = toField.getText();
-            this.location = locationField.getText();
+            LocalDateTime datetime = this.dateTimePicker.getDateTimePermissive();
+            InsertEntryRequestModel model = new InsertEntryRequestModel(
+                    ZonedDateTime.of(datetime, ZoneId.systemDefault()),
+                    Double.parseDouble(this.valueField.getText()),
+                    Objects.requireNonNull(this.currencyComboBox.getSelectedItem()).toString(),
+                    this.descriptionField.getText(),
+                    this.fromField.getText(),
+                    this.toField.getText(),
+                    this.locationField.getText());
+            if (this.mainFrame.isSplitterBill()) {
+                model.setPayee(this.payeeField.getText());
+                model.setPaidBack(this.paidBackCheckBox.isSelected());
+            }
+            return model;
+        } else {
+            return null;
         }
     }
 
-    public ZonedDateTime getDate() {
-        return date;
-    }
+    private void initDialog() {
+        this.add(new ActionLabel("Date and Time:"));
+        // Create a datetime picker.
+        DatePickerSettings datePickerSettings = new DatePickerSettings();
+        TimePickerSettings timePickerSettings = new TimePickerSettings();
+        timePickerSettings.setFormatForMenuTimes(BillGatesUtilities.TIME_PATTERN);
+        timePickerSettings.setFormatForDisplayTime(BillGatesUtilities.TIME_PATTERN);
+        this.dateTimePicker = new DateTimePicker(datePickerSettings, timePickerSettings);
+        this.dateTimePicker.setAlignmentX(LEFT_ALIGNMENT);
+        this.dateTimePicker.setDateTimeStrict(LocalDateTime.now());
+        this.add(this.dateTimePicker);
 
-    public double getValue() {
-        return value;
-    }
+        this.add(new ActionLabel("Value:"));
+        this.valueField = new ActionTextField(20);
+        this.valueField.setDocument(new RegexDocument("\\d*\\.?\\d{0,2}"));
+        this.valueField.setText(NumberFormat.getInstance().format(0D));
+        this.add(this.valueField);
 
-    public String getCurrency() {
-        return currency;
-    }
+        this.add(new ActionLabel("Currency:"));
+        this.currencyComboBox = new ActionComboBox<>(BillGatesUtilities.CURRENCY_CODES);
+        this.currencyComboBox.setAlignmentX(LEFT_ALIGNMENT);
+        this.currencyComboBox.setFont(ActionTextField.DEFAULT_FONT);
+        this.add(this.currencyComboBox);
 
-    public String getDescription() {
-        return description;
-    }
+        this.add(new ActionLabel("Description:"));
+        this.descriptionField = new ActionTextField(20);
+        this.add(this.descriptionField);
 
-    public String getFrom() {
-        return from;
-    }
+        this.add(new ActionLabel("From:"));
+        this.fromField = new ActionTextField(20);
+        this.add(this.fromField);
 
-    public String getTo() {
-        return to;
-    }
+        this.add(new ActionLabel("To:"));
+        this.toField = new ActionTextField(20);
+        this.add(this.toField);
 
-    public String getLocationText() {
-        return location;
-    }
+        this.add(new ActionLabel("Location:"));
+        this.locationField = new ActionTextField(20);
+        this.add(this.locationField);
 
-    public int getResult() {
-        return result;
-    }
+        if (this.mainFrame.isSplitterBill()) {
+            this.add(new ActionLabel("Payee:"));
+            this.payeeField = new ActionTextField(20);
+            this.add(this.payeeField);
 
+            this.paidBackCheckBox = new JCheckBox("Paid Back", false);
+            this.add(this.paidBackCheckBox);
+        }
+    }
 }

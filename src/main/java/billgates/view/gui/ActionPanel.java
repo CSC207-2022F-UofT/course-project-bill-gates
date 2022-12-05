@@ -215,13 +215,10 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     private void addEntry() {
         AddEntryDialog addEntryDialog = new AddEntryDialog(this.mainFrame);
+        InsertEntryRequestModel model = addEntryDialog.exec();
 
-        if (addEntryDialog.getResult() == 0) {
-            InsertEntryRequestModel model = new InsertEntryRequestModel(addEntryDialog.getDate(),
-                    addEntryDialog.getValue(), addEntryDialog.getCurrency(), addEntryDialog.getDescription(),
-                    addEntryDialog.getFrom(), addEntryDialog.getTo(), addEntryDialog.getLocationText());
+        if (model != null) {
             this.mainFrame.getInsertEntryController().insert(model);
-
             // after adding the entry, update the current bill
             SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
         }

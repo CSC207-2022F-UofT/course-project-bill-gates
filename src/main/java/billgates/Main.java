@@ -30,8 +30,6 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
  */
 public class Main {
 
-    public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new MetalLookAndFeel());

@@ -109,4 +109,12 @@ public class InsertEntryRequestModel {
     public boolean getIsPaidBack() {
         return this.isPaidBack;
     }
+
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    public void setPaidBack(boolean paidBack) {
+        isPaidBack = paidBack;
+    }
 }
