@@ -129,6 +129,22 @@ public interface DatabaseGateway {
     void insertUser(QueryUserData user);
 
     /**
+     * Deletes the <code>user</code> in the database.
+     *
+     * @param user the user to be deleted
+     * @see QueryUserData
+     */
+    void deleteUser(QueryUserData user);
+
+    /**
+     * Cleans the <code>user</code> in the database.
+     * Drops all the tables related to the <code>user</code>, including the split bills.
+     *
+     * @param user the user to be cleaned
+     */
+    void cleanUser(QueryUserData user);
+
+    /**
      * Deletes the entry with entryId from the specified bill (using billId)
      *
      * @param billId  the id of the bill that we are trying to remove the specific entry from
@@ -193,6 +209,12 @@ public interface DatabaseGateway {
     void createBillTable(int billId);
 
     /**
+     * Drops a bill with the table name "bill_{billId}" in our database.
+     * @param billId the id of the bill that we are trying drop
+     */
+    void dropBillTable(int billId);
+
+    /**
      * Creates a split bill with the table name "bill_{userId}_{billId}" in our database
      * the userId can be obtained as the User class is designed using a Singleton design pattern
      *
@@ -200,6 +222,13 @@ public interface DatabaseGateway {
      * @see billgates.entities.User
      */
     void createSplitBillTable(int billId);
+
+    /**
+     * Drops a split bill with the table name "bill_{userId}_{billId}" in our database.
+     *
+     * @param billId the id of the split bill that we are trying create
+     */
+    void dropSplitBillTable(int billId);
 
     /**
      * Creates the user table with the table name "users" in our database

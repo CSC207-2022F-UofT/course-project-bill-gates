@@ -1,6 +1,5 @@
-package database;
+package billgates.database;
 
-import billgates.database.MySQLDatabaseGateway;
 import billgates.entities.Entry;
 import billgates.entities.EntryBuilder;
 import billgates.entities.QueryUserData;
