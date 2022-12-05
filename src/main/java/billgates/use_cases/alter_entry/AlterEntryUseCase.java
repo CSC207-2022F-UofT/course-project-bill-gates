@@ -24,7 +24,7 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
     }
 
     /**
-     * This method aim to change numbers of column in one entry by once
+     * This method aims to change multiple columns of an entry once.
      *
      * @param entryId   the ID of the entry which have a value we want to change.
      * @param changeMap the map which has the alter column as key and new value as key
@@ -68,7 +68,7 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
     }
 
     /**
-     * this is the basic alterEntry method that change on column in one entry
+     * Alters one column in one entry.
      *
      * @param entryId     the ID of the entry which have a value we want to change.
      * @param newValue    the value we want the date to change to, object type

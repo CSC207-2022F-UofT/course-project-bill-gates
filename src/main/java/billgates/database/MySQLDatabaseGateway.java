@@ -43,16 +43,6 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         this.columnToDatabaseColumn.put("Paid Back", "paid_back");
     }
 
-    public static void main(String[] args) {
-        MySQLDatabaseGateway testGateway = new MySQLDatabaseGateway();
-
-        testGateway.setUserId(9999);
-
-        Entry obtainedEntry = testGateway.getEntryData(9999, 1);
-
-        System.out.println(obtainedEntry.getDescription().getAttribute());
-    }
-
     public void initializeConnection() {
         try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
 
