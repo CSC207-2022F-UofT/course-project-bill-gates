@@ -473,22 +473,38 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
     @Override
     public void deleteUser(QueryUserData user) {
+        if (user.getUserID() == -1) {
+            this.deleteUser(user.getUsername());
+        } else {
+            // use user id
+            this.deleteUser(user.getUserID());
+        }
+    }
+
+    @Override
+    public void deleteUser(int userid) {
         try {
             Statement statement = this.connection.createStatement();
             String delete;
-            // use username
-            if (user.getUserID() == -1) {
-                delete = String.format("""
-                                DELETE FROM users WHERE username = '%s'
-                                """,
-                        user.getUsername());
-            } else {
-                // use user id
-                delete = String.format("""
-                                DELETE FROM users WHERE user_id = %d
-                                """,
-                        user.getUserID());
-            }
+            delete = String.format("""
+                            DELETE FROM users WHERE user_id = %d
+                            """,
+                    userid);
+            statement.execute(delete);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String delete;
+            delete = String.format("""
+                            DELETE FROM users WHERE username = '%s'
+                            """,
+                    username);
             statement.execute(delete);
         } catch (SQLException e) {
             throw new RuntimeException(e);

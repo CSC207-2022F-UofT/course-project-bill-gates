@@ -137,6 +137,20 @@ public interface DatabaseGateway {
     void deleteUser(QueryUserData user);
 
     /**
+     * Deletes the <code>user</code> in the database.
+     *
+     * @param userid the user id of the user to be deleted
+     */
+    void deleteUser(int userid);
+
+    /**
+     * Deletes the <code>user</code> in the database.
+     *
+     * @param username the username of the user to be deleted
+     */
+    void deleteUser(String username);
+
+    /**
      * Cleans the <code>user</code> in the database.
      * Drops all the tables related to the <code>user</code>, including the split bills.
      *
@@ -210,6 +224,7 @@ public interface DatabaseGateway {
 
     /**
      * Drops a bill with the table name "bill_{billId}" in our database.
+     *
      * @param billId the id of the bill that we are trying drop
      */
     void dropBillTable(int billId);
