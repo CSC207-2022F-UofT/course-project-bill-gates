@@ -17,7 +17,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     // window width
-    public static final int DEFAULT_WIDTH = 1000;
+    public static final int DEFAULT_WIDTH = 1300;
     // window height
     public static final int DEFAULT_HEIGHT = 618;
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);

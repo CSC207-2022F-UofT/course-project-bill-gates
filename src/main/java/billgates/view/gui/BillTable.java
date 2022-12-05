@@ -1,13 +1,10 @@
 package billgates.view.gui;
 
-import billgates.Main;
 import billgates.view.BillTableModel;
+import com.github.lgooddatepicker.components.DateTimePicker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
@@ -18,7 +15,7 @@ public class BillTable extends JTable {
 
     public static final int DEFAULT_HEADER_HEIGHT = 50;
     public static final int DEFAULT_ROW_HEIGHT = 40;
-    public static final int DEFAULT_FONT_SIZE = 15;
+    public static final int DEFAULT_FONT_SIZE = 14;
     public static final Font DEFAULT_FONT = new FontSettings(DEFAULT_FONT_SIZE);
 
     private final BillTableModel model = new BillTableModel();
@@ -61,19 +58,16 @@ public class BillTable extends JTable {
         this.getColumnModel().getColumn(0).setMinWidth(fontMetrics.stringWidth("000"));
         this.getColumnModel().getColumn(0).setPreferredWidth(fontMetrics.stringWidth("0000"));
         // date column width
-        this.getColumnModel().getColumn(1).setMinWidth(fontMetrics.stringWidth(
-                Main.DATETIME_PATTERN));
+        this.getColumnModel().getColumn(1).setMinWidth(new DateTimePicker().getMinimumSize().width);
+        this.getColumnModel().getColumn(3).setMaxWidth(fontMetrics.stringWidth("Currency   "));
+        try {
+            this.getColumn("Splitter").setMaxWidth(fontMetrics.stringWidth("Splitter   "));
+        } catch (IllegalArgumentException ignore) {
+        }
 
         this.getColumn("Currency").setCellEditor(new ConstraintTableCellEditor(new JTextField(),
                 s -> s.length() == 3));
-        this.getColumn("Date").setCellEditor(new ConstraintTableCellEditor(new JTextField(), s -> {
-            try {
-                LocalDateTime.parse(s, DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
-            } catch (DateTimeParseException e) {
-                return false;
-            }
-            return true;
-        }));
+        this.getColumn("Date").setCellEditor(new DateTableCellEditor());
     }
 
 }
