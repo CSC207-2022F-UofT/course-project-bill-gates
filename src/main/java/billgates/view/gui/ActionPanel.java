@@ -28,9 +28,9 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     private final SpringLayout signInLayout = new SpringLayout();
     private final JPanel signInPanel = new JPanel(this.signInLayout);
     private final JLabel usernameLabel = new ActionLabel("Username: ");
-    private final JTextField usernameField = new JTextField(10);
+    private final JTextField usernameField = new JTextField(20);
     private final JLabel passwordLabel = new ActionLabel("Password: ");
-    private final JPasswordField passwordField = new JPasswordField(16);
+    private final JPasswordField passwordField = new JPasswordField(20);
 
     private final JButton signInButton = new ActionButton("Sign In");
     private final JButton signOutButton = new ActionButton("Sign Out");
