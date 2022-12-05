@@ -116,7 +116,7 @@ Table Specifications:
 | `description` | `TEXT`           |                                                                  |
 | `from`        | `TEXT`           | Inherited from the parent entry.                                 |
 | `to`          | `TEXT`           | Inherited from the parent entry.                                 |
-| `location`    | `TEXT`           | Inherited from the parent entry.                                 |    | `payee`       | `TEXT`           | We may want to change the datatype here. We may not need such a big type here. |
+| `location`    | `TEXT`           | Inherited from the parent entry.                                 |
 | `payee`       | `TEXT`           | This represents the person who is responsible for this split.    |
 | `paid_back`   | `BOOLEAN`        | This represents whether the payee had paid the money back.       |
 
