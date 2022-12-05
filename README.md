@@ -10,13 +10,61 @@
 where users can log in to the application and start recording bill entries into the database.
 - Users will be able to obtain simple statistics on the current entries recorded in the bill.
 - Within each recorded bill entry, users can provide additional details on the payment. 
-- Users can also utilize this application to calculate a split bill with other people.
+- Users can also utilize this application to record a split bill with other people.
+
+## Design Patterns
+
+### User: Singleton
+
+- The `User` class represents a user entity in our program. 
+- Only **ONE** user (Singleton) is allowed in the running time of our program.
+- The `UserJoinUseCase` will initialize the user by calling `getInstance` with parameters.
+- Then, all the use cases can use `getInstance` without parameters to obtain the current user via Singleton design pattern.
+
+### DatabaseGateway: Strategy
+
+- We have laid out this class as a collection of methods that can be implemented by different classes.
+- For each specific database type (MariaDB, MongoDB, MySQL, etc.), we can implement the `DatabaseGateway` using different syntax to adapt.
+- Currently, our project uses `MySQL`, therefore, `MySQLDatabaseGateway` is a specific "strategy" to connect the application to our database.
+
+### EntryBuilder: Builder
+
+- The instance variables define the default values for each attribute.
+- We can build our desired `Entry` by calling the `set___` methods to give values for the entry.
+- After we are done, we can call `buildEntry` or `buildSplitterEntry` to obtain the desired Entry.
+- In a sense, we are "building" the entry by giving it attributes one by one. 
+
+## Test Coverage
+
+Currently, we have implemented the following test suit:
+
+```
+MySQLDatabaseGatewayTests
+- testCreateUsersTable
+- testGetUserData
+- testCreateBillTable
+- testCreateSplitBillTable
+- testInsertUser
+- testInsertEntryAllAttributes
+- testInsertEntryMainAttributes
+- testInsertEntryAutoIncrement
+- testGetEntry
+- testGetBillDataAll
+- testGetBillDataPartial
+- testModifyEntryDescription
+- testModifyEntryValue
+- testModifyEntryDate
+- testModifyEntryAll
+- testDeleteEntry
+```
 
 ## Database Specifications
 
 ### Related issues 
 - [#11 [Feature 7] Design and Implement Bill Splitter](https://github.com/CSC207-2022F-UofT/course-project-bill-gates/issues/11) 
 - [#22 [Improvement 1] Database Specification](https://github.com/CSC207-2022F-UofT/course-project-bill-gates/issues/22)
+- [#80 [Feature] Add support for adding a splitter entry](https://github.com/CSC207-2022F-UofT/course-project-bill-gates/issues/80)
+- [#91 [Feature] Add a use case to fill in the inherited attributes of a splitter entry automatically](https://github.com/CSC207-2022F-UofT/course-project-bill-gates/issues/91)
 
 ### The User Table
 
@@ -69,6 +117,7 @@ Table Specifications:
 | `from`        | `TEXT`           | Inherited from the parent entry.                                 |
 | `to`          | `TEXT`           | Inherited from the parent entry.                                 |
 | `location`    | `TEXT`           | Inherited from the parent entry.                                 |    | `payee`       | `TEXT`           | We may want to change the datatype here. We may not need such a big type here. |
+| `payee`       | `TEXT`           | This represents the person who is responsible for this split.    |
 | `paid_back`   | `BOOLEAN`        | This represents whether the payee had paid the money back.       |
 
 - Related Use Case and Details
@@ -86,12 +135,12 @@ Table Specifications:
 - [#25 [Feature 8] Cloud Storage](https://github.com/CSC207-2022F-UofT/course-project-bill-gates/issues/25)
 
 ### Connection details
-    ```
-    hostname=bill-gates-database.mysql.database.azure.com
-    username=scott
-    password=Billgates@
-    ssl-mode=require
-    ```
+```
+hostname=bill-gates-database.mysql.database.azure.com
+username=scott
+password=Billgates@
+ssl-mode=require
+```
 
 - Database Name: `bill`.
 
