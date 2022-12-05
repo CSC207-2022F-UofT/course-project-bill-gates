@@ -1,6 +1,6 @@
 package billgates.view.gui;
 
-import billgates.Main;
+import billgates.view.BillGatesUtilities;
 import billgates.view.BillTableModel;
 
 import javax.swing.*;
@@ -62,13 +62,13 @@ public class BillTable extends JTable {
         this.getColumnModel().getColumn(0).setPreferredWidth(fontMetrics.stringWidth("0000"));
         // date column width
         this.getColumnModel().getColumn(1).setMinWidth(fontMetrics.stringWidth(
-                Main.DATETIME_PATTERN));
+                BillGatesUtilities.DATETIME_PATTERN));
 
         this.getColumn("Currency").setCellEditor(new ConstraintTableCellEditor(new JTextField(),
                 s -> s.length() == 3));
         this.getColumn("Date").setCellEditor(new ConstraintTableCellEditor(new JTextField(), s -> {
             try {
-                LocalDateTime.parse(s, DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
+                LocalDateTime.parse(s, DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN));
             } catch (DateTimeParseException e) {
                 return false;
             }

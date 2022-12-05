@@ -1,11 +1,11 @@
 package billgates.database;
 
-import billgates.Main;
 import billgates.entities.Entry;
 import billgates.entities.EntryBuilder;
 import billgates.entities.QueryUserData;
 import billgates.entities.SplitterEntry;
 import billgates.interface_adapters.DatabaseGateway;
+import billgates.view.BillGatesUtilities;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -169,7 +169,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public List<Entry> getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate) {
         List<Entry> entries = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN);
 
         try {
             Statement statement = connection.createStatement();
@@ -324,7 +324,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void insertEntry(int billId, Entry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
@@ -377,7 +377,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void insertSplitEntry(int billId, SplitterEntry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
@@ -421,7 +421,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         entry.getTo().getAttribute(),
                         entry.getLocation().getAttribute(),
                         entry.getPayee().getAttribute(),
-                        entry.getIsPaidBack().getAttribute());
+                        entry.getIsPaidBack().getAttribute() ? "1" : "0");
             }
 
             statement.execute(query);
@@ -563,7 +563,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void modifyEntry(int billId, Entry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
@@ -601,7 +601,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     @Override
     public void modifySplitEntry(int billId, SplitterEntry entry) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN);
 
             Statement statement = connection.createStatement();
 
