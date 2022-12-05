@@ -1,16 +1,12 @@
 package billgates.view.gui;
 
-import billgates.Main;
 import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.insert_entry.InsertEntryRequestModel;
 import billgates.use_cases.user_join.UserJoinViewModel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -219,13 +215,10 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
     private void addEntry() {
         AddEntryDialog addEntryDialog = new AddEntryDialog(this.mainFrame);
+        InsertEntryRequestModel model = addEntryDialog.exec();
 
-        if (addEntryDialog.getResult() == 0) {
-            InsertEntryRequestModel model = new InsertEntryRequestModel(addEntryDialog.getDate(),
-                    addEntryDialog.getValue(), addEntryDialog.getCurrency(), addEntryDialog.getDescription(),
-                    addEntryDialog.getFrom(), addEntryDialog.getTo(), addEntryDialog.getLocationText());
+        if (model != null) {
             this.mainFrame.getInsertEntryController().insert(model);
-
             // after adding the entry, update the current bill
             SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
         }

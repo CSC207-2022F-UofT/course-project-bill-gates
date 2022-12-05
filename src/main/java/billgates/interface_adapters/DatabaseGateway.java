@@ -60,7 +60,7 @@ public interface DatabaseGateway {
      *
      * @param splitBillId the splitBillId that we wish to query
      * @return a list of SplitterEntry objects
-     * @see billgates.entities.SplitterEntry
+     * @see SplitterEntry
      */
     List<SplitterEntry> getSplitBillData(int splitBillId);
 
@@ -72,7 +72,7 @@ public interface DatabaseGateway {
      * @param startDate a ZonedDateTime object that marks the start date of this query
      * @param endDate   a ZonedDateTime object that marks the end date of this query
      * @return a list of Entry that is within the specified date range
-     * @see billgates.entities.Entry
+     * @see Entry
      */
     List<Entry> getBillData(int billId, ZonedDateTime startDate, ZonedDateTime endDate);
 
