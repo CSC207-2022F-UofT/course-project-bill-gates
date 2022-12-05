@@ -29,23 +29,19 @@ public class AddEntryDialog extends JDialog {
 
         JTextField valueField = new JTextField(20);
         valueField.setDocument(new RegexDocument("\\S*"));
-        valueField.setDocument(new RegexDocument("\\w*"));
+        valueField.setDocument(new RegexDocument("\\d*\\.?\\d{0,2}"));
 
         JTextField currencyField = new JTextField(20);
         currencyField.setDocument(new RegexDocument("\\S*"));
-        currencyField.setDocument(new RegexDocument("[a-zA-z]^*"));
+        currencyField.setDocument(new RegexDocument("[A-Z]*"));
 
         JTextField descriptionField = new JTextField(20);
-        descriptionField.setDocument(new RegexDocument("\\w*"));
 
         JTextField fromField = new JTextField(20);
-        fromField.setDocument(new RegexDocument("\\w*"));
 
         JTextField toField = new JTextField(20);
-        toField.setDocument(new RegexDocument("\\w*"));
 
         JTextField locationField = new JTextField(20);
-        locationField.setDocument(new RegexDocument("\\w*"));
 
         JPanel insertEntryDialog = new JPanel();
         insertEntryDialog.setLayout(new BoxLayout(insertEntryDialog, BoxLayout.PAGE_AXIS));
