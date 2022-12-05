@@ -1,6 +1,6 @@
 package billgates.view.gui;
 
-import billgates.Main;
+import billgates.view.BillGatesUtilities;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
@@ -26,14 +26,14 @@ public class DateTableCellEditor extends AbstractCellEditor implements TableCell
     @Override
     public Object getCellEditorValue() {
         return this.dateTimePicker.getDateTimePermissive()
-                .format(DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
+                .format(DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN));
     }
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
                                                  int row, int column) {
         LocalDateTime datetime = LocalDateTime.parse((String) value,
-                DateTimeFormatter.ofPattern(Main.DATETIME_PATTERN));
+                DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN));
         this.dateTimePicker.setDateTimeStrict(datetime);
         return this.dateTimePicker;
     }
