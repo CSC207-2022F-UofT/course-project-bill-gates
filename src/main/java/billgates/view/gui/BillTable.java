@@ -1,5 +1,6 @@
 package billgates.view.gui;
 
+import billgates.view.BillGatesUtilities;
 import billgates.view.BillTableModel;
 import com.github.lgooddatepicker.components.DateTimePicker;
 
