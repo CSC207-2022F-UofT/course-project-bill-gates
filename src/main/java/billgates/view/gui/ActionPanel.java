@@ -206,6 +206,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
         billTable.setEnabled(false);
         billTable.setVisible(false);
+
+        this.backFromSplit();
     }
 
     private void backFromSplit() {
