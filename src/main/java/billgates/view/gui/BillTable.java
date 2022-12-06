@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -78,27 +79,59 @@ public class BillTable extends JTable {
         int[] selectedColumns= this.getSelectedColumns();
         List<String> statistics = new ArrayList<>();
         List<Double> values = new ArrayList<>();
+        List<String> currencyValues = new ArrayList<>();
         int valueCol = 2;
         int currencyCol = 3;
 
         if (selectedColumns.length == 1) {
+            int[] selectedRows = this.getSelectedRows();
+            for (int i:selectedRows) {
+                Double value = (Double) this.getValueAt(i, valueCol);
+                String currency = (String) this.getValueAt(i, currencyCol);
+                values.add(value);
+                currencyValues.add(currency);
+            }
+
             if (selectedColumns[0] == valueCol) {
-                int[] selectedRows = this.getSelectedRows();
-                for (int i:selectedRows) {
-                    Double value = (Double) this.getValueAt(i, valueCol);
-                    values.add(value);
-                }
+                // Sort the list of values
                 Collections.sort(values);
+                int length = this.getSelectedRowCount();
+
+                // Calculate the statistics
                 String sum = this.calculateSum(values);
-                String mean = this.calculateMean(Double.parseDouble(sum), this.getSelectedRowCount());
-                String median = this.calculateMedian(values, values.size());
+                String mean = this.calculateMean(Double.parseDouble(sum), length);
+                String median = this.calculateMedian(values, length);
+                String max = String.valueOf(values.get(length - 1));
+                String min = String.valueOf(values.get(0));
+
                 statistics.add("Sum: " + sum);
                 statistics.add("\n\nMean: " + mean);
                 statistics.add("\n\nMedian: " + median);
+                statistics.add("\n\nMaximum: " + max);
+                statistics.add("\n\nMinimum: " + min);
             }
 
-            if (selectedColumns[0] == currencyCol) {
-                statistics.add("The number of selected rows: " + String.valueOf(this.getSelectedRowCount()));
+            else if (selectedColumns[0] == currencyCol) {
+                HashMap<String, Integer> currencyToCount = new HashMap<>();
+                statistics.add("The number of selected rows: " + this.getSelectedRowCount());
+
+                for (String value:currencyValues) {
+                    if (!currencyToCount.containsKey(value)) {
+                        currencyToCount.put(value, 1);
+                    }
+                    else {
+                        int count = currencyToCount.get(value) + 1;
+                        currencyToCount.put(value, count);
+                    }
+                }
+
+                for (String key:currencyToCount.keySet()) {
+                    statistics.add("\n\n" + key + ": " + currencyToCount.get(key));
+                }
+            }
+
+            else {
+                statistics.add("The number of selected rows: " + this.getSelectedRowCount());
             }
         }
 
