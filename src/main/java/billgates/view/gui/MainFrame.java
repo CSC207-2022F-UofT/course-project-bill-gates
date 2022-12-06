@@ -17,9 +17,9 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     // window width
-    public static final int DEFAULT_WIDTH = 1200;
+    public static final int DEFAULT_WIDTH = 1250;
     // window height
-    public static final int DEFAULT_HEIGHT = 740;
+    public static final int DEFAULT_HEIGHT = 750;
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);
 
     private final ActionPanel actionPanel = new ActionPanel(this);
