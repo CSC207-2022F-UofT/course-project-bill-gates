@@ -27,6 +27,7 @@ public class MainFrame extends JFrame {
     private final JMenuBar menu = new TopMenuBar(this);
 
     private boolean isSplitterBill = false;
+    private boolean isSignedIn = false;
     private UserJoinController userJoinController;
 
     // controllers will be set after constructing the view objects
@@ -77,6 +78,14 @@ public class MainFrame extends JFrame {
 
     public void setSplitterBill(boolean splitterBill) {
         isSplitterBill = splitterBill;
+    }
+
+    public boolean isSignedIn() {
+        return isSignedIn;
+    }
+
+    public void setSignedIn(boolean signedIn) {
+        isSignedIn = signedIn;
     }
 
     public BillUpdateController getBillUpdateController() {

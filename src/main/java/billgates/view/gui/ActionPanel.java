@@ -183,12 +183,12 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     private void signOut() {
+        this.mainFrame.setSignedIn(false);
         // init button status
         this.signInButton.setEnabled(true);
         this.signOutButton.setEnabled(false);
         this.addEntryButton.setEnabled(false);
         this.deleteEntryButton.setEnabled(false);
-        this.backButton.setEnabled(false);
 
         // The usernameField and passwordField should be editable after signing out
         this.usernameField.setEditable(true);
@@ -270,6 +270,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
             BillTable billTable = this.mainFrame.getBillPanel().getBillTable();
             billTable.setVisible(true);
             billTable.setEnabled(true);
+
+            this.mainFrame.setSignedIn(true);
         }
 
         // Show a message dialog with whatever the text from the viewModel
