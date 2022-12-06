@@ -48,7 +48,7 @@ public class InsertEntryUseCaseTest {
     }
 
     @Test
-    public void testNormalEntry() {
+    public void testNormalEntry() throws InterruptedException {
         LocalDateTime datetime = LocalDateTime.now();
         Entry expected = new EntryBuilder()
                 .setDate(ZonedDateTime.of(datetime, ZoneId.systemDefault()))
@@ -75,9 +75,9 @@ public class InsertEntryUseCaseTest {
     }
 
     @Test
-    public void testSplitterEntry() {
+    public void testSplitterEntry() throws InterruptedException {
         this.user.setCurrentBillID(666666);
-        
+
         LocalDateTime datetime = LocalDateTime.now();
         SplitterEntry expected = new EntryBuilder()
                 .setDate(ZonedDateTime.of(datetime, ZoneId.systemDefault()))
