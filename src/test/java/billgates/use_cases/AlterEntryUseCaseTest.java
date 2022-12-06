@@ -20,7 +20,8 @@ import java.util.List;
  * This test utilizes 666666 as the user id and bill id. And change the entry of it.
  * The test user and test bills will be deleted after the test.
  *
- * @see billgates.use_cases.bill_update
+ * @author Brandon Fu
+ * @see billgates.use_cases.alter_entry
  */
 public class AlterEntryUseCaseTest {
     public static final int USER_ID = 666666;
