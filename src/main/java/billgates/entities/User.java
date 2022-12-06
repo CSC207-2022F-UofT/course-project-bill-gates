@@ -88,6 +88,10 @@ public class User {
         return instance;
     }
 
+    public QueryUserData getQueryUserData() {
+        return new QueryUserData(this.id, this.billId, this.name, this.password);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -4,7 +4,9 @@ import billgates.entities.AbstractEntry;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Clean Architecture Layer: Application Business Rules
@@ -25,6 +27,8 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
      * The database gateway for input/output with the database.
      */
     private final DatabaseGateway gateway;
+
+    private final Set<Thread> threads = new HashSet<>(5);
 
     public BillUpdateUseCase(BillUpdateOutputPort presenter, DatabaseGateway gateway) {
         this.presenter = presenter;
@@ -60,7 +64,13 @@ public class BillUpdateUseCase implements BillUpdateInputPort {
             // then the current bill is a splitter bill
             this.presenter.updateBill(new BillUpdateResponseModel(list,
                     user.getCurrentBillID() != user.getBillId()));
-        });
+        }, "bill_update_thread_" + user.getBillId());
         thread.start();
+        this.threads.add(thread);
+        this.threads.removeIf(t -> !t.isAlive());
+    }
+
+    public Set<Thread> getThreads() {
+        return threads;
     }
 }

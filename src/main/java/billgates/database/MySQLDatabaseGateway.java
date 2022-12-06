@@ -149,7 +149,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             query = String.format("""
                     SELECT * FROM bill_%d_%d
-                    ORDER BY
+                    ORDER BY date DESC,
                     entry_id ASC
                     """, this.userId, splitBillId);
 
@@ -402,7 +402,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
                         entry.getTo().getAttribute(),
                         entry.getLocation().getAttribute(),
                         entry.getPayee().getAttribute(),
-                        entry.getIsPaidBack().getAttribute());
+                        entry.getIsPaidBack().getAttribute() ? "1" : "0");
             } else {
                 // This is the case where we want auto increment
                 query = String.format("""
@@ -469,6 +469,58 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void deleteUser(QueryUserData user) {
+        if (user.getUserID() == -1) {
+            this.deleteUser(user.getUsername());
+        } else {
+            // use user id
+            this.deleteUser(user.getUserID());
+        }
+    }
+
+    @Override
+    public void deleteUser(int userid) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String delete;
+            delete = String.format("""
+                            DELETE FROM users WHERE user_id = %d
+                            """,
+                    userid);
+            statement.execute(delete);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String delete;
+            delete = String.format("""
+                            DELETE FROM users WHERE username = '%s'
+                            """,
+                    username);
+            statement.execute(delete);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void cleanUser(QueryUserData user) {
+        List<Entry> entries = this.getBillData(user.getBillID());
+        entries.forEach(entry -> {
+            if (entry.getSplitterBillId().getAttribute() != -1) {
+                this.dropSplitBillTable(entry.getSplitterBillId().getAttribute());
+            }
+        });
+        this.dropBillTable(user.getBillID());
+        this.deleteUser(user);
     }
 
     @Override
@@ -668,6 +720,19 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     @Override
+    public void dropBillTable(int billId) {
+        try {
+            Statement statement = this.connection.createStatement();
+            String drop = String.format("""
+                    DROP TABLE IF EXISTS bill_%d
+                    """, billId);
+            statement.execute(drop);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void createSplitBillTable(int billId) {
         try {
             Statement statement = connection.createStatement();
@@ -691,6 +756,19 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
 
             statement.execute(query);
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void dropSplitBillTable(int billId) {
+        try {
+            Statement statement = connection.createStatement();
+            String drop = String.format("""
+                    DROP TABLE IF EXISTS bill_%d_%d
+                    """, this.userId, billId);
+            statement.execute(drop);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

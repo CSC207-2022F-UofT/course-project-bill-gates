@@ -66,8 +66,9 @@ public class BillTable extends JTable {
         } catch (IllegalArgumentException ignore) {
         }
 
-        this.getColumn("Currency").setCellEditor(new ConstraintTableCellEditor(new JTextField(),
-                s -> s.length() == 3));
+        ActionComboBox<String> comboBox = new ActionComboBox<>(BillGatesUtilities.CURRENCY_CODES);
+        comboBox.setFont(ActionTextField.DEFAULT_FONT);
+        this.getColumn("Currency").setCellEditor(new DefaultCellEditor(comboBox));
         this.getColumn("Date").setCellEditor(new DateTableCellEditor());
     }
 

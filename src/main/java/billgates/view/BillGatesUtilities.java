@@ -27,14 +27,13 @@ public class BillGatesUtilities {
      */
     public static List<String> getCurrencyCodes() {
         List<String> result = new ArrayList<>(Arrays.asList("CAD", "CNY", "USD"));
-        List<String> temp = new ArrayList<>();
+        Set<String> temp = new TreeSet<>();
         for (Locale locale : Locale.getAvailableLocales()) {
             try {
                 temp.add(Currency.getInstance(locale).getCurrencyCode());
             } catch (IllegalArgumentException ignore) {
             }
         }
-        Collections.sort(temp);
         result.addAll(temp);
         return result;
     }
