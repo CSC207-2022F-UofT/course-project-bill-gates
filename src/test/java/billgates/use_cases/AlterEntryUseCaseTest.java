@@ -2,17 +2,19 @@ package billgates.use_cases;
 
 import billgates.TestUtilities;
 import billgates.database.MySQLDatabaseGateway;
-import billgates.entities.*;
+import billgates.entities.AbstractEntry;
+import billgates.entities.Entry;
+import billgates.entities.EntryBuilder;
+import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 import billgates.use_cases.alter_entry.AlterEntryController;
-import billgates.use_cases.alter_entry.AlterEntryUseCase;
 import billgates.use_cases.alter_entry.AlterEntryRequestModel;
+import billgates.use_cases.alter_entry.AlterEntryUseCase;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +27,11 @@ import java.util.List;
  */
 public class AlterEntryUseCaseTest {
     public static final int USER_ID = 666666;
-
+    private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
     private DatabaseGateway gateway = new MySQLDatabaseGateway();
     private AlterEntryRequestModel requestModel;
     private AlterEntryUseCase useCase;
     private AlterEntryController controller;
-    private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
 
     @Before
     public void setup() {
@@ -64,12 +65,10 @@ public class AlterEntryUseCaseTest {
         Entry expect = builder.buildEntry();
 
 
-        this.controller.alterEntry(this.user.getBillId(),"UofT","Location");
+        this.controller.alterEntry(this.user.getBillId(), "UofT", "Location");
 
         Assert.assertEquals(expect, this.gateway.getEntryData(this.user.getBillId(), entry.getId().getAttribute()));
     }
-
-
 
 
     @Test
@@ -89,7 +88,7 @@ public class AlterEntryUseCaseTest {
         Entry expect = builder.buildEntry();
 
 
-        this.controller.alterEntry(this.user.getBillId(),"666666","Value");
+        this.controller.alterEntry(this.user.getBillId(), "666666", "Value");
 
         Assert.assertEquals(expect, this.gateway.getEntryData(this.user.getBillId(), entry.getId().getAttribute()));
 
