@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte
+ * @author Charlotte, Eva
  */
 public class ActionLabel extends JLabel {
     public static final List<ActionLabel> allLabel = new ArrayList<>();

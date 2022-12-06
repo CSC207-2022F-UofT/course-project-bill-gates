@@ -37,7 +37,7 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     private final JButton backButton = new ActionButton(" Back", this.backIcon);
     private final JButton addEntryButton = new ActionButton("Add Entry");
     private final JButton deleteEntryButton = new ActionButton("Delete Entry");
-    private final JTextArea statisticsTextArea = new ActionTextArea("Statistics");
+    private final JTextArea statisticsTextArea = new ActionTextArea("");
 
     private final MainFrame mainFrame;
 
@@ -207,6 +207,9 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         billTable.setEnabled(false);
         billTable.setVisible(false);
 
+        // Clear the statisticsTextArea
+        this.statisticsTextArea.setText("");
+
         this.backFromSplit();
     }
 
@@ -293,5 +296,9 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
         }
         Font newTextFont = new FontSettings(f, ActionTextArea.DEFAULT_FONT_SIZE);
         this.statisticsTextArea.setFont(newTextFont);
+    }
+
+    public JTextArea getStatisticsTextArea() {
+        return this.statisticsTextArea;
     }
 }

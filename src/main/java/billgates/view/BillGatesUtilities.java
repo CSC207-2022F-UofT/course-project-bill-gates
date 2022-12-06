@@ -2,6 +2,11 @@ package billgates.view;
 
 import java.util.*;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Ellen
+ */
 public class BillGatesUtilities {
 
     public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";

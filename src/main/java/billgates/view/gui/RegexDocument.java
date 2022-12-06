@@ -6,6 +6,11 @@ import javax.swing.text.PlainDocument;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Clean Architecture Layer: Frameworks & Drivers
+ *
+ * @author Charlotte
+ */
 public class RegexDocument extends PlainDocument {
     private final Pattern pattern;
 

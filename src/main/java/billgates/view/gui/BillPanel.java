@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Scott
+ * @author Charlotte, Scott, Eva
  */
 public class BillPanel extends JPanel implements BillPanelUpdatable {
 
@@ -137,6 +137,11 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
                         BillPanel.this.mainFrame.getBillUpdateController().update(entryId));
             }
         }
-    }
 
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            String text = BillPanel.this.billTable.getData().toString().replaceAll("[\\[\\]]", "");
+            BillPanel.this.mainFrame.getActionPanel().getStatisticsTextArea().setText(text);
+        }
+    }
 }

@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Eva, Ruby, Brandon Fu
+ * @author Charlotte, Eva, Ruby, Brandon Fu, Scott
  */
 public class TopMenuBar extends JMenuBar {
 
@@ -17,8 +17,8 @@ public class TopMenuBar extends JMenuBar {
     private final static Color[] COLORS = new Color[]{new Color(240, 140, 170), Color.RED,
             Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK, Color.WHITE
     };
-    private final static String[] FONTS = new String[]{"Modern No. 20", "Times New Roman",
-            "Helvetica", "Arial", "Impact", "Verdana", "Century", "Tahoma", "Copperplate"};
+    private final static String[] FONTS = new String[]{"Tahoma", "Times New Roman",
+            "Helvetica", "Arial", "Impact", "Verdana", "Century", "Copperplate"};
     private final JMenu fileMenu = new GeneralMenu("File");
     private final JMenu settingsMenu = new GeneralMenu("Settings");
     private final JMenu helpMenu = new GeneralMenu("Help");
@@ -103,7 +103,6 @@ public class TopMenuBar extends JMenuBar {
 
     // Function to set up the setting dialog
     private int[] setting() {
-//        SettingDialog setdlg = new SettingDialog(mainFrame);
         SettingDialog setdlg = new SettingDialog(mainFrame);
         int[] setting = new int[2];
         if (setdlg.exec()) {
