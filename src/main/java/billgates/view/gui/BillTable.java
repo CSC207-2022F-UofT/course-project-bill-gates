@@ -6,6 +6,9 @@ import com.github.lgooddatepicker.components.DateTimePicker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
@@ -69,6 +72,62 @@ public class BillTable extends JTable {
         this.getColumn("Currency").setCellEditor(new ConstraintTableCellEditor(new JTextField(),
                 s -> s.length() == 3));
         this.getColumn("Date").setCellEditor(new DateTableCellEditor());
+    }
+
+    public List<String> getData() {
+        int[] selectedColumns= this.getSelectedColumns();
+        List<String> statistics = new ArrayList<>();
+        List<Double> values = new ArrayList<>();
+        int valueCol = 2;
+        int currencyCol = 3;
+
+        if (selectedColumns.length == 1) {
+            if (selectedColumns[0] == valueCol) {
+                int[] selectedRows = this.getSelectedRows();
+                for (int i:selectedRows) {
+                    Double value = (Double) this.getValueAt(i, valueCol);
+                    values.add(value);
+                }
+                Collections.sort(values);
+                String sum = this.calculateSum(values);
+                String mean = this.calculateMean(Double.parseDouble(sum), this.getSelectedRowCount());
+                String median = this.calculateMedian(values, values.size());
+                statistics.add("Sum: " + sum);
+                statistics.add("\n\nMean: " + mean);
+                statistics.add("\n\nMedian: " + median);
+            }
+
+            if (selectedColumns[0] == currencyCol) {
+                statistics.add("The number of selected rows: " + String.valueOf(this.getSelectedRowCount()));
+            }
+        }
+
+        return statistics;
+    }
+
+    private String calculateSum(List<Double> values) {
+        double sum = 0;
+        for (double i:values) {
+            sum += i;
+        }
+        return String.format("%.2f", sum);
+    }
+
+    private String calculateMean(double sum, int rowsCount) {
+        return String.format("%.2f", sum / rowsCount);
+    }
+
+    private String calculateMedian(List<Double> values, int n) {
+        String median;
+        int mid = n / 2;
+
+        if (n % 2 == 0) {
+            median = this.calculateMean(values.get(mid - 1) + values.get(mid), 2);
+        }
+        else {
+            median = this.calculateMean(values.get(mid), 1);
+        }
+        return median;
     }
 
 }

@@ -27,5 +27,8 @@ public class ActionTextArea extends JTextArea {
 
         // Set the size
         this.setMaximumSize(new Dimension(ActionPanel.DEFAULT_SIGN_IN_PANEL_WIDTH, DEFAULT_HEIGHT));
+
+        // Set this text area not editable
+        this.setEditable(false);
     }
 }

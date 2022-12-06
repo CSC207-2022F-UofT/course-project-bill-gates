@@ -137,6 +137,11 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
                         BillPanel.this.mainFrame.getBillUpdateController().update(entryId));
             }
         }
-    }
 
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            String text = BillPanel.this.billTable.getData().toString().replaceAll("[\\[\\]]", "");
+            BillPanel.this.mainFrame.getActionPanel().getStatisticsTextArea().setText(text);
+        }
+    }
 }
