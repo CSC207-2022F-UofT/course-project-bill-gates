@@ -38,7 +38,7 @@ public class BillUpdateUseCaseTest {
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
 
     @Before
-    public void setup() {
+    public void setUp() {
         this.gateway.setUserId(this.user.getId());
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
@@ -49,7 +49,7 @@ public class BillUpdateUseCaseTest {
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         this.gateway.cleanUser(this.user.getQueryUserData());
     }
 
