@@ -297,6 +297,6 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
     }
 
     public JTextArea getStatisticsTextArea() {
-        return statisticsTextArea;
+        return this.statisticsTextArea;
     }
 }

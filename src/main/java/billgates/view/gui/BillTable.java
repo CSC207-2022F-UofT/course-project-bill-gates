@@ -1,6 +1,5 @@
 package billgates.view.gui;
 
-import billgates.view.BillGatesUtilities;
 import billgates.view.BillTableModel;
 import com.github.lgooddatepicker.components.DateTimePicker;
 
@@ -76,7 +75,7 @@ public class BillTable extends JTable {
     }
 
     public List<String> getData() {
-        int[] selectedColumns= this.getSelectedColumns();
+        int[] selectedColumns = this.getSelectedColumns();
         List<String> statistics = new ArrayList<>();
         List<Double> values = new ArrayList<>();
         List<String> currencyValues = new ArrayList<>();
@@ -85,7 +84,7 @@ public class BillTable extends JTable {
 
         if (selectedColumns.length == 1) {
             int[] selectedRows = this.getSelectedRows();
-            for (int i:selectedRows) {
+            for (int i : selectedRows) {
                 Double value = (Double) this.getValueAt(i, valueCol);
                 String currency = (String) this.getValueAt(i, currencyCol);
                 values.add(value);
@@ -109,28 +108,23 @@ public class BillTable extends JTable {
                 statistics.add("\n\nMedian: " + median);
                 statistics.add("\n\nMaximum: " + max);
                 statistics.add("\n\nMinimum: " + min);
-            }
-
-            else if (selectedColumns[0] == currencyCol) {
+            } else if (selectedColumns[0] == currencyCol) {
                 HashMap<String, Integer> currencyToCount = new HashMap<>();
                 statistics.add("The number of selected rows: " + this.getSelectedRowCount());
 
-                for (String value:currencyValues) {
+                for (String value : currencyValues) {
                     if (!currencyToCount.containsKey(value)) {
                         currencyToCount.put(value, 1);
-                    }
-                    else {
+                    } else {
                         int count = currencyToCount.get(value) + 1;
                         currencyToCount.put(value, count);
                     }
                 }
 
-                for (String key:currencyToCount.keySet()) {
+                for (String key : currencyToCount.keySet()) {
                     statistics.add("\n\n" + key + ": " + currencyToCount.get(key));
                 }
-            }
-
-            else {
+            } else {
                 statistics.add("The number of selected rows: " + this.getSelectedRowCount());
             }
         }
@@ -140,7 +134,7 @@ public class BillTable extends JTable {
 
     private String calculateSum(List<Double> values) {
         double sum = 0;
-        for (double i:values) {
+        for (double i : values) {
             sum += i;
         }
         return String.format("%.2f", sum);
@@ -156,8 +150,7 @@ public class BillTable extends JTable {
 
         if (n % 2 == 0) {
             median = this.calculateMean(values.get(mid - 1) + values.get(mid), 2);
-        }
-        else {
+        } else {
             median = this.calculateMean(values.get(mid), 1);
         }
         return median;
