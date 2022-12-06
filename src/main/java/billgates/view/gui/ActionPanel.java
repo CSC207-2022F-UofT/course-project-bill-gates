@@ -209,6 +209,8 @@ public class ActionPanel extends JPanel implements UserJoinUpdatable {
 
         // Clear the statisticsTextArea
         this.statisticsTextArea.setText("");
+
+        this.backFromSplit();
     }
 
     private void backFromSplit() {

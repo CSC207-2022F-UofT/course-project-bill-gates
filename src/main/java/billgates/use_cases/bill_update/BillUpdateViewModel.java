@@ -1,6 +1,8 @@
 package billgates.use_cases.bill_update;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Clean Architecture Layer: Interface Adapters
@@ -32,6 +34,23 @@ public class BillUpdateViewModel {
         this.columns = columns;
         this.entries = entries;
         this.isSplitterBill = isSplitterBill;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        BillUpdateViewModel that = (BillUpdateViewModel) o;
+        return this.isSplitterBill == that.isSplitterBill &&
+                Arrays.equals(this.columns, that.columns) &&
+                this.entries.equals(that.entries);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(this.entries, this.isSplitterBill);
+        result = 31 * result + Arrays.hashCode(this.columns);
+        return result;
     }
 
     public String[] getColumns() {

@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Clean Architecture Layer: Frameworks & Drivers
  *
- * @author Charlotte, Eva, Ruby, Scott
+ * @author Charlotte, Eva, Ruby, Brandon Fu, Scott
  */
 public class TopMenuBar extends JMenuBar {
 
@@ -49,7 +49,7 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem import in File
         JMenuItem importMenuItem = new JMenuItem("Import File");
         KeyStroke keyStrokeToImport
-                = KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         importMenuItem.setAccelerator(keyStrokeToImport);
         fileMenu.add(importMenuItem);
 
@@ -60,7 +60,7 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem change color and font in setting
         JMenuItem appearanceMenuItem = new JMenuItem("Appearance");
         KeyStroke keyStrokeToSet
-                = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.SHIFT_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         appearanceMenuItem.setAccelerator(keyStrokeToSet);
         settingsMenu.add(appearanceMenuItem);
 
@@ -79,7 +79,7 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem functions in help
         JMenuItem functionMenuItem = new JMenuItem("How to use");
         KeyStroke keyStrokeToUse
-                = KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.SHIFT_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         functionMenuItem.setAccelerator(keyStrokeToUse);
         helpMenu.add(functionMenuItem);
 
@@ -91,7 +91,7 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem shortcut key in help
         JMenuItem shortcutMenuItem = new JMenuItem("Shortcut key");
         KeyStroke keyStrokeShortcut
-                = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         shortcutMenuItem.setAccelerator(keyStrokeShortcut);
         helpMenu.add(shortcutMenuItem);
 
@@ -167,11 +167,6 @@ public class TopMenuBar extends JMenuBar {
                 <html><h3>MenuBar -> Help -> Shortcut key:</h3>
                 Some descriptions of how to use the shortcut keys.
                 """;
-        // Change description to scrollable text?
-//        JTextArea textArea = new JTextArea(description, 25,  57);
-//        textArea.setEditable(false);
-//        JScrollPane sp = new JScrollPane(textArea);
-//        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         JOptionPane.showMessageDialog(null, description,
                 "How to use the Bill Gates", JOptionPane.PLAIN_MESSAGE);
     }
@@ -179,10 +174,10 @@ public class TopMenuBar extends JMenuBar {
     // Function to show that how to use shortcut key
     private void shortcut() {
         String shortcut = """
-                Shift + I: MenuBar -> File -> Import File
-                Shift + A: MenuBar -> Settings -> Appearance
-                Shift + H: MenuBar -> Help -> How to use
-                Shift + S: MenuBar -> Help -> Shortcut key
+                Shift + Control + I: MenuBar -> File -> Import File
+                Shift + Control + A: MenuBar -> Settings -> Appearance
+                Shift + Control + H: MenuBar -> Help -> How to use
+                Shift + Control + S: MenuBar -> Help -> Shortcut key
                 """;
         JOptionPane.showMessageDialog(null, shortcut,
                 "Shortcut keys", JOptionPane.PLAIN_MESSAGE);
