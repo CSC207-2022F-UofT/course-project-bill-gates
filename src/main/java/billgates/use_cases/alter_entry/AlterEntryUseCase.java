@@ -40,25 +40,25 @@ public class AlterEntryUseCase implements AlterEntryInputPort {
             Object newValue = changeSet.getValue();
 
 
-            if (alterColumn.equals("date")) {
+            if (alterColumn.equals("Date")) {
                 model.setDate((ZonedDateTime) newValue);
             }
-            if (alterColumn.equals("value")) {
+            if (alterColumn.equals("Value")) {
                 model.setValue((double) newValue);
             }
-            if (alterColumn.equals("currency")) {
+            if (alterColumn.equals("Currency")) {
                 model.setCurrency((String) newValue);
             }
-            if (alterColumn.equals("description")) {
+            if (alterColumn.equals("Description")) {
                 model.setDescription((String) newValue);
             }
-            if (alterColumn.equals("from")) {
+            if (alterColumn.equals("From")) {
                 model.setFrom((String) newValue);
             }
-            if (alterColumn.equals("to")) {
+            if (alterColumn.equals("To")) {
                 model.setTo((String) newValue);
             }
-            if (alterColumn.equals("location")) {
+            if (alterColumn.equals("Location")) {
                 model.setLocation((String) newValue);
             }
         }
