@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @see billgates.use_cases.bill_update
  */
-public class BillUpdateUseCaseTest {
+public class BillUpdateUseCaseTests {
 
     public static final int USER_ID = 666666;
 
@@ -43,7 +43,7 @@ public class BillUpdateUseCaseTest {
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
         this.presenter = new BillUpdatePresenter(
-                viewModel -> BillUpdateUseCaseTest.this.viewModel = viewModel);
+                viewModel -> BillUpdateUseCaseTests.this.viewModel = viewModel);
         this.useCase = new BillUpdateUseCase(this.presenter, this.gateway);
         this.controller = new BillUpdateController(this.useCase);
     }
