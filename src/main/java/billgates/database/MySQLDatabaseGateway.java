@@ -7,7 +7,6 @@ import billgates.entities.SplitterEntry;
 import billgates.interface_adapters.DatabaseGateway;
 import billgates.view.BillGatesUtilities;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -44,7 +43,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
     }
 
     public void initializeConnection() {
-        try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
+        try (InputStream input = this.getClass().getClassLoader().getResourceAsStream("config.properties")) {
 
             Properties prop = new Properties();
 
