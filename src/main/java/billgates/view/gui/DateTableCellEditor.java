@@ -8,8 +8,10 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.EventObject;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
@@ -41,5 +43,15 @@ public class DateTableCellEditor extends AbstractCellEditor implements TableCell
                 DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN));
         this.dateTimePicker.setDateTimeStrict(datetime);
         return this.dateTimePicker;
+    }
+
+    @Override
+    public boolean isCellEditable(EventObject e) {
+        if (super.isCellEditable(e)) {
+            if (e instanceof MouseEvent mouseEvent) {
+                return mouseEvent.getClickCount() == 2;
+            }
+        }
+        return false;
     }
 }

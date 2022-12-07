@@ -97,7 +97,7 @@ public class BillPanel extends JPanel implements BillPanelUpdatable {
                 model.fireTableStructureChanged();
                 this.billTable.initTableColumns();
                 JButton backButton = this.mainFrame.getActionPanel().getBackButton();
-                backButton.setEnabled(!backButton.isEnabled());
+                backButton.setEnabled(!backButton.isEnabled() && this.mainFrame.isSignedIn());
             }
             this.billTable.updateUI();
             this.mainFrame.setSplitterBill(isSplitterBill);

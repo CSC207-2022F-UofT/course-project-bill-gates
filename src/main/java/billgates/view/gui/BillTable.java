@@ -72,7 +72,7 @@ public class BillTable extends JTable {
 
         ActionComboBox<String> comboBox = new ActionComboBox<>(BillGatesUtilities.CURRENCY_CODES);
         comboBox.setFont(ActionTextField.DEFAULT_FONT);
-        this.getColumn("Currency").setCellEditor(new DefaultCellEditor(comboBox));
+        this.getColumn("Currency").setCellEditor(new BillDefaultTableCellEditor(comboBox));
         this.getColumn("Date").setCellEditor(new DateTableCellEditor());
     }
 
