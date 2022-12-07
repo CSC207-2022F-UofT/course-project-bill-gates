@@ -5,8 +5,6 @@ env:
   description: "This is a test release"
 
 on:
-  push:
-    branches: [ "auto-release" ]
   pull_request:
     branches: [ "auto-release" ]
 
