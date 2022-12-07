@@ -6,7 +6,7 @@ import java.util.List;
  * Clean Architecture Layer: Application Business Rules
  * A request model of the Bill Import use case.
  * It is used to transfer input data as a whole
- * from the controller to the use case.
+ * from the controller g to the use case.
  *
  * @author Eva
  * @see BillImportInputPort

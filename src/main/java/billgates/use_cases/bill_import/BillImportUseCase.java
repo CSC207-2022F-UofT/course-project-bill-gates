@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
- * Clean Architecture Layer: Application Business Rules
+ * Clean Architecture Layer: g Application Business Rules
  * A concrete implementation of the <code>BillImportInputPort</code>.
  *
  * @author Eva
