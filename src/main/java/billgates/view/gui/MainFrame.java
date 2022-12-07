@@ -1,6 +1,7 @@
 package billgates.view.gui;
 
 import billgates.use_cases.alter_entry.AlterEntryController;
+import billgates.use_cases.bill_import.BillImportController;
 import billgates.use_cases.bill_update.BillUpdateController;
 import billgates.use_cases.delete_entry.DeleteEntryController;
 import billgates.use_cases.insert_entry.InsertEntryController;
@@ -34,6 +35,8 @@ public class MainFrame extends JFrame {
     private DeleteEntryController deleteEntryController;
     private InsertEntryController insertEntryController;
     private AlterEntryController alterEntryController;
+
+    private BillImportController billImportController;
 
     public MainFrame() {
         // Set the title
@@ -117,5 +120,12 @@ public class MainFrame extends JFrame {
 
     public void setAlterEntryController(AlterEntryController alterEntryController) {
         this.alterEntryController = alterEntryController;
+    }
+    public BillImportController getBillImportController(){
+        return this.billImportController;
+    }
+
+    public void setBillImportController(BillImportController billImportController) {
+        this.billImportController = billImportController;
     }
 }

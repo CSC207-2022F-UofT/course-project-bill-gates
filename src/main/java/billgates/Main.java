@@ -7,6 +7,9 @@ import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.alter_entry.AlterEntryController;
 import billgates.use_cases.alter_entry.AlterEntryInputPort;
 import billgates.use_cases.alter_entry.AlterEntryUseCase;
+import billgates.use_cases.bill_import.BillImportController;
+import billgates.use_cases.bill_import.BillImportInputPort;
+import billgates.use_cases.bill_import.BillImportUseCase;
 import billgates.use_cases.bill_update.BillUpdateController;
 import billgates.use_cases.bill_update.BillUpdateOutputPort;
 import billgates.use_cases.bill_update.BillUpdatePresenter;
@@ -83,6 +86,10 @@ public class Main {
         return new AlterEntryController(useCase);
     }
 
+    private static BillImportController initBillImportUseCase(DatabaseGateway databaseGateway) {
+        BillImportInputPort useCase = new BillImportUseCase(databaseGateway);
+        return new BillImportController(useCase);
+    }
     // add new functions to init all other use cases
 
 }
