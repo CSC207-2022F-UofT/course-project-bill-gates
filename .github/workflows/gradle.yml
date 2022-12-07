@@ -7,7 +7,7 @@ on:
     branches: [ "auto-release" ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
