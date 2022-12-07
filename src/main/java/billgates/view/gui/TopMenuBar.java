@@ -17,7 +17,7 @@ public class TopMenuBar extends JMenuBar {
     private final static Color[] COLORS = new Color[]{new Color(240, 140, 170), Color.RED,
             Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK, Color.WHITE
     };
-    private final static String[] FONTS = new String[]{"Tahoma", "Times New Roman",
+    private final static String[] FONTS = new String[]{"微软雅黑", "Tahoma", "Times New Roman",
             "Helvetica", "Arial", "Impact", "Verdana", "Century", "Copperplate"};
     private final JMenu fileMenu = new GeneralMenu("File");
     private final JMenu settingsMenu = new GeneralMenu("Settings");

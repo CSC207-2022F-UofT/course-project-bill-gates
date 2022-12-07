@@ -55,6 +55,7 @@ public class SettingDialog extends JDialog {
             colorField.addItem("White");
 
             fontField.addItem("Default");
+            fontField.addItem("Tahoma");
             fontField.addItem("Times New Roman");
             fontField.addItem("Helvetica");
             fontField.addItem("Arial");
