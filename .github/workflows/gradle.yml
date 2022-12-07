@@ -5,8 +5,9 @@ env:
   description: "This is a test release"
 
 on:
-  pull_request:
-    branches: [ "auto-release" ]
+  push:
+    paths:
+      - 'gradle.yml'
 
 permissions:
   contents: write
