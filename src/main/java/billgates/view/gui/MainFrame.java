@@ -41,7 +41,10 @@ public class MainFrame extends JFrame {
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // Set the size of the window, and the user cannot resize the window
+        // Set full screen
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        // Set the size of the window, and the user can resize the window
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setResizable(true);
 
