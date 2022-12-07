@@ -49,7 +49,31 @@ MySQLDatabaseGatewayTests
 
 # Use of GitHub Features
 
-- TODO
+## Issues
+
+TODO
+
+## Project
+
+TODO
+
+## Pull Request
+
+TODO
+
+## Actions
+
+### Auto Grading: Running Tests
+
+By default, the GitHub classroom checks does not work normally with Java 17 and the version of Gradle that we chose to use. 
+
+Therefore, we have managed to modify `build.gradle` to allow tests to be ran when we build it using GitHub Actions. 
+
+### Auto Release: Create releases
+
+We have also created another script, which automatically builds the JAR file and creates the release within the repository. 
+
+With this script, right after we are prepared with a proper release, we can modify the `gradle.yml` file to allow the repository to build itself and upload a release.  
 
 # Design Patterns
 
