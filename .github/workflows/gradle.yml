@@ -38,9 +38,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: release_$version
-        release_name: Release BillGates-$version
-        body: $description
+        tag_name: "release_$version"
+        release_name: "Release BillGates-$version"
+        body: "$description"
         draft: false
         prerelease: false
 
