@@ -38,9 +38,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: "release_$version"
-        release_name: "Release BillGates-$version"
-        body: "$description"
+        tag_name: release_${{ env.version }}
+        release_name: Release BillGates ${{ env.version }}
+        body: ${{ env.description }}
         draft: false
         prerelease: false
 
@@ -51,6 +51,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: "build/libs/BillGates-$version.jar"
-        asset_name: "BillGates-$version.jar"
+        asset_path: build/libs/BillGates-${{ env.version }}
+        asset_name: BillGates-${{ env.version }}.jar
         asset_content_type: application/jar
