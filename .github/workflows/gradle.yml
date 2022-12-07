@@ -2,9 +2,7 @@ name: Java Gradle build and Release
 
 env:
   version: 0.1.0
-  release-name: Initial Release
   description: "This is a test release"
-
 
 on:
   push:
@@ -53,6 +51,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: build/libs/BillGates-$version.jar
-        asset_name: BillGates-$version.jar
+        asset_path: "build/libs/BillGates-$version.jar"
+        asset_name: "BillGates-$version.jar"
         asset_content_type: application/jar
