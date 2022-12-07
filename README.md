@@ -45,9 +45,28 @@ MySQLDatabaseGatewayTests
 - testModifyEntryDate
 - testModifyEntryAll
 - testDeleteEntry
+
+AlterEntryUseCaseTests
+- testAlterEntryLocation
+- testAlterEntryValue
+
+BillUpdateUseCaseTests
+- testEmptyBill
+- testRandomBill
+- testRandomSplitterBill
+
+InsertEntryUseCaseTests
+- testNormalEntry
+- testSplitterEntry
 ```
 
 # Use of GitHub Features
+
+## Discussion
+
+It is used as a discussion board to discuss some of the features under develop. 
+
+However, it is mainly used as a Announcement Board, where we display all the Milestones and their respective files for the team members. 
 
 ## Issues
 
