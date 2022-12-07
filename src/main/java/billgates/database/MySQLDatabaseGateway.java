@@ -18,6 +18,7 @@ import java.util.*;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
+ * This is the class that is responsible for connecting the application to the Database
  *
  * @author Ray, Scott
  */
