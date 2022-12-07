@@ -40,7 +40,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: $release-name
         release_name: Release BillGates-$version
         body: $description
         draft: false
