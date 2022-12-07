@@ -28,13 +28,13 @@ import java.util.List;
 public class AlterEntryUseCaseTest {
     public static final int USER_ID = 666666;
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
-    private DatabaseGateway gateway = new MySQLDatabaseGateway();
+    private final DatabaseGateway gateway = new MySQLDatabaseGateway();
     private AlterEntryRequestModel requestModel;
     private AlterEntryUseCase useCase;
     private AlterEntryController controller;
 
     @Before
-    public void setup() {
+    public void setUp() {
         this.gateway.setUserId(this.user.getId());
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
@@ -43,13 +43,13 @@ public class AlterEntryUseCaseTest {
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         this.gateway.cleanUser(this.user.getQueryUserData());
     }
 
 
     @Test
-    public void testAlterEntry_location() throws InterruptedException {
+    public void testAlterEntryLocation() {
         List<AbstractEntry> entries = TestUtilities.generateRandomEntries(1, 1, 0, 50, false);
         entries.forEach(entry -> this.gateway.insertEntry(this.user.getBillId(), (Entry) entry));
         AbstractEntry entry = entries.get(0);
@@ -72,7 +72,7 @@ public class AlterEntryUseCaseTest {
 
 
     @Test
-    public void testAlterEntry_value() throws InterruptedException {
+    public void testAlterEntryValue() {
         List<AbstractEntry> entries = TestUtilities.generateRandomEntries(1, 1, 0, 50, false);
         entries.forEach(entry -> this.gateway.insertEntry(this.user.getBillId(), (Entry) entry));
         AbstractEntry entry = entries.get(0);
@@ -90,7 +90,8 @@ public class AlterEntryUseCaseTest {
 
         this.controller.alterEntry(this.user.getBillId(), "666666", "Value");
 
-        Assert.assertEquals(expect, this.gateway.getEntryData(this.user.getBillId(), entry.getId().getAttribute()));
+        Assert.assertEquals(expect, this.gateway.getEntryData(this.user.getBillId(), entry.getId()
+                .getAttribute()));
 
     }
 
