@@ -196,6 +196,26 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
         return entries;
     }
 
+    // This is a method specifically used to obtain:
+    // Value, time, currency, description, from, to, location
+    public List<Object> getBasicEntryInfo(ResultSet resultSet) throws SQLException {
+        double value = resultSet.getDouble("value");
+        Timestamp date = resultSet.getTimestamp("date");
+        String currency = resultSet.getString("currency");
+        String description = resultSet.getString("description");
+        String from = resultSet.getString("from");
+        String to = resultSet.getString("to");
+        String location = resultSet.getString("location");
+
+        return new ArrayList<>(List.of(value,
+                date,
+                currency,
+                description,
+                from,
+                to,
+                location));
+    }
+
     @Override
     public Entry getEntryData(int billId, int entryId) {
         int splitBillId;
@@ -221,14 +241,18 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             if (resultSet.next()) {
                 // Note that, aside from the general types that we have here
                 // All the rest objects will be parsed in a string format
-                value = resultSet.getDouble("value");
-                Timestamp date = resultSet.getTimestamp("date");
-                currency = resultSet.getString("currency");
-                description = resultSet.getString("description");
-                from = resultSet.getString("from");
-                to = resultSet.getString("to");
-                location = resultSet.getString("location");
+
                 splitBillId = resultSet.getInt("split_bill_id");
+
+                List<Object> result = getBasicEntryInfo(resultSet);
+
+                value = (double) result.get(0);
+                Timestamp date = (Timestamp) result.get(1);
+                currency = (String) result.get(2);
+                description = (String) result.get(3);
+                from = (String) result.get(4);
+                to = (String) result.get(5);
+                location = (String) result.get(6);
 
                 Instant i = Instant.ofEpochMilli(date.getTime());
 
@@ -283,6 +307,7 @@ public class MySQLDatabaseGateway implements DatabaseGateway {
             if (resultSet.next()) {
                 // Note that, aside from the general types that we have here
                 // All the rest objects will be parsed in a string format
+
                 value = resultSet.getDouble("value");
                 Timestamp date = resultSet.getTimestamp("date");
                 currency = resultSet.getString("currency");
