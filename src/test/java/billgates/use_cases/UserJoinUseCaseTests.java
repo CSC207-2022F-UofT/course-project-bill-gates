@@ -26,7 +26,9 @@ public class UserJoinUseCaseTests {
     private UserJoinPresenter presenter;
     private UserJoinUseCase useCase;
     private UserJoinViewModel viewModel;
-    private final User user = User.createInstance(243545, "userjoin", "usecasetest", 756432);
+    private final int userID = 243545;
+    private final int billID = 756432;
+    private final User user = User.createInstance(userID, "userjoin", "usecasetest", billID);
 
     @Before
     public void setUp() {
