@@ -25,7 +25,7 @@ where users can log in to the application and start recording bill entries into 
 - Package `use_cases` contains different use cases. We decided to include all parts of a use case (regardless of layers) in the same package to make the organization cleaner.
 - Package `interface_adapters` are some universal classes in the interface adapters layer.
 - Package `view` contains classes for a presenting our program. We implemented a GUI using Swing.
-- The `Main` class is the entry point of our program. It initializes every detail (like use case initializations) of our program and connect them together..
+- The `Main` class is the entry point of our program. It initializes every detail (like use case initializations) of our program and connect them together.
 
 # Test Coverage
 
@@ -58,6 +58,10 @@ BillUpdateUseCaseTests
 - testEmptyBill
 - testRandomBill
 - testRandomSplitterBill
+
+DeleteEntryUseCaseTests
+- testOneEntryDeleted
+- testMultipleEntriesDeleted
 
 InsertEntryUseCaseTests
 - testNormalEntry
