@@ -171,7 +171,6 @@ public class TopMenuBar extends JMenuBar {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(csvFile);
         return csvFile;
     }
 
