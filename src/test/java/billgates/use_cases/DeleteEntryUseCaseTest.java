@@ -27,7 +27,6 @@ public class DeleteEntryUseCaseTest {
     public static final int USER_ID = 666666;
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
     private DatabaseGateway gateway = new MySQLDatabaseGateway();
-
     private DeleteEntryController controller;
     private DeleteEntryUseCase useCase;
 
@@ -46,25 +45,32 @@ public class DeleteEntryUseCaseTest {
     }
 
     @Test
-    public void testIsNormalEntryDeleted() throws InterruptedException {
+    public void testOneEntryDeleted() {
         int size = 50;
-        List<AbstractEntry> entries = TestUtilities.generateRandomEntries(0, size, 0, 50, false);
+        List<AbstractEntry> entries = TestUtilities.generateRandomEntries(size, size, 0, 50, false);
         entries.forEach(entry -> this.gateway.insertEntry(this.user.getBillId(), (Entry) entry));
-        List<List<Object>> list = TestUtilities.toFormattedEntries(entries, false);
         this.controller.delete(1);
-        int expected = size - 1;
-        Assert.assertEquals(expected, 49);
+        int expected = this.gateway.getBillData(USER_ID).size();
+        Assert.assertEquals(expected, size - 1);
     }
 
     @Test
-    public void testEmptyBillDeleted() throws InterruptedException {
-        int size = 0;
-        List<AbstractEntry> entries = TestUtilities.generateRandomEntries(0, size, 0, 50, false);
+    public void testMultipleEntriesDeleted() {
+        int minSize = 2;
+        int maxSize = 50;
+        List<AbstractEntry> entries = TestUtilities.generateRandomEntries(minSize, maxSize, 0, 50, false);
         entries.forEach(entry -> this.gateway.insertEntry(this.user.getBillId(), (Entry) entry));
         List<List<Object>> list = TestUtilities.toFormattedEntries(entries, false);
-        this.controller.delete(1);
-        int expected = size;
-        Assert.assertEquals(expected, 0);
+
+        for (List<Object> objects : list) {
+            // objects.get(0) returns the id of this given entry
+            this.gateway.deleteEntry(USER_ID, (int) objects.get(0));
+        }
+
+        int expected = 0;
+        int actual = this.gateway.getBillData(USER_ID).size();
+
+        Assert.assertEquals(expected, actual);
     }
 
 }
