@@ -45,6 +45,9 @@ public class BillTable extends JTable {
 
         // Set functionality
         this.setCellSelectionEnabled(true);
+
+        // The user cannot reorder the columns of the table
+        this.getTableHeader().setReorderingAllowed(false);
     }
 
     @Override
@@ -81,8 +84,8 @@ public class BillTable extends JTable {
         List<String> statistics = new ArrayList<>();
         List<Double> values = new ArrayList<>();
         List<String> currencyValues = new ArrayList<>();
-        int valueCol = 2;
-        int currencyCol = 3;
+        int valueCol = this.getColumn("Value").getModelIndex();
+        int currencyCol = this.getColumn("Currency").getModelIndex();
 
         if (selectedColumns.length == 1) {
             int[] selectedRows = this.getSelectedRows();

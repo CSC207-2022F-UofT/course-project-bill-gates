@@ -17,9 +17,9 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     // window width
-    public static final int DEFAULT_WIDTH = 1200;
+    public static final int DEFAULT_WIDTH = 1250;
     // window height
-    public static final int DEFAULT_HEIGHT = 740;
+    public static final int DEFAULT_HEIGHT = 750;
     public static final Color DEFAULT_BACKGROUND_COLOR = new Color(220, 120, 150, 100);
 
     private final ActionPanel actionPanel = new ActionPanel(this);
@@ -42,7 +42,10 @@ public class MainFrame extends JFrame {
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // Set the size of the window, and the user cannot resize the window
+        // Set full screen
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        // Set the size of the window, and the user can resize the window
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setResizable(true);
 
@@ -127,4 +130,5 @@ public class MainFrame extends JFrame {
     public void setAlterEntryController(AlterEntryController alterEntryController) {
         this.alterEntryController = alterEntryController;
     }
+
 }

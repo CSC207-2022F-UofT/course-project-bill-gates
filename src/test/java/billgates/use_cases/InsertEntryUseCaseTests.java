@@ -23,7 +23,7 @@ import java.time.ZonedDateTime;
  * @author Ruby
  * @see billgates.use_cases.insert_entry
  */
-public class InsertEntryUseCaseTest {
+public class InsertEntryUseCaseTests {
 
     public static final int USER_ID = 7777777;
 

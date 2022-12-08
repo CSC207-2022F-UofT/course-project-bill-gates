@@ -25,7 +25,7 @@ import java.util.List;
  * @author Brandon Fu
  * @see billgates.use_cases.alter_entry
  */
-public class AlterEntryUseCaseTest {
+public class AlterEntryUseCaseTests {
     public static final int USER_ID = 666666;
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
     private final DatabaseGateway gateway = new MySQLDatabaseGateway();
