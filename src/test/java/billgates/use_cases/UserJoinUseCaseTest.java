@@ -28,7 +28,8 @@ public class UserJoinUseCaseTest {
         this.gateway.setUserId(this.user.getId());
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
-        this.presenter = new UserJoinPresenter(viewModel1 -> UserJoinUseCaseTest.this.viewModel = viewModel1);
+        this.presenter = new UserJoinPresenter(
+                viewModel -> UserJoinUseCaseTest.this.viewModel = viewModel);
         this.useCase = new UserJoinUseCase(this.gateway, this.presenter);
         this.controller = new UserJoinController(this.useCase);
     }

@@ -1,5 +1,7 @@
 package billgates.use_cases.user_join;
 
+import java.util.Objects;
+
 /**
  * Clean Architecture Layer: Interface Adapters
  * A view model holding information for the GUI to display.
@@ -22,6 +24,15 @@ public class UserJoinViewModel {
     public UserJoinViewModel(boolean isJoined, String reasonRejected) {
         this.isJoined = isJoined;
         this.reasonRejected = reasonRejected;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+        UserJoinViewModel that = (UserJoinViewModel) obj;
+        return this.isJoined == that.isJoined &&
+                Objects.equals(this.reasonRejected, that.reasonRejected);
     }
 
     public boolean isJoined() {
