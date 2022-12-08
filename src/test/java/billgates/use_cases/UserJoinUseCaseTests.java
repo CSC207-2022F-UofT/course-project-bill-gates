@@ -1,6 +1,7 @@
 package billgates.use_cases;
 
 import billgates.database.MySQLDatabaseGateway;
+import billgates.entities.QueryUserData;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 import billgates.use_cases.user_join.*;
@@ -48,8 +49,9 @@ public class UserJoinUseCaseTests {
     public void testRegisterNewUser() {
         UserJoinViewModel expected = new UserJoinViewModel(true, "Registered successfully");
         this.controller.userJoin("matter", "123456");
+        QueryUserData matter = this.gateway.getUserData("matter");
         Assert.assertEquals(expected, this.viewModel);
-        this.gateway.deleteUser("matter");
+        this.gateway.cleanUser(matter);
     }
 
     @Test

@@ -44,6 +44,7 @@ public class InsertEntryUseCaseTests {
     @After
     public void tearDown() {
         this.gateway.cleanUser(this.user.getQueryUserData());
+        this.gateway.dropSplitBillTable(666666);
     }
 
     @Test
