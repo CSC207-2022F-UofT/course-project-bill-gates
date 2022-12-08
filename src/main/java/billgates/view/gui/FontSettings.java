@@ -10,7 +10,7 @@ import java.awt.*;
 public class FontSettings extends Font{
 
     public FontSettings(int fontSize) {
-        super("Tahoma", Font.BOLD, fontSize);
+        super("微软雅黑", Font.BOLD, fontSize);
     }
 
     // Add a new constructor to change font later, with parameter of font and font size
