@@ -66,6 +66,11 @@ DeleteEntryUseCaseTests
 InsertEntryUseCaseTests
 - testNormalEntry
 - testSplitterEntry
+
+UserJoinUseCaseTests
+- testRegisterNewUser
+- testLoginExistingUser
+- testWrongPasswordForLogin
 ```
 
 # Code Style and Documentation
