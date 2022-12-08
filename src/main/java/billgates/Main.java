@@ -7,9 +7,6 @@ import billgates.interface_adapters.UserJoinUpdatable;
 import billgates.use_cases.alter_entry.AlterEntryController;
 import billgates.use_cases.alter_entry.AlterEntryInputPort;
 import billgates.use_cases.alter_entry.AlterEntryUseCase;
-import billgates.use_cases.bill_import.BillImportController;
-import billgates.use_cases.bill_import.BillImportInputPort;
-import billgates.use_cases.bill_import.BillImportUseCase;
 import billgates.use_cases.bill_update.BillUpdateController;
 import billgates.use_cases.bill_update.BillUpdateOutputPort;
 import billgates.use_cases.bill_update.BillUpdatePresenter;
@@ -49,7 +46,6 @@ public class Main {
         mainFrame.setUserJoinController(initUserJoinUseCase(databaseGateway, mainFrame.getActionPanel()));
         mainFrame.setInsertEntryController(initInsertEntryUseCase(databaseGateway));
         mainFrame.setAlterEntryController(initAlterEntryUseCase(databaseGateway));
-        mainFrame.setBillImportController(initBillImportUseCase(databaseGateway, mainFrame));
 
         mainFrame.setVisible(true);
         // init column widths
@@ -85,11 +81,6 @@ public class Main {
     private static AlterEntryController initAlterEntryUseCase(DatabaseGateway databaseGateway) {
         AlterEntryInputPort useCase = new AlterEntryUseCase(databaseGateway);
         return new AlterEntryController(useCase);
-    }
-
-    private static BillImportController initBillImportUseCase(DatabaseGateway databaseGateway, MainFrame mainFrame) {
-        BillImportInputPort useCase = new BillImportUseCase(databaseGateway,mainFrame);
-        return new BillImportController(useCase);
     }
 
     // add new functions to init all other use cases
