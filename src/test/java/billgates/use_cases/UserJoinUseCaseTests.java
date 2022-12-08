@@ -11,10 +11,15 @@ import org.junit.Test;
 
 /**
  * A test for <code>UserJoinUseCase</code>.
- * This test utilizes
+ * This test utilizes the User with user ID 243545 and a bill ID of 756432 as a standard user in the database,
+ * and we test registering new user, logging in the standard user and denying the log in process.
+ * The user in the database created either before or during the test will be deleted.
+ *
+ * @author Xinxiang
+ * @see billgates.use_cases.user_join
  */
 
-public class UserJoinUseCaseTest {
+public class UserJoinUseCaseTests {
 
     private DatabaseGateway gateway = new MySQLDatabaseGateway();
     private UserJoinController controller;
@@ -29,7 +34,7 @@ public class UserJoinUseCaseTest {
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
         this.presenter = new UserJoinPresenter(
-                viewModel -> UserJoinUseCaseTest.this.viewModel = viewModel);
+                viewModel -> UserJoinUseCaseTests.this.viewModel = viewModel);
         this.useCase = new UserJoinUseCase(this.gateway, this.presenter);
         this.controller = new UserJoinController(this.useCase);
     }
