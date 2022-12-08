@@ -130,4 +130,5 @@ public class MainFrame extends JFrame {
     public void setAlterEntryController(AlterEntryController alterEntryController) {
         this.alterEntryController = alterEntryController;
     }
+
 }

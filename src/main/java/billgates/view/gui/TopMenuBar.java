@@ -1,10 +1,22 @@
 package billgates.view.gui;
 
+import billgates.use_cases.insert_entry.InsertEntryRequestModel;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Clean Architecture Layer: Frameworks & Drivers
@@ -126,20 +138,40 @@ public class TopMenuBar extends JMenuBar {
     // Function to choose file in your computer
     private void importBills() {
         JFileChooser chooser = new JFileChooser();
-        //JDialog chooserDialog = chooser.createDialog(mainFrame);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Your Bills", "csv");
         chooser.setFileFilter(filter);
         int ret = chooser.showOpenDialog(mainFrame);
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
-            loadFile(file);
+
+            // Connect with the Insert Entry Use case to pass the file
+            List<List<String>> csvFile = convertFile(file);
+            for (List<String> entry: csvFile) {
+                ZonedDateTime date = LocalDate.parse(entry.get(0), DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneOffset.UTC);
+                double value = Double.parseDouble(entry.get(1));
+                InsertEntryRequestModel model1 = new InsertEntryRequestModel(date, value, entry.get(2), entry.get(3), entry.get(4), entry.get(5),entry.get(6));
+                this.mainFrame.getInsertEntryController().insert(model1);
+            }
+
+            // After adding these bills, update the current bill
+            SwingUtilities.invokeLater(() -> this.mainFrame.getBillUpdateController().update(-1));
         }
     }
 
-    // Function to load file after loading file
-    public void loadFile(File file) {
-        // CONTINUE!!!
-        System.out.println("loaded");
+    // Function to convert your file after loading file
+    public List<List<String>> convertFile(File file) {
+        List<List<String>> csvFile = new ArrayList<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                csvFile.add(Arrays.asList(values));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return csvFile;
     }
 
     // Function to show a description of the function of this app
