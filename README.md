@@ -75,7 +75,6 @@ InsertEntryUseCaseTests
     - We used `CONSTANT_CASE` for `static final` constants.
     - We used `CamelCase` for class names.
     - We added `this.` before referring every instance variable and method.
-    - More and more ...
 - We also added many java docs for most of the project. 
     - For each classes, we clearly labeled the layer of in Clean Architecture, the author of, the related collaborators, and the description of this class.
     - For most methods that need a complete java doc, we added clear explanations of what the method is doing and related resources to check.
@@ -92,7 +91,7 @@ InsertEntryUseCaseTests
 ## Issues
 
 - We have utilized issues in conjunction with pull requests. 
-- For each bug fix, feature request, or other improvements, we firstly submit an issue outline the initiations and initial design of the problem, and then start working on the problem. We distributed assignees to assure that there are no conflicts in collaboration. We also utilized labels and projects to better mange our progress and works.
+- For each bug fix, feature request, or other improvements, we firstly submit an issue to outline the need to fix this problem and an initial solution of the problem, and then start working on the problem. We distributed assignees to ensure that there are no conflicts in collaboration. We also utilized labels and projects to better mange our progress and works.
 - After getting done with some codes and completing a draft, we will make a pull request about this. The pull request will be connected to the issue.
 - Then, after merging the pull request into main, the issue will be automatically closed.
 
@@ -122,7 +121,7 @@ InsertEntryUseCaseTests
 ## `User`: Singleton
 
 - The `User` class represents a user entity in our program. 
-- Only **ONE** user (Singleton) is allowed in the main life time of our program.
+- Only **ONE** user (Singleton) is allowed in a single runtime of our program.
 - The `UserJoinUseCase` will initialize the user by calling `createInstance` with parameters.
 - Then, all the use cases can use `getInstance` without parameters to obtain the current user via Singleton design pattern.
 
@@ -142,7 +141,7 @@ InsertEntryUseCaseTests
 # Clean Architecture
 
 - As we mentioned in the Code Organization section, we organized our code by layers in Clean Architecture. Therefore, it is easy to observe that our codes completely follow the Clean Architecture.
-- We implemented the MVC architecture in the Clean Architecture. Here is the diagram of the flow of control of our program.<img src="resources/image-20221208122252600.png" alt="image-20221208122252600" style="zoom:50%;" />
+- We implemented the MVC architecture in the Clean Architecture. Here is the diagram of the flow of control of our program.<img src="resources/image-20221208122252600.png" alt="Flow of Control Chart" style="zoom:50%;" />
 
 # SOLID
 
@@ -153,10 +152,10 @@ InsertEntryUseCaseTests
     - each view is only responsible for its own part of display.
 2. **Open and Closed Principle**: We completely adhere this principle. 
     - For example, we have various input ports, and those input ports are simply interfaces to decouple the controller and the use case implementation of each use case. We can easily add another implementation of the use case by implementing the input port interface, without needing to change any other codes.
-    - Also we can easily add another implementation of data persistence by implementing the database boundaries. Our codes are open for extending but closed for modifications.
+    - Also, we can easily add another implementation of data persistence by implementing the database boundaries. Our codes are open for extending but closed for modifications.
 3. **Liskov Substitution Principle**: Our subclasses do not alter the behavior of the general inherited behavior. Therefore, we can safely substitute objects of the super classes by the subclasses.
 4. **Interface Segregation Principle**: All interfaces in our projects have clearly defined specifications and any subset of the interfaces can not support the normal life cycle of our program. Therefore, we made interfaces into separate, small, concise, but necessary parts. Client codes won't be forced to implement the parts they don't need.
-5. **Dependency Inversion Principle**: As we explained in the Clean Architecture section, our codes completely follow the Clean Architecture and we have bunch of boundaries separating different layers and doing dependency inversions. Therefore, we followed this principle automatically.
+5. **Dependency Inversion Principle**: As we explained in the Clean Architecture section, our codes completely follow the Clean Architecture principles, and we have a bunch of boundaries separating different layers and doing dependency inversions. Therefore, we followed this principle automatically.
 
 # Standards
 
