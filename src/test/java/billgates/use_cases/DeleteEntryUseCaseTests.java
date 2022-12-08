@@ -23,7 +23,7 @@ import java.util.List;
  * @see billgates.use_cases.delete_entry
  */
 
-public class DeleteEntryUseCaseTest {
+public class DeleteEntryUseCaseTests {
     public static final int USER_ID = 666666;
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
     private DatabaseGateway gateway = new MySQLDatabaseGateway();
