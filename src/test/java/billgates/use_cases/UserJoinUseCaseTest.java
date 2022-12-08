@@ -41,14 +41,15 @@ public class UserJoinUseCaseTest {
 
     @Test
     public void testRegisterNewUser() throws InterruptedException {
-        UserJoinViewModel expected = new UserJoinViewModel(true, "Registered successfully.");
+        UserJoinViewModel expected = new UserJoinViewModel(true, "Registered successfully");
         this.controller.userJoin("matter", "123456");
         Assert.assertEquals(expected, this.viewModel);
+        this.gateway.deleteUser("matter");
     }
 
     @Test
     public void testLoginExistingUser() throws InterruptedException {
-        UserJoinViewModel expected = new UserJoinViewModel(true, "Logged in successfully.");
+        UserJoinViewModel expected = new UserJoinViewModel(true, "Logged in successfully");
         this.controller.userJoin("userjoin", "usecasetest");
         Assert.assertEquals(expected, this.viewModel);
     }

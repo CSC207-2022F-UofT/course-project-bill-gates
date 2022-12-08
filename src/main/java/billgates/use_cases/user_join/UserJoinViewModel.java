@@ -1,5 +1,6 @@
 package billgates.use_cases.user_join;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
