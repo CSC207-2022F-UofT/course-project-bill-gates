@@ -20,9 +20,8 @@ public class UserJoinUseCaseTest {
     private UserJoinController controller;
     private UserJoinPresenter presenter;
     private UserJoinUseCase useCase;
-    private UserJoinOutputPort outputPort;
     private UserJoinViewModel viewModel;
-    private final User user = User.createInstance(100837, "userjoin", "usecasetest", 100837);
+    private final User user = User.createInstance(243545, "userjoin", "usecasetest", 756432);
 
     @Before
     public void setUp() {
@@ -30,9 +29,8 @@ public class UserJoinUseCaseTest {
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
         this.presenter = new UserJoinPresenter(viewModel1 -> UserJoinUseCaseTest.this.viewModel = viewModel1);
-        this.useCase = new UserJoinUseCase(this.gateway, this.outputPort);
+        this.useCase = new UserJoinUseCase(this.gateway, this.presenter);
         this.controller = new UserJoinController(this.useCase);
-
     }
 
     @After
@@ -43,8 +41,7 @@ public class UserJoinUseCaseTest {
     @Test
     public void testRegisterNewUser() throws InterruptedException {
         UserJoinViewModel expected = new UserJoinViewModel(true, "Registered successfully.");
-        this.controller.userJoin("thenamedoesnotmatter", "123456");
-
+        this.controller.userJoin("matter", "123456");
         Assert.assertEquals(expected, this.viewModel);
     }
 
