@@ -30,9 +30,8 @@ public class BillUpdateUseCaseTests {
 
     public static final int USER_ID = 666666;
 
-    private DatabaseGateway gateway = new MySQLDatabaseGateway();
+    private final DatabaseGateway gateway = new MySQLDatabaseGateway();
     private BillUpdateController controller;
-    private BillUpdatePresenter presenter;
     private BillUpdateUseCase useCase;
     private BillUpdateViewModel viewModel;
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
@@ -42,9 +41,9 @@ public class BillUpdateUseCaseTests {
         this.gateway.setUserId(this.user.getId());
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
-        this.presenter = new BillUpdatePresenter(
+        BillUpdatePresenter presenter = new BillUpdatePresenter(
                 viewModel -> BillUpdateUseCaseTests.this.viewModel = viewModel);
-        this.useCase = new BillUpdateUseCase(this.presenter, this.gateway);
+        this.useCase = new BillUpdateUseCase(presenter, this.gateway);
         this.controller = new BillUpdateController(this.useCase);
     }
 

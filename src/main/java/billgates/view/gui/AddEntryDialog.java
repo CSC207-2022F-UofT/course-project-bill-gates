@@ -29,7 +29,6 @@ public class AddEntryDialog extends JPanel {
     private ActionTextField locationField;
     private ActionTextField payeeField;
     private JCheckBox paidBackCheckBox;
-    private int result;
 
     public AddEntryDialog(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -39,7 +38,7 @@ public class AddEntryDialog extends JPanel {
     }
 
     public InsertEntryRequestModel exec() {
-        result = JOptionPane.showConfirmDialog(this.mainFrame, this,
+        int result = JOptionPane.showConfirmDialog(this.mainFrame, this,
                 "Adding an entry...", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             LocalDateTime datetime = this.dateTimePicker.getDateTimePermissive();

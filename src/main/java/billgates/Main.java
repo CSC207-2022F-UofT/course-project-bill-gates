@@ -41,9 +41,11 @@ public class Main {
 
         // init the main frame
         MainFrame mainFrame = new MainFrame();
-        mainFrame.setBillUpdateController(initBillUpdateUseCase(databaseGateway, mainFrame.getBillPanel()));
+        mainFrame.setBillUpdateController(initBillUpdateUseCase(databaseGateway,
+                mainFrame.getBillPanel()));
         mainFrame.setDeleteEntryController(initDeleteEntryUseCase(databaseGateway));
-        mainFrame.setUserJoinController(initUserJoinUseCase(databaseGateway, mainFrame.getActionPanel()));
+        mainFrame.setUserJoinController(initUserJoinUseCase(databaseGateway,
+                mainFrame.getActionPanel()));
         mainFrame.setInsertEntryController(initInsertEntryUseCase(databaseGateway));
         mainFrame.setAlterEntryController(initAlterEntryUseCase(databaseGateway));
 

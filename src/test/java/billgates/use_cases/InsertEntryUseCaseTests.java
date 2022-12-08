@@ -27,9 +27,8 @@ public class InsertEntryUseCaseTests {
 
     public static final int USER_ID = 7777777;
 
-    private DatabaseGateway gateway = new MySQLDatabaseGateway();
+    private final DatabaseGateway gateway = new MySQLDatabaseGateway();
     private InsertEntryController controller;
-    private InsertEntryUseCase useCase;
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
 
     @Before
@@ -38,8 +37,8 @@ public class InsertEntryUseCaseTests {
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
         this.gateway.createSplitBillTable(666666);
-        this.useCase = new InsertEntryUseCase(this.gateway);
-        this.controller = new InsertEntryController(this.useCase);
+        InsertEntryUseCase useCase = new InsertEntryUseCase(this.gateway);
+        this.controller = new InsertEntryController(useCase);
     }
 
     @After
@@ -103,7 +102,8 @@ public class InsertEntryUseCaseTests {
                 false);
 
         this.controller.insert(model);
-        Assert.assertEquals(expected, this.gateway.getSplitEntryData(this.user.getCurrentBillID(), 1));
+        Assert.assertEquals(expected, this.gateway
+                .getSplitEntryData(this.user.getCurrentBillID(), 1));
     }
 
 }

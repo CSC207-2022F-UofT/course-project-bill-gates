@@ -212,6 +212,7 @@ public interface DatabaseGateway {
      * @param billId the id of the SPLIT bill that we are trying to modify the specific entry from
      * @param entry  a QuerySplitEntryData object that contains all the information of the new entry
      */
+    // This warning shouldn't be resolved because it is necessary to have this method.
     void modifySplitEntry(int billId, SplitterEntry entry);
 
     /**

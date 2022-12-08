@@ -8,7 +8,6 @@ import billgates.entities.EntryBuilder;
 import billgates.entities.User;
 import billgates.interface_adapters.DatabaseGateway;
 import billgates.use_cases.alter_entry.AlterEntryController;
-import billgates.use_cases.alter_entry.AlterEntryRequestModel;
 import billgates.use_cases.alter_entry.AlterEntryUseCase;
 import org.junit.After;
 import org.junit.Assert;
@@ -29,8 +28,6 @@ public class AlterEntryUseCaseTests {
     public static final int USER_ID = 666666;
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
     private final DatabaseGateway gateway = new MySQLDatabaseGateway();
-    private AlterEntryRequestModel requestModel;
-    private AlterEntryUseCase useCase;
     private AlterEntryController controller;
 
     @Before
@@ -38,8 +35,8 @@ public class AlterEntryUseCaseTests {
         this.gateway.setUserId(this.user.getId());
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
-        this.useCase = new AlterEntryUseCase(this.gateway);
-        this.controller = new AlterEntryController(this.useCase);
+        AlterEntryUseCase useCase = new AlterEntryUseCase(this.gateway);
+        this.controller = new AlterEntryController(useCase);
     }
 
     @After
@@ -67,7 +64,8 @@ public class AlterEntryUseCaseTests {
 
         this.controller.alterEntry(this.user.getBillId(), "UofT", "Location");
 
-        Assert.assertEquals(expect, this.gateway.getEntryData(this.user.getBillId(), entry.getId().getAttribute()));
+        Assert.assertEquals(expect, this.gateway.getEntryData(this.user.getBillId(),
+                entry.getId().getAttribute()));
     }
 
 

@@ -26,17 +26,16 @@ import java.util.List;
 public class DeleteEntryUseCaseTests {
     public static final int USER_ID = 666666;
     private final User user = User.createInstance(USER_ID, "test_user", "test_user", USER_ID);
-    private DatabaseGateway gateway = new MySQLDatabaseGateway();
+    private final DatabaseGateway gateway = new MySQLDatabaseGateway();
     private DeleteEntryController controller;
-    private DeleteEntryUseCase useCase;
 
     @Before
     public void setUp() {
         this.gateway.setUserId(this.user.getId());
         this.gateway.insertUser(this.user.getQueryUserData());
         this.gateway.createBillTable(this.user.getBillId());
-        this.useCase = new DeleteEntryUseCase(this.gateway);
-        this.controller = new DeleteEntryController(this.useCase);
+        DeleteEntryUseCase useCase = new DeleteEntryUseCase(this.gateway);
+        this.controller = new DeleteEntryController(useCase);
     }
 
     @After
@@ -58,7 +57,8 @@ public class DeleteEntryUseCaseTests {
     public void testMultipleEntriesDeleted() {
         int minSize = 2;
         int maxSize = 50;
-        List<AbstractEntry> entries = TestUtilities.generateRandomEntries(minSize, maxSize, 0, 50, false);
+        List<AbstractEntry> entries = TestUtilities.generateRandomEntries(minSize, maxSize, 0, 50,
+                false);
         entries.forEach(entry -> this.gateway.insertEntry(this.user.getBillId(), (Entry) entry));
         List<List<Object>> list = TestUtilities.toFormattedEntries(entries, false);
 

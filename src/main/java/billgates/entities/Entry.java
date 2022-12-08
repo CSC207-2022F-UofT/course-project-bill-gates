@@ -47,6 +47,7 @@ public class Entry extends AbstractEntry {
         return splitterBillId;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setSplitterBillId(Attribute<Integer> splitterBillId) {
         this.splitterBillId = splitterBillId;
     }

@@ -51,6 +51,7 @@ public class Attribute<T> {
         return attribute;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setAttribute(T attribute) {
         this.attribute = attribute;
     }
@@ -59,6 +60,7 @@ public class Attribute<T> {
         return name;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setName(String name) {
         this.name = name;
     }

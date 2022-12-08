@@ -24,6 +24,7 @@ public class UserJoinResponseModel {
         return this.isJoined;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setJoined(boolean joined) {
         this.isJoined = joined;
     }
@@ -32,6 +33,7 @@ public class UserJoinResponseModel {
         return this.reasonRejected;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setReasonRejected(String reasonRejected) {
         this.reasonRejected = reasonRejected;
     }

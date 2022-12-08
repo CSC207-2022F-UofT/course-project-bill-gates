@@ -117,6 +117,7 @@ public class User {
         return name;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setName(String name) {
         this.name = name;
     }
@@ -134,6 +135,7 @@ public class User {
         return billId;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setBillId(int billId) {
         this.billId = billId;
     }

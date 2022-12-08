@@ -11,7 +11,8 @@ public interface BillUpdateInputPort {
 
     /**
      * This method will update the bill view with the entries in the database.
-     * If billId == -1, then the bill that the current bill id of the user points to will be displayed.
+     * If billId == -1, then the bill that the current bill id of the user points to will be
+     * displayed.
      * If billId == -2, then the bill that the main bill id of the user points to will be displayed.
      * Otherwise, the bill pointed by billId will be displayed.
      *

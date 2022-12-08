@@ -61,7 +61,8 @@ public class TopMenuBar extends JMenuBar {
         // Add MenuItem import in File
         JMenuItem importMenuItem = new JMenuItem("Import File");
         KeyStroke keyStrokeToImport
-                = KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
+                = KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK +
+                KeyEvent.CTRL_DOWN_MASK);
         importMenuItem.setAccelerator(keyStrokeToImport);
         fileMenu.add(importMenuItem);
 
@@ -71,8 +72,8 @@ public class TopMenuBar extends JMenuBar {
 
         // Add MenuItem change color and font in setting
         JMenuItem appearanceMenuItem = new JMenuItem("Appearance");
-        KeyStroke keyStrokeToSet
-                = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
+        KeyStroke keyStrokeToSet = KeyStroke.getKeyStroke(KeyEvent.VK_A,
+                KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         appearanceMenuItem.setAccelerator(keyStrokeToSet);
         settingsMenu.add(appearanceMenuItem);
 
@@ -90,27 +91,23 @@ public class TopMenuBar extends JMenuBar {
 
         // Add MenuItem functions in help
         JMenuItem functionMenuItem = new JMenuItem("How to use");
-        KeyStroke keyStrokeToUse
-                = KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
+        KeyStroke keyStrokeToUse = KeyStroke.getKeyStroke(KeyEvent.VK_H,
+                KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         functionMenuItem.setAccelerator(keyStrokeToUse);
         helpMenu.add(functionMenuItem);
 
         // Add function to help menu
-        functionMenuItem.addActionListener( e -> {
-            showFunctions();
-        });
+        functionMenuItem.addActionListener( e -> showFunctions());
 
         // Add MenuItem shortcut key in help
         JMenuItem shortcutMenuItem = new JMenuItem("Shortcut key");
-        KeyStroke keyStrokeShortcut
-                = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
+        KeyStroke keyStrokeShortcut = KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                KeyEvent.SHIFT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK);
         shortcutMenuItem.setAccelerator(keyStrokeShortcut);
         helpMenu.add(shortcutMenuItem);
 
         // Add function to help menu
-        shortcutMenuItem.addActionListener( e -> {
-            shortcut();
-        });
+        shortcutMenuItem.addActionListener( e -> shortcut());
     }
 
     // Function to set up the setting dialog
@@ -147,9 +144,11 @@ public class TopMenuBar extends JMenuBar {
             // Connect with the Insert Entry Use case to pass the file
             List<List<String>> csvFile = convertFile(file);
             for (List<String> entry: csvFile) {
-                ZonedDateTime date = LocalDate.parse(entry.get(0), DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneOffset.UTC);
+                ZonedDateTime date = LocalDate.parse(entry.get(0), DateTimeFormatter.ISO_DATE)
+                        .atStartOfDay(ZoneOffset.UTC);
                 double value = Double.parseDouble(entry.get(1));
-                InsertEntryRequestModel model1 = new InsertEntryRequestModel(date, value, entry.get(2), entry.get(3), entry.get(4), entry.get(5),entry.get(6));
+                InsertEntryRequestModel model1 = new InsertEntryRequestModel(date, value,
+                        entry.get(2), entry.get(3), entry.get(4), entry.get(5),entry.get(6));
                 this.mainFrame.getInsertEntryController().insert(model1);
             }
 
@@ -175,6 +174,7 @@ public class TopMenuBar extends JMenuBar {
     }
 
     // Function to show a description of the function of this app
+    // This warning shouldn't be resolved because these are just bunch of texts.
     private void showFunctions() {
         String description = """
                 <html><h3>Username, Password, and Sign In:</h3>

@@ -62,6 +62,7 @@ public class EntryBuilder {
         );
     }
 
+    // This warning shouldn't be resolved because it is necessary to have this method.
     public EntryBuilder reset() {
         this.id = -1;
         this.date = ZonedDateTime.now();

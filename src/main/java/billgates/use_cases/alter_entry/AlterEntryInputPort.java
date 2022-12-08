@@ -14,7 +14,8 @@ import java.util.Map;
 public interface AlterEntryInputPort {
 
     /**
-     * his method will change the entry with corresponding entryID in the database to the new value according to the map.
+     * his method will change the entry with corresponding entryID in the database to the new
+     * value according to the map.
      *
      * @param entryId   the ID of the entry which have a value we want to change.
      * @param changeMap the map which has the alter column as key and new value as key
@@ -23,7 +24,8 @@ public interface AlterEntryInputPort {
     void alterEntry(int entryId, Map<String, Object> changeMap);
 
     /**
-     * This method will change the entry with corresponding entryID in the database to the new value.
+     * This method will change the entry with corresponding entryID in the database to the
+     * new value.
      *
      * @param entryId     the ID of the entry which have a value we want to change.
      * @param newValue    the value we want the date to change to, object type

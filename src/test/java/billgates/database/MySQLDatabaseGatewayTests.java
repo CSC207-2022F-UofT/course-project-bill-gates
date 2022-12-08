@@ -26,9 +26,9 @@ import static org.junit.Assert.fail;
 public class MySQLDatabaseGatewayTests {
     public static final int TEST_TIMEOUT = 100000;
     public MySQLDatabaseGateway testGateway;
-    public int testBillID = 9999;
-    public int testSplitBillID = 1234;
-    public int testUserID = 9999;
+    public final int testBillID = 9999;
+    public final int testSplitBillID = 1234;
+    public final int testUserID = 9999;
     public Connection testConnection;
 
     @Before
@@ -48,25 +48,30 @@ public class MySQLDatabaseGatewayTests {
             String password = prop.getProperty("db.password");
 
             try {
-                this.testConnection = DriverManager.getConnection(String.format("jdbc:mysql://%s/bill", url),
-                        user,
-                        password);
+                this.testConnection = DriverManager.getConnection(
+                        String.format("jdbc:mysql://%s/bill", url), user, password);
 
                 Statement testStatement = this.testConnection.createStatement();
 
-                // Checking if the test table already exists, if it does, then we want to remove it for our tests
-                String dropBillQuery = String.format("DROP TABLE IF EXISTS bill_%d", this.testBillID);
+                // Checking if the test table already exists, if it does, then we want to remove it
+                // for our tests
+                String dropBillQuery = String.format("DROP TABLE IF EXISTS bill_%d",
+                        this.testBillID);
 
                 testStatement.execute(dropBillQuery);
 
-                // Checking if the test user already exists, if it does, then we want to remove it for our tests
-                String checkUserQuery = String.format("SELECT * FROM users WHERE user_id=%d", this.testUserID);
+                // Checking if the test user already exists, if it does, then we want to remove it
+                // for our tests
+                String checkUserQuery = String.format("SELECT * FROM users WHERE user_id=%d",
+                        this.testUserID);
 
                 ResultSet resultSet = testStatement.executeQuery(checkUserQuery);
 
                 if (resultSet.next()) {
-                    // If the user already exists there (Due to previous failed tests, we want to remove it and recreate)
-                    String deleteUserQuery = String.format("DELETE FROM users WHERE user_id=%d", this.testUserID);
+                    // If the user already exists there (Due to previous failed tests, we want to
+                    // remove it and recreate)
+                    String deleteUserQuery = String.format("DELETE FROM users WHERE user_id=%d",
+                            this.testUserID);
 
                     testStatement.execute(deleteUserQuery);
                 }
@@ -91,15 +96,19 @@ public class MySQLDatabaseGatewayTests {
                 testStatement.execute(createTableQuery);
 
                 String createEntryOneQuery = String.format("""
-                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
-                        (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
+                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`,
+                        `to`, location, split_bill_id) VALUE
+                        (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry",
+                        "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
                         """, this.testBillID);
 
                 testStatement.execute(createEntryOneQuery);
 
                 String createEntryTwoQuery = String.format("""
-                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`, `to`, location, split_bill_id) VALUE
-                        (2, 678.90, "1970-01-10 00:00:00", "CNY", "This is another test entry", "Cash", "Burger King", "College Street", -1)
+                        INSERT INTO bill_%d (entry_id, value, date, currency, description, `from`,
+                        `to`, location, split_bill_id) VALUE
+                        (2, 678.90, "1970-01-10 00:00:00", "CNY", "This is another test entry",
+                        "Cash", "Burger King", "College Street", -1)
                         """, this.testBillID);
 
                 testStatement.execute(createEntryTwoQuery);
@@ -161,8 +170,10 @@ public class MySQLDatabaseGatewayTests {
     @Test(timeout = TEST_TIMEOUT)
     public void testGetUserData() {
         try {
+            // This warning shouldn't be resolved: this is just a test to check if the method fails.
             List<QueryUserData> obtainedUsers = this.testGateway.getUserData();
-            // There's not much we can test on this method, as the users list grows in size as people use our application
+            // There's not much we can test on this method, as the users list grows in size as
+            // people use our application
             // So we will just test if there is a runtime exception being raised
         } catch (RuntimeException e) {
             // Fails the test whenever we encounter an Error
@@ -222,7 +233,8 @@ public class MySQLDatabaseGatewayTests {
 
 
             // Dropping the table if it already exists (due to previous failed tests)
-            String dropTableQuery = String.format("DROP TABLE IF EXISTS bill_%d_%d", this.testBillID, this.testSplitBillID);
+            String dropTableQuery = String.format("DROP TABLE IF EXISTS bill_%d_%d",
+                    this.testBillID, this.testSplitBillID);
 
             testStatement.execute(dropTableQuery);
 
@@ -230,7 +242,8 @@ public class MySQLDatabaseGatewayTests {
             // Test create the table
             this.testGateway.createSplitBillTable(this.testSplitBillID);
 
-            String checkQuery = String.format("SHOW COLUMNS FROM bill_%d_%d", this.testBillID, this.testSplitBillID);
+            String checkQuery = String.format("SHOW COLUMNS FROM bill_%d_%d", this.testBillID,
+                    this.testSplitBillID);
 
             ResultSet resultSet = testStatement.executeQuery(checkQuery);
 
@@ -256,7 +269,8 @@ public class MySQLDatabaseGatewayTests {
             assertEquals(obtainedColumnNames, trueColumnNames);
 
             // Drop the split bill we just created
-            dropTableQuery = String.format("DROP TABLE bill_%d_%d", this.testBillID, this.testSplitBillID);
+            dropTableQuery = String.format("DROP TABLE bill_%d_%d", this.testBillID,
+                    this.testSplitBillID);
 
             testStatement.execute(dropTableQuery);
 
@@ -384,7 +398,8 @@ public class MySQLDatabaseGatewayTests {
 
                 Instant i = Instant.ofEpochMilli(date.getTime());
 
-                // We can pass in the different zones we want to convert in, and we can obtain the value we want
+                // We can pass in the different zones we want to convert in, and we can obtain the
+                // value we want
                 zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
             }
 
@@ -458,7 +473,8 @@ public class MySQLDatabaseGatewayTests {
 
                 Instant i = Instant.ofEpochMilli(date.getTime());
 
-                // We can pass in the different zones we want to convert in, and we can obtain the value we want
+                // We can pass in the different zones we want to convert in, and we can obtain
+                // the value we want
                 zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
             }
 
@@ -512,7 +528,8 @@ public class MySQLDatabaseGatewayTests {
                 size += 1;
             }
 
-            // We have 3 entries now, because we have 2 entries inserted in setUp, and 1 inserted in this test case
+            // We have 3 entries now, because we have 2 entries inserted in setUp, and 1 inserted
+            // in this test case
             assertEquals(size, 3);
 
 
@@ -538,7 +555,8 @@ public class MySQLDatabaseGatewayTests {
                     0, ZoneId.systemDefault());
 
             // This information was identical to the ones in the setUp chunk.
-            // (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T Supermarket", "T&T Supermarket", -1)
+            // (1, 123.45, "1970-01-02 00:00:00", "CAD", "This is a test entry", "Credit Card", "T&T
+            // Supermarket", "T&T Supermarket", -1)
             assertEquals(1, (int) obtainedEntry.getId().getAttribute());
             assertEquals(expectedDate, obtainedEntry.getDate().getAttribute());
             assertEquals(123.45, obtainedEntry.getValue().getAttribute(), 1e-8);
@@ -559,7 +577,8 @@ public class MySQLDatabaseGatewayTests {
         try {
             List<Entry> obtainedBillData = this.testGateway.getBillData(this.testBillID);
 
-            // Testing if the size is 2, since if there is 2, then it means we have obtained all entries
+            // Testing if the size is 2, since if there is 2, then it means we have obtained all
+            // entries
             // In the setUp chunk, we initialized the bill with 2 entries
             assertEquals(obtainedBillData.size(), 2);
 
@@ -588,7 +607,8 @@ public class MySQLDatabaseGatewayTests {
                     0,
                     0, ZoneId.systemDefault());
 
-            List<Entry> obtainedBillData = this.testGateway.getBillData(this.testBillID, startTime, endTime);
+            List<Entry> obtainedBillData = this.testGateway.getBillData(
+                    this.testBillID, startTime, endTime);
 
             // If we only have 1 entry obtained, then it is a success
             assertEquals(obtainedBillData.size(), 1);
@@ -605,7 +625,8 @@ public class MySQLDatabaseGatewayTests {
             int testEntryID = 1;
             String testDescription = "This is modified test entry 1";
 
-            this.testGateway.modifyEntry(this.testBillID, testEntryID, "Description", testDescription);
+            this.testGateway.modifyEntry(this.testBillID, testEntryID, "Description",
+                    testDescription);
 
             Statement testStatement = this.testConnection.createStatement();
 
@@ -670,9 +691,11 @@ public class MySQLDatabaseGatewayTests {
                     0,
                     ZoneId.systemDefault());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
+                    BillGatesUtilities.DATETIME_PATTERN);
 
-            this.testGateway.modifyEntry(this.testBillID, testEntryID, "Date", testDate.format(formatter));
+            this.testGateway.modifyEntry(this.testBillID, testEntryID, "Date",
+                    testDate.format(formatter));
 
             Statement testStatement = this.testConnection.createStatement();
 
@@ -764,7 +787,8 @@ public class MySQLDatabaseGatewayTests {
 
             Instant i = Instant.ofEpochMilli(date.getTime());
 
-            // We can pass in the different zones we want to convert in, and we can obtain the value we want
+            // We can pass in the different zones we want to convert in, and we can obtain the value
+            // we want
             zDate = ZonedDateTime.ofInstant(i, ZoneId.systemDefault());
 
             assertEquals(obtainedID, (int) testModifiedEntry1.getId().getAttribute());

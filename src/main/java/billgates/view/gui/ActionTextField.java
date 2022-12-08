@@ -18,8 +18,4 @@ public class ActionTextField extends JTextField {
         this.setFont(DEFAULT_FONT);
     }
 
-    public ActionTextField(String text, int columns) {
-        this(columns);
-        this.setText(text);
-    }
 }

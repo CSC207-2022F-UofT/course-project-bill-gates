@@ -71,15 +71,17 @@ public class AlterEntryRequestModel {
         this.currency = currency;
     }
 
+    // This warning shouldn't be resolved because it is necessary to have this variable.
+    // We may use it in future extension.
     public Entry getEntryData(int entryID) {
         return new EntryBuilder()
-                .setDate(date)
-                .setValue(value)
-                .setCurrency(currency)
-                .setDescription(description)
-                .setFrom(from)
-                .setTo(to)
-                .setLocation(location)
+                .setDate(this.date)
+                .setValue(this.value)
+                .setCurrency(this.currency)
+                .setDescription(this.description)
+                .setFrom(this.from)
+                .setTo(this.to)
+                .setLocation(this.location)
                 .setSplitterBillId(-1)
                 .buildEntry();
 

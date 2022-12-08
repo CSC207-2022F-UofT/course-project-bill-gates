@@ -25,6 +25,7 @@ public class AlterEntryController {
         this.useCase.alterEntry(entryId, newValue, alterColumn);
     }
 
+    // This warning shouldn't be resolved because it is necessary to have this method.
     public void alterEntry(int entryId, Map<String, Object> changeMap) {
         this.useCase.alterEntry(entryId, changeMap);
 

@@ -54,6 +54,7 @@ public class SplitterEntry extends AbstractEntry {
         return payee;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setPayee(Attribute<String> payee) {
         this.payee = payee;
     }
@@ -62,6 +63,7 @@ public class SplitterEntry extends AbstractEntry {
         return isPaidBack;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setIsPaidBack(Attribute<Boolean> isPaidBack) {
         this.isPaidBack = isPaidBack;
     }

@@ -30,7 +30,8 @@ public class BillUpdateViewModel {
      */
     private boolean isSplitterBill;
 
-    public BillUpdateViewModel(String[] columns, List<List<Object>> entries, boolean isSplitterBill) {
+    public BillUpdateViewModel(String[] columns, List<List<Object>> entries,
+                               boolean isSplitterBill) {
         this.columns = columns;
         this.entries = entries;
         this.isSplitterBill = isSplitterBill;
@@ -57,6 +58,7 @@ public class BillUpdateViewModel {
         return columns;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setColumns(String[] columns) {
         this.columns = columns;
     }
@@ -73,6 +75,7 @@ public class BillUpdateViewModel {
         return isSplitterBill;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setSplitterBill(boolean splitterBill) {
         isSplitterBill = splitterBill;
     }

@@ -71,6 +71,7 @@ public class MainFrame extends JFrame {
         return this.actionPanel;
     }
 
+    // This warning shouldn't be resolved because this is just a getter.
     public JMenuBar getMenu() {
         return menu;
     }

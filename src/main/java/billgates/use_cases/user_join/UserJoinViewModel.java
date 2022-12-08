@@ -1,6 +1,5 @@
 package billgates.use_cases.user_join;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -40,6 +39,7 @@ public class UserJoinViewModel {
         return this.isJoined;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setJoined(boolean joined) {
         this.isJoined = joined;
     }
@@ -48,6 +48,7 @@ public class UserJoinViewModel {
         return this.reasonRejected;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setReasonRejected(String reasonRejected) {
         this.reasonRejected = reasonRejected;
     }

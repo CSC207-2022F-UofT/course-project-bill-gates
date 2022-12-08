@@ -47,7 +47,8 @@ public class BillUpdatePresenter implements BillUpdateOutputPort {
         // format dates
         for (List<Object> list : entries) {
             ZonedDateTime date = (ZonedDateTime) list.get(1);
-            String formatted = date.format(DateTimeFormatter.ofPattern(BillGatesUtilities.DATETIME_PATTERN));
+            String formatted = date.format(DateTimeFormatter.ofPattern(
+                    BillGatesUtilities.DATETIME_PATTERN));
             list.set(1, formatted);
         }
         String[] columns;

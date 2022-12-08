@@ -34,6 +34,7 @@ public class BillUpdateResponseModel {
         return isSplitterBill;
     }
 
+    // This warning shouldn't be resolved because this is just a setter.
     public void setSplitterBill(boolean splitterBill) {
         isSplitterBill = splitterBill;
     }

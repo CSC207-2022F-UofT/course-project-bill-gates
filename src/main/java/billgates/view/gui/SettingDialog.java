@@ -13,8 +13,6 @@ public class SettingDialog extends JDialog {
     private static final JComboBox<String> fontField = new JComboBox<>();
     private static int colorIndex;
     private static int fontIndex;
-    private final JButton confirmButton = new JButton("Confirm");
-    private final JButton cancelButton = new JButton("Cancel");
     private boolean confirmed = false;
     private static boolean isInitialized = false;
 
@@ -36,8 +34,10 @@ public class SettingDialog extends JDialog {
 
         //Set the sub-action root panel
         JPanel subAction = new JPanel();
-        subAction.add(this.confirmButton);
-        subAction.add(this.cancelButton);
+        JButton confirmButton = new JButton("Confirm");
+        subAction.add(confirmButton);
+        JButton cancelButton = new JButton("Cancel");
+        subAction.add(cancelButton);
 
         // Set the color-field and font-field
         JLabel backgroundButton = new JLabel("Background Color");
@@ -83,10 +83,10 @@ public class SettingDialog extends JDialog {
         this.add(subAction, BorderLayout.SOUTH);
 
         // Case 1: Click cancelButton
-        this.cancelButton.addActionListener(e -> this.setVisible(false));
+        cancelButton.addActionListener(e -> this.setVisible(false));
 
         // Case 2: Choose different color and font
-        this.confirmButton.addActionListener((e ->
+        confirmButton.addActionListener((e ->
         {
             colorIndex = colorField.getSelectedIndex();
             colorField.setSelectedIndex(colorIndex);
