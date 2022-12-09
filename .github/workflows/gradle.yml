@@ -1,8 +1,8 @@
 name: Java Gradle build and Release
 
 env:
-  version: 0.1.0
-  description: "This is a test release"
+  version: 1.0.0
+  description: "The is the first official release of Bill Gates"
 
 on:
   push:
