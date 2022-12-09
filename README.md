@@ -146,7 +146,7 @@ UserJoinUseCaseTests
 # Clean Architecture
 
 - As we mentioned in the Code Organization section, we organized our code by layers in Clean Architecture. Therefore, it is easy to observe that our codes completely follow the Clean Architecture.
-- We implemented the MVC architecture in the Clean Architecture. Here is the diagram of the flow of control of our program.<img src="resources/flow_or_control.png" alt="Flow of Control Chart" style="zoom:50%;" />
+- We implemented the MVC architecture in the Clean Architecture. Here is the diagram of the flow of control of our program.<img src="resources/flow_of_control.png" alt="Flow of Control Chart" style="zoom:50%;" />
 
 # SOLID
 
