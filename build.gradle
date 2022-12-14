@@ -40,7 +40,7 @@ test {
 shadowJar {
     archiveBaseName.set('BillGates')
     archiveClassifier.set('')
-    archiveVersion.set('0.1.0')
+    archiveVersion.set('1.0.0')
 }
 
 jar {
