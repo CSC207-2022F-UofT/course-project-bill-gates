@@ -1,3 +1,5 @@
+**We have already shutdown our database service. The database dump script is in the `database` folder.** 
+
 # Bill Gates - Your next Bill Management System
 
 - This software serves as the project for the course CSC207 at the University of Toronto.
